@@ -1,0 +1,398 @@
+<!DOCTYPE HTML>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+		<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+		<title>Hello APP</title>
+		<link rel="stylesheet" type="text/css" href="../css/api.css" />
+		<style type="text/css">
+			#subNav {}
+			
+			#subNav .discover {
+				overflow: hidden;
+				height: 45px;
+				position: relative;
+			}
+			
+			#subNav .hide {
+				display: none;
+			}
+			
+			#subNav .discover .nav {
+				height: 45px;
+				line-height: 45px;
+				-webkit-box-sizing: border-box;
+				box-sizing: border-box;
+				position: absolute;
+				z-index: 1;
+				-webkit-transform: translateZ(0);
+				transform: translateZ(0);
+				display: block;
+				white-space: nowrap;
+				width: 100%;
+				font-size: 0;
+			}
+			
+			#subNav .discover .nav span {
+				display: inline-block;
+				color: #666666;
+				font-size: 15px;
+				width: 25%;
+				text-align: center;
+				height: 40px;
+			}
+			
+			#subNav .discover .nav span.active {
+				color: #febd01;
+			}
+			
+			#subNav .discover .con span.active a {
+				display: inline-block;
+				height: 43px;
+				width: 75px;
+				border-bottom: 2px solid #febf02;
+				-webkit-transition: all .3s;
+				transition: all .3s;
+			}
+			
+			#subNav .discover em {
+				/*width: 45px; height: 1px;*/
+				/*position: absolute; bottom: 8px;;*/
+				/*margin-left: 10px;*/
+				/*/!*border-bottom: 2px solid #febd01; left: 10px;*!/*/
+				/*border-bottom: 1px solid #febd01; left: 10px;*/
+				/*-webkit-transition: all .3s;*/
+				/*transition: all .3s;*/
+			}
+			
+			#subNav .discover .btn {
+				display: inline-block;
+				width: 56px;
+				height: 100%;
+				position: absolute;
+				right: 0;
+				top: 0;
+				text-align: center;
+				z-index: 10;
+				background: #fff url(image/line_category_collapse.png) no-repeat left center;
+				-webkit-background-size: contain;
+				background-size: contain;
+			}
+			
+			#subNav .discover .arr {
+				display: inline-block;
+				width: 26px;
+				height: 18px;
+				background: url(image/ic_collapse_category.png) no-repeat center;
+				-webkit-background-size: 13px 9px;
+				background-size: 13px 9px;
+				border: 1px solid #c6c6c6;
+				border-radius: 8px;
+				margin-top: 10px;
+			}
+			
+			#subNav .discover .category {
+				position: absolute;
+				background-color: #fff;
+				width: 100%;
+				border-bottom: 1px solid #ddd;
+				height: 44px;
+				z-index: 20;
+				overflow: hidden;
+				opacity: 0;
+				display: none;
+				-webkit-transition: all .3s;
+				transition: all .3s;
+			}
+			
+			#subNav .discover .category.fadeIn {
+				opacity: 1;
+			}
+			
+			#subNav .discover .category h3 {
+				margin-left: 20px;
+				line-height: 44px;
+				font-size: 14px;
+				color: #8d8d8d;
+				float: left;
+				width: 5em;
+			}
+			
+			#subNav .discover .category .order {
+				font-size: 12px;
+				color: #e13632;
+				padding: 4px 10px;
+				line-height: 1;
+				border-radius: 10px;
+				border: 1px solid #f6c2c0;
+				margin-top: 10px;
+				margin-right: 10px;
+			}
+			
+			#subNav .discover .category span {
+				float: right;
+			}
+			
+			#subNav .discover .category .btn {
+				background-image: none;
+				position: static;
+			}
+			
+			#subNav .discover .category .arr {
+				background-image: none;
+				line-height: 1;
+			}
+			
+			#subNav .discover .category .arr:before {
+				display: inline-block;
+				content: '';
+				width: 13px;
+				height: 9px;
+				background: url(image/ic_collapse_category.png) no-repeat center;
+				-webkit-background-size: contain;
+				background-size: contain;
+				-webkit-transition: all .3s;
+				transition: all .3s;
+				-webkit-transform: rotate(0deg);
+				transform: rotate(0deg);
+			}
+			
+			#subNav .discover .category .arr.up:before {
+				-webkit-transform: rotate(180deg);
+				transform: rotate(180deg);
+			}
+			
+			#subNav .download {
+				position: relative;
+				height: 44px;
+				line-height: 44px;
+				border-bottom: 1px solid #dedede;
+			}
+			
+			#subNav .download span {
+				display: inline-block;
+				width: 50%;
+				text-align: center;
+				position: relative;
+				font-size: 13px;
+				color: #272930;
+			}
+			
+			#subNav .download .active,
+			#subNav .download .focus {
+				color: #e13632;
+			}
+			
+			#subNav .download em {
+				position: absolute;
+				bottom: -1px;
+				left: 0;
+				-webkit-transition: all .2s;
+				transition: all .2s;
+				/*width: 50%; height: 1px; border-bottom: 2px solid #febd01;*/
+				width: 50%;
+				height: 1px;
+				border-bottom: 1px solid #febd01;
+			}
+			
+			#subNav .download.toggle em {
+				left: 50%;
+			}
+			
+			#subNav .download span.first:after {
+				content: "";
+				display: inline-block;
+				height: 14px;
+				width: 1px;
+				border-right: 1px solid #ddd;
+				position: absolute;
+				right: 0;
+				top: 50%;
+				margin-top: -7px;
+			}
+			
+			#subNav .search {
+				padding: 10px 0 0;
+			}
+			
+			#subNav .search span {
+				color: #8e8e93;
+				position: relative;
+				background: url(image/search_zoom.png) no-repeat 16px center;
+				-webkit-background-size: 19px 19px;
+				background-size: 19px 19px;
+				margin: 0 auto 10px;
+				width: 90%;
+				display: block;
+				font-size: 13px;
+				background-color: #e0e0e0;
+				border-radius: 6px;
+				padding: 10px 20px 10px 40px;
+				-webkit-box-sizing: border-box;
+				box-sizing: border-box;
+			}
+			
+			#subNav .search .record {
+				position: absolute;
+				right: 20px;
+				top: 8px;
+				display: inline-block;
+				width: 12px;
+				height: 18px;
+				background: url(image/voice_logo_microphone.png) no-repeat;
+				-webkit-background-size: contain;
+				background-size: contain;
+			}
+			
+			#subNav .search .list {
+				padding: 10px 20px;
+				border-top: 1px solid #ddd;
+				overflow: hidden;
+			}
+			
+			#subNav .search .list em {
+				font-size: 13px;
+				color: #97989a;
+			}
+			
+			#subNav .search .rank {
+				float: left;
+			}
+			
+			#subNav .search .hot {
+				float: right;
+			}
+		</style>
+	</head>
+
+	<body onload="loaded();">
+		<div id="subNav" style="border:1px solid #f1f1f1;">
+			<div class="discover" id="scrollBar">
+				<div class="nav">
+					<div class="con">
+						<span class="active" tapmode onclick="switchDiscFrm(this)"><a>全部</a></span>
+						<span tapmode onclick="switchDiscFrm(this)"><a>通知消息</a></span>
+						<span tapmode onclick="switchDiscFrm(this)"><a>资讯消息</a></span>
+						<span tapmode onclick="switchDiscFrm(this)"><a>系统消息</a></span>
+						<em></em>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div id="main">
+			<!--占位-->
+		</div>
+	</body>
+	<script type="text/javascript" src="../script/api-lite.js"></script>
+	<script type="text/javascript" src="../script/zepto.js"></script>
+	<script type="text/javascript" src="../script/iscroll.js"></script>
+	<script type="text/javascript">
+		var myScroll, menu_index = 0;
+
+		function loaded() {
+			//发现导航
+			myScroll = new IScroll('#scrollBar', {
+				bounce: false,
+				disableMouse: true,
+				disablePointer: true,
+				eventPassthrough: true,
+				scrollX: true,
+				scrollY: false
+			});
+		}
+
+		function activeDiscNav(index) {
+			menu_index = index;
+			var $eSpan = $('.nav .con span');
+			var $em = $('.nav .con em');
+			var $curSpan = $eSpan.eq(index);
+			$eSpan.removeClass('active');
+			$curSpan.addClass('active');
+
+			var curSpanPos = $curSpan.position();
+			var l = curSpanPos.left,
+				w = $curSpan.width();
+
+			$em.css({
+				'left': l + 'px',
+				'width': w + 'px'
+			});
+			myScroll.scrollToElement($curSpan[0], 300, true, null);
+		};
+
+		function switchDiscFrm(it) {
+			var $eSpan = $('.nav .con span');
+			$eSpan.removeClass('active');
+			var $em = $('.nav .con em');
+			$(it).addClass('active');
+			var index = $(it).index();
+
+			menu_index = index;
+
+			var $curSpan = $eSpan.eq(index);
+			var curSpanPos = $curSpan.position();
+			var l = curSpanPos.left,
+				w = $curSpan.width();
+			$em.css({
+				'left': l + 'px',
+				'width': w + 'px'
+			});
+
+			myScroll.scrollToElement($curSpan[0], 300, true, null);
+
+			api.setFrameGroupIndex({
+				name: 'messageContent',
+				index: index
+				// ,scroll: true
+			});
+		}
+
+		function openTab() {
+			var mainHeight, mainTop;
+			//api.winHeight
+			mainTop = 43 + $('#subNav').height();
+			mainHeight = api.winHeight - mainTop - 44;
+			var framesArr = [{
+				name: 'mes_all',
+				url: 'message/mes_all.html',
+				bounces: false
+			}, {
+				name: 'mes_service',
+				url: 'message/mes_service.html',
+				bounces: false
+			}, {
+				name: 'mes_information',
+				url: 'message/mes_information.html',
+				bounces: false
+			}, {
+				name: 'mes_system',
+				url: 'message/mes_system.html',
+				bounces: false
+			}];
+
+			api.openFrameGroup({
+				name: 'messageContent',
+				scrollEnabled: true,
+				rect: {
+					x: 0,
+					y: mainTop,
+					w: 'auto',
+					h: mainHeight
+				},
+				index: menu_index,
+				frames: framesArr
+			}, function(ret, err) {
+				var $discoverNav = $('#subNav .discover .nav span');
+				var index = ret.index;
+				activeDiscNav(index);
+			});
+		}
+
+		apiready = function() {
+			openTab();
+		};
+	</script>
+
+</html>

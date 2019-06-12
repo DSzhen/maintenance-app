@@ -1,0 +1,870 @@
+<!DOCTYPE HTML>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+		<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+		<title>智能维保</title>
+		<link rel="stylesheet" type="text/css" href="css/api.css" />
+		<link rel="stylesheet" type="text/css" href="css/aui.css" />
+		<link rel="stylesheet" href="css/wbicon/style.css" />
+		<style>
+			html {
+				height: 100%;
+				background-color: #FFFFFF;
+			}
+			
+			body {
+				background-color: #FFFFFF;
+				padding: 0;
+				margin: 0;
+				display: -webkit-box;
+				height: 100%;
+				-webkit-box-orient: vertical;
+			}
+			
+			.header {
+				height: 57px;
+				width: 100%;
+				display: block;
+				line-height: 57px;
+				padding-top: 11px;
+				font-size: .8rem;
+			}
+			
+			.header.active {
+				display: block;
+			}
+			
+			.top-menu {
+				/*padding: 0 43px 0 8px;*/
+				text-align: center;
+				color: #fff;
+				font-weight: bold;
+			}
+			
+			.right-menu {
+				position: absolute;
+				right: 10px;
+				top: 1.3rem;
+			}
+			
+			.right-menu img {
+				margin-top: .2rem;
+				margin-right: .2rem;
+				width: .7rem
+			}
+			/*按钮*/
+			
+			.btn {
+				height: 40px;
+				width: 35px;
+				position: absolute;
+				right: 0;
+				bottom: 0;
+			}
+			/*首页头部导航*/
+			/*字体颜色*/
+			
+			.header.home>div.active {
+				opacity: 1;
+			}
+			
+			.header.home {
+				/*background: -moz-linear-gradient(top, #febd00 0%, #ff951b 100%);
+				background: -webkit-gradient(linear, left top, right bottom, color-stop(0%, #febd00), color-stop(100%, #ff951b));
+				background: -webkit-linear-gradient(top, #febd00 0%, #ff951b 100%);
+				background: -o-linear-gradient(top, #febd00 0%, #ff951b 100%);
+				background: -ms-linear-gradient(top, #febd00 0%, #ff951b 100%);
+				background: linear-gradient(to top, #febd00 0%, #ff951b 100%);*/
+				background-color: #ff961b;
+			}
+			
+			.header.home .top-menu>div {
+				color: #fff;
+				opacity: .8;
+			}
+			
+			.header.home .top-menu>div.active {
+				opacity: 1;
+			}
+			
+			.add_btn {
+				/*background: #d43d3d url('../image/head/add.png') center center no-repeat;*/
+				-webkit-background-size: 38px 43px;
+				background-size: 38px 43px;
+			}
+			/*视频头部导航*/
+			
+			.header.my {
+				height: 0;
+			}
+			
+			.content {
+				-webkit-flex: 1px;
+				flex: 1px;
+				-webkit-box-flex: 1;
+				background-color: #f4f5f6;
+			}
+			
+			.footer {
+				height: 44px;
+				display: flex;
+				display: -webkit-flex;
+				display: -webkit-box;
+				flex-flow: row;
+				-webkit-flex-flow: row;
+				-webkit-box-orient: horizontal;
+				background-color: #fff;
+				-webkit-box-shadow: 0 -2px 2px rgba(0, 0, 0, .1);
+				-moz-box-shadow: 0 -2px 2px rgba(0, 0, 0, .1);
+				box-shadow: 0 -2px 2px rgba(0, 0, 0, .1);
+			}
+			
+			.menu {
+				flex: 1;
+				-webkit-flex: 1;
+				-webkit-box-flex: 1;
+				height: 44px;
+				box-sizing: border-box;
+				padding-bottom: 5px;
+				padding-top: 28px;
+				color: #818181;
+				/*color: #585858;*/
+				font-size: 10px;
+				text-align: center;
+				background-position: center 5px;
+				background-repeat: no-repeat;
+			}
+			
+			.footer .main {
+				background-size: 18px 20px;
+				background-image: url(image/footer/main.png);
+			}
+			
+			.footer .home {
+				background-size: 22px 21px;
+				background-image: url(image/footer/maintenance.png);
+			}
+			
+			.footer .video {
+				background-size: 18px 20px;
+				background-image: url(image/footer/schedule.png);
+			}
+			
+			.footer .gambit {
+				background-size: 17px 20px;
+				background-image: url(image/footer/cabinet.png);
+			}
+			
+			.footer .my {
+				background-size: 16px 20px;
+				background-image: url(image/footer/user.png);
+			}
+			
+			.footer .active {
+				color: #feac1a
+			}
+			
+			.footer .main.active {
+				background-image: url(image/footer/main-active.png);
+			}
+			
+			.footer .home.active {
+				background-image: url(image/footer/maintenance-active.png);
+			}
+			
+			.footer .video.active {
+				background-image: url(image/footer/schedule-active.png);
+			}
+			
+			.footer .gambit.active {
+				background-image: url(image/footer/cabinet-active.png);
+			}
+			
+			.footer .my.active {
+				background-image: url(image/footer/user-active.png);
+			}
+			
+			.filter {
+				position: absolute;
+				text-align: right;
+				height: 2rem;
+				font-size: .7rem;
+				line-height: 2rem;
+				padding-right: 1.2rem;
+				top: 1.5rem;
+				z-index: 1000;
+				color: #fff;
+				right: .1rem;
+				display: none;
+			}
+			
+			.wb-filter {
+				width: .83rem;
+				height: .83rem;
+			}
+		</style>
+	</head>
+
+	<body>
+		<header id="header">
+			<div class="header home active">
+				<div id="title" class="top-menu">首页</div>
+				<div class="right-menu emergency-filter" onclick="_openFliterbar()"><img src="image/index/filterEme.png"></div>
+			</div>
+			<div class="filter rontine-filter" onclick="openRoutinFilterPage()"> <img class="wb-filter" src="image/routine/filter.png" alt="" /></div>
+		</header>
+		<section class="content">
+		</section>
+		<footer id="footer" class="footer">
+			<div class="menu main active " tapmode="active" onclick="fnChange(0)">首页</div>
+			<div class="menu home " tapmode="active" onclick="fnChange(1)">应急维保</div>
+			<div class="menu gambit" tapmode="active" onclick="fnChange(2)">例行维保</div>
+			<div class="menu my" tapmode="active" onclick="fnChange(3)">我的</div>
+		</footer>
+	</body>
+	<script type="text/javascript" src="config/config.js"></script>
+	<script type="text/javascript" src="script/zepto.js"></script>
+	<script type="text/javascript" src="script/api.js"></script>
+	<script type="text/javascript" src="script/sockjs/sockjs.min.js"></script>
+	<script type="text/javascript" src="script/sockjs/stomp.min.js"></script>
+	<script src="script/umeng/zhuge.js"></script>
+	<script type="text/javascript" src="script/iphoneX.js"></script>
+	<script type="text/javascript">
+		//定义一个变量防止重复请求ajax
+		var preventAjaxRepeatSubmit = true;
+		var baiduLocation, baiduInterval, gio;
+		apiready = function() {
+			iphoneXfit();
+			// gio = api.require('GrowingIO');
+			// gio.init();
+			//导航页
+			var userObj = localStorage.getItem("userObj")
+			if(!userObj || !JSON.parse(userObj).userid) {
+				//关闭指定的frame跳转到login
+				closeFrameToLogin();
+				return
+			}
+			//			baiduLocation = api.require('baiduLocation');
+			baiduLocation = api.require('bmLocation');
+			//初始化界面
+			fnInit();
+			//默认选择首页
+			fnChange(0);
+			apiEvents();
+			//注册极光服务
+			initJpsuh();
+			//检测更新
+			//detectionUpdate();
+			//开启位置上传
+			startGps();
+			//开启websocket
+			startWebsocket();
+		};
+		// 点击应急维保过滤事件
+		function _openFliterbar() {
+			//			console.log('点击进入应急维保模糊查询页')
+			//			growingIoAddEvent('enterEmergencyMaintenanceSearchPage')
+			//			api.execScript({
+			//				frameName: 'emergency',
+			//				script: 'openSearchbar()'
+			//			});
+			api.sendEvent({
+				name: 'filtrateEmergency',
+				extra: {}
+			});
+		}
+		var menus, headers, headerHeight, footerHeight, headerTop;
+		//初始化页面
+		function fnInit() {
+			var header = $api.byId('header');
+			var footer = $api.byId('footer');
+			menus = $api.domAll(footer, '.menu');
+			footerHeight = $api.offset(footer).h;
+			var offset = $api.offset(header);
+			headerHeight = offset.h;
+			headerTop = offset.t;
+		};
+
+		var frameNames = ['main', 'emergency', 'newRoutine', 'frm_user'];
+		var titles = ['首页', '应急维保', '例行维保', '我的'];
+		//默认选择首页
+		function fnChange(index) {
+			closePage();
+			if(frameNames[index] == "main") {
+				console.log('进入了首页')
+				growingIoAddEvent('enterHomePage')
+			} else if(frameNames[index] == "emergency") {
+				console.log('进入应急维保列表页')
+				growingIoAddEvent('enterEmergencyMaintenanceListPage')
+			} else if(frameNames[index] == "newRoutine") {
+				console.log('进入例行维保列表页本月待办')
+				var groingObj = {
+					planListType_var: '本月待办'
+				}
+				growingIoAddEvent('enterRoutingMaintenanceListPage', groingObj);
+			} else if(frameNames[index] == "frm_user") {
+				//进入我的
+			}
+			$api.byId('title').innerHTML = titles[index];
+			for(var i = 0; i < menus.length; i++) {
+				if(index == i) {
+					$api.addCls(menus[i], 'active');
+					fnOpenFrameGroup(i, true);
+				} else {
+					$api.removeCls(menus[i], 'active');
+					fnOpenFrameGroup(i, false);
+				}
+			}
+		};
+		//打开对应页面
+		function fnOpenFrameGroup(index, isOpen) {
+			var yH = headerHeight;
+			var hH = api.winHeight - headerHeight - footerHeight;
+			if(isIphoneX()) {
+				hH = hH - 20;
+			}
+			var time = (new Date()).getTime();
+			if(index == 3) {
+				yH = 0;
+				hH += headerHeight;
+			}
+
+			if(isOpen) {
+				if(frameNames[index] == "newRoutine" || frameNames[index] == "workmate" || frameNames[index] == "emergency") {
+					api.closeFrame({
+						name: frameNames[index]
+					});
+				} else if(frameNames[index] == "main") {
+					api.sendEvent({
+						name: 'pageLoadingData',
+						extra: {}
+					});
+				}
+
+				if(frameNames[index] == "emergency") {
+					$(".right-menu").show()
+				} else {
+					$(".right-menu").hide()
+				}
+				if(frameNames[index] != "newRoutine") {
+					$(".filter").hide();
+				}
+				if(frameNames[index] == 'frm_user') {
+					is_jump().then(function(bool) {
+						// 发送监听到我的页面，是否显示新功能引导
+						api.sendEvent({
+							name: 'sendNewFunction',
+							extra: {
+								fucState: bool
+							}
+						});
+						api.openFrame({
+							name: frameNames[index],
+							url: 'html/' + frameNames[index] + '.html',
+							bounces: false,
+							reload: false, //不重新刷新页面
+							scrollEnabled: true,
+							pageParam: {
+								bool: bool
+							},
+							rect: {
+								x: 0,
+								y: yH,
+								w: 'auto',
+								h: hH
+							},
+							vScrollBarEnabled: false
+						});
+					})
+				} else {
+					api.openFrame({
+						name: frameNames[index],
+						url: 'html/' + frameNames[index] + '.html',
+						bounces: false,
+						reload: false, //不重新刷新页面
+						scrollEnabled: true,
+						pageParam: {
+							bool: '1'
+						},
+						rect: {
+							x: 0,
+							y: yH,
+							w: 'auto',
+							h: hH
+						},
+						vScrollBarEnabled: false
+					});
+				}
+				api.bringFrameToFront({
+					from: 'open_top.html'
+				});
+
+			} else {
+				api.setFrameAttr({
+					name: frameNames[index],
+					hidden: true
+				});
+			}
+		};
+		//打开例行维保筛选页面
+		function openRoutinFilterPage() {
+			//进入例行维保筛选
+			growingIoAddEvent('enterRoutingMaintenanceFilterPage')
+			api.execScript({
+				frameName: 'completedPlan',
+				script: "filterConpletedRoutine()"
+			});
+		}
+		// 判断是否跳到引导页
+		function is_jump() {
+			var userObj = JSON.parse(localStorage.getItem("userObj"))
+			var datas = {
+				userId: userObj.userid,
+				versionNo: api.systemVersion,
+				menuId: 'message_notice'
+			}
+			var istrue = '0';
+			return new Promise(function(re, je) {
+				api.ajax({
+					url: webapp_global.url + "/login/postNewFunctionStatus",
+					method: 'post',
+					dataType: "json",
+					data: {
+						values: datas
+					}
+				}, function(ret, err) {
+					var code = ret["code"];
+					if(code == "success") {
+						var data = ret["data"];
+						if(data == '1') {
+							istrue = '1';
+							re(istrue)
+						} else {
+							istrue = '0';
+							re(istrue)
+						}
+					} else {
+						re(istrue)
+					}
+				})
+			})
+		}
+
+		//关闭相应的打开页面
+		function closePage() {
+			//关闭应急维保数组
+			api.closeFrameGroup({
+				name: 'emergencyContent'
+			})
+			//关闭消息
+			api.closeFrameGroup({
+				name: 'messageContent'
+			});
+			//关闭弹出消息
+			api.closeFrame({
+				name: 'open.html'
+			});
+			api.closeFrameGroup({
+				name: "routineContent"
+			});
+		}
+		//api监听事件
+		function apiEvents() {
+			//ios右滑控制
+			api.addEventListener({
+				name: 'swiperight'
+			}, function(ret, err) {});
+			//监听返回事件
+			api.addEventListener({
+				name: 'keyback'
+			}, function(ret, err) {
+				api.openFrame({
+					name: 'frm_exit',
+					url: 'html/frm_exit.html',
+					bounces: false,
+					bgColor: 'rgba(0,0,0,0.6)',
+					rect: {
+						x: 0,
+						y: 0,
+						w: 'auto',
+						h: 'auto'
+					}
+				});
+			});
+			api.setStatusBarStyle({
+				style: 'light',
+				color: 'rgba(255,149,27,0)'
+			});
+			//监听应用进入后台，通知jpush暂停事件
+			api.addEventListener({
+				name: 'pause'
+			}, function(ret, err) {})
+			//监听应用恢复到前台，通知jpush恢复事件
+			api.addEventListener({
+				name: 'resume'
+			}, function(ret, err) {
+				var userObj = JSON.parse(localStorage.getItem("userObj"));
+				if(userObj && userObj.userid) {
+					api.ajax({
+						url: webapp_global.url + "/userInfo/getUserInfo",
+						method: 'get',
+						dataType: "json",
+						data: {
+							values: {
+								userId: userObj.userid,
+								orgCode: userObj.orgId
+							}
+						}
+					}, function(ret, err) {
+						var code = ret["code"];
+						if(code == "success") {
+							var data = ret["data"];
+							if(data.valid == "0") { //锁定
+								localStorage.clear();
+								api.closeFrame({
+									name: 'main'
+								});
+								api.closeFrame({
+									name: 'frm_user'
+								});
+								api.closeWin({
+									name: "index"
+								})
+								api.openWin({
+									name: 'login',
+									url: './html/login.html',
+									bounces: false
+								})
+							}
+						}
+					})
+				}
+				//连接websocket
+				connect();
+			});
+			//监听设备断开网络的事件，字符串类型
+			api.addEventListener({
+				name: 'offline'
+			}, function(ret, err) {});
+			//监听设备连接到网络的事件，字符串类型
+			api.addEventListener({
+				name: 'online'
+			}, function(ret, err) {});
+			api.addEventListener({
+				name: 'newMessage'
+			}, function(ret, err) {
+				fnChange(ret.value.index)
+			});
+			//后台点进来
+			api.addEventListener({
+				name: 'appintent'
+			}, function(ret, err) {
+				var appParam = ret.appParam;
+			});
+			api.addEventListener({
+				name: "controlScreeningButton"
+			}, function(ret, err) {
+				var index = ret.value.index;
+				if(index == "1") {
+					$(".filter").show()
+				} else {
+					$(".filter").hide()
+				}
+			})
+			//退出的事件
+			api.addEventListener({
+				name: 'exitSystem'
+			}, function(ret, err) {
+				disconnect();
+			});
+		}
+		//注册极光服务
+		function initJpsuh() {
+			var jpush = api.require('ajpush');
+			if(api.systemType != "ios") {
+				jpush.init(function(ret) {
+					if(ret && ret.status) {
+						//success
+					}
+				});
+			}
+			//获取cid
+			jpush.getRegistrationId(function(ret) {
+				var registrationId = ret.id;
+			});
+			//极光监听消息
+			jpush.setListener(
+				function(ret) {
+					var obj;
+					var id = ret.id;
+					var title = ret.title;
+					var content = ret.content;
+					var extra = ret.extra;
+					var details = ret.extra.details;
+					if(typeof details == "string") {
+						obj = JSON.parse(details)
+					} else {
+						obj = details
+					}
+					var userObj = JSON.parse(localStorage.getItem("userObj"));
+					if(userObj) {
+						if(userObj.userid) {
+							if(obj.type == "99") {
+								//推送过来的是人员锁定消息
+								api.alert({
+									title: obj.title,
+									msg: obj.content,
+								}, function(ret, err) {
+									//关闭指定的frame跳转到login
+									closeFrameToLogin()
+								});
+							} else if(obj.type == "8") { //例行维保监测火警测试设备
+								api.sendEvent({
+									name: 'maintenanceMonitoringFire',
+									extra: {
+										pageParam: obj
+									}
+								});
+							} else { //应急维保
+
+								api.execScript({
+									frameName: 'main',
+									script: 'dialog_message(' + JSON.stringify(obj) + ')'
+								});
+
+							}
+						}
+					}
+				}
+			);
+		}
+		var longitude = "0",
+		latitude = "0";
+		//开始gps定位
+		function startGps() {
+			baiduLocation.configManager({
+				accuracy: 'device_sensors',
+				coordinateType: 'BMK09MC',
+				locationTimeout: 10
+			});
+			//html页面a：
+			api.addEventListener({
+				name: 'stopLocation'
+			}, function(ret, err) {
+				baiduLocation.stopLocation();
+				window.clearInterval(baiduInterval)
+			});
+			//			baiduLocation.start({
+			//			    locatingWithReGeocode: true,
+			//			    backgroundLocation: false
+			//			}, function(ret) {
+			//			    var sta = ret.status;
+			//			    alert(sta)
+			//			    if (sta) {
+			//			        var lat = ret.location.latitude;
+			//			        var lon = ret.location.longitude;
+			//			        var t = ret.timestamp;
+			//			        var str = '经度：' + lon + '<br>';
+			//			        str += '纬度：' + lat + '<br>';
+			//			        str += '更新时间：' + t + '<br>';
+			//			        api.alert({ msg: str });
+			//			    } else {
+			//			        api.alert({ msg: '发生错误' });
+			//			    }
+			//			});
+			addUserLocation();
+			baiduInterval = window.setInterval(function() {
+				var userObj = JSON.parse(localStorage.getItem("userObj"));
+				var groingObjs = {
+					userId_var: userObj.userid,
+					userName_var: userObj.name,
+					onlineTime_var: 1
+				}
+				growingIoAddEvent('appUserOnlineStatistics', groingObjs);
+				baiduLocation.singleLocation({
+					reGeocode: false,
+					netWorkState: false
+				}, function(ret) {
+					var sta = ret.status;
+					if(sta && ret.location.longitude && ret.location.latitude && ret.location.longitude!=0&&ret.location.latitude !=0) {
+						longitude = ret.location.longitude;
+						latitude = ret.location.latitude;
+					}
+				});
+				saveUserLocation(longitude,latitude);
+			}, 60000)
+		}
+
+		function saveUserLocation(log,lat) {
+			var userObj = JSON.parse(localStorage.getItem("userObj"));
+			if(!userObj || !userObj.userid) {
+				return;
+			}
+			if(log && lat) {
+				console.log("经度=" + log + ",纬度=" + lat);
+				api.ajax({
+					url: webapp_global.url + '/maintenance/location/addUserLocation',
+					method: 'post',
+					timeout: 20,
+					data: {
+						values: {
+							userid: userObj.userid,
+							log: log,
+							lat: lat,
+							maintenanceorgid: userObj.orgId,
+							maintenanceorgcentercode: userObj.subCenterCode
+						}
+					}
+				}, function(ret, error) {})
+			}
+		}
+
+		function addUserLocation() {
+			baiduLocation.singleLocation({
+				reGeocode: false,
+				netWorkState: false
+			}, function(ret) {
+				var sta = ret.status;
+				if(sta) {
+					if(ret.location.longitude && ret.location.latitude) {
+						longitude = ret.location.longitude;
+						latitude = ret.location.latitude;
+						saveUserLocation(ret.location.longitude,ret.location.latitude);
+					}
+				}
+			});
+		}
+
+		function closeFrameToLogin() {
+			localStorage.clear();
+			api.closeFrame({
+				name: 'main'
+			});
+			api.closeFrame({
+				name: 'frm_user'
+			});
+			api.closeWin({
+				name: "index"
+			})
+			api.openWin({
+				name: 'login',
+				url: 'html/login.html',
+				rect: {
+					x: 0,
+					y: 0,
+					w: 'auto',
+					h: 'auto'
+				},
+				pageParam: {},
+				bounces: false,
+				bgColor: 'rgba(0,0,0,0)',
+				vScrollBarEnabled: false,
+				hScrollBarEnabled: false
+			});
+		}
+		/**
+		 * 检测更新
+		 * */
+		function detectionUpdate() {
+			var mam = api.require('mam');
+			mam.checkUpdate(function(ret, err) {
+				if(ret) {
+					var result = ret.result;
+					if(result.update == true && result.closed == false) {
+						//var str = '新版本型号:' + result.version + ';更新提示语:' + result.updateTip + ';下载地址:' + result.source + ';发布时间:' + result.time;
+						var str = '新版本型号:' + result.version + ';更新提示语:' + result.updateTip + '发布时间:' + result.time;
+						api.confirm({
+							title: '有新的版本,是否下载并安装 ',
+							msg: str,
+							buttons: ['确定', '取消']
+						}, function(ret, err) {
+							if(ret.buttonIndex == 1) {
+								if(api.systemType == "android") {
+									api.download({
+										url: result.source,
+										report: true
+									}, function(ret, err) {
+										if(ret && 0 == ret.state) { /* 下载进度 */
+											api.toast({
+												msg: "正在下载应用" + ret.percent + "%",
+												duration: 2000
+											});
+										}
+										if(ret && 1 == ret.state) { /* 下载完成 */
+											var savePath = ret.savePath;
+											api.installApp({
+												appUri: savePath
+											});
+										}
+									});
+								}
+								if(api.systemType == "ios") {
+									api.installApp({
+										appUri: result.source
+									});
+								}
+							}
+						});
+					} else {}
+				} else {}
+			});
+		}
+		var userObj = JSON.parse(localStorage.getItem("userObj"));
+		var stompClient = undefined,
+			socket = null,
+			timer = null,
+			wsUrl="",
+			headers={};
+		//开启websocket
+		function startWebsocket() {
+			wsUrl = webapp_global.maintenance_message_service_url + "/ws";
+			headers = {
+				userId: userObj.userid,
+				userName: userObj.name,
+				terminal: 'app'
+			};
+			connect();
+
+			socket.onclose = function() {
+				if(!timer) {
+					console.log("webSocket准备重新连接！");
+					timer = setInterval(function() {
+						console.log("webSocket重新连接！");
+						connect();
+					}, 30000)
+				}
+			}
+		}
+		
+		function connect() {
+			if(!socket) {
+				socket = null;
+				stompClient = null;
+			}
+			socket = new SockJS(wsUrl);
+			stompClient = Stomp.over(socket);
+			stompClient.connect(headers, function connectCallback(frame) {
+				console.log("webSocket已经连接！");
+				if(timer) {
+					clearInterval(timer);
+					timer = null;
+				}
+			});
+			stompClient.heartbeat.outgoing = 5000;
+			stompClient.heartbeat.incoming = 0; //客户端不从服务端接收心跳包
+			stompClient.debug = function() {
+				if(socket.readyState == 1) {} else if(socket.readyState == 3) {}
+			}
+		}
+
+		function disconnect() {
+			if(stompClient) {
+				stompClient.disconnect();
+			}
+		}
+	</script>
+
+</html>

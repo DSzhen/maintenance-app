@@ -1,0 +1,58 @@
+{
+	"orderId": "12456",
+	"proprietor": "业主单位",
+	"proprietorCoordinate": "117.2,38.7",
+	"submitter": "提交人",
+	"submitTime": "提交时间",
+	"concat": "联系人",
+	"concatPhone": "联系电话",
+	"orderTime": "预约时间",
+	"//": "维保状态0未处置，1已出发，2已抵达，3已完成，4已确认，5已评价",
+	"maintenanceState": "0",
+	"memo": "备注信息",
+	"//：": "订单类型1无隐患，2有隐患",
+	"orderType": "1",
+	"maintenanceDetails": {
+		"buildId": "楼栋Id",
+		"build": "楼栋",
+		"floorId": "楼层Id",
+		"floor": "楼层",
+		"deviceId": "设备编码",
+		"deviceTypeId": "设备类型编码",
+		"deviceType": "设备类型",
+		"deviceName": "设施",
+		"deviceAddress": "位置",
+		"deviceDescription": "描述",
+		"attachment": [
+			{
+				"attachName": "附件名称",
+				"attachPath": "附件地址",
+				"createTime": "创建时间"
+			}
+		]
+	},
+	"handleDetails": [
+		{
+			"serviceman": "维保人",
+			"time": "维保时间",
+			"problemFix": "问题定位",
+			"maintenanceDesc": "处置描述",
+			"emergencyHandle": "应急措施",
+			"attachment": [
+				{
+					"name": "附件名称",
+					"url": "附件地址"
+				}
+			],
+			"solved": "是否解决"
+		}
+	],
+	"maintenanceProcess": [
+		{
+			"maintenanceState": "",
+			"time": "时间",
+			"concat": "联系人",
+			"telephone": "联系电话"
+		}
+	]
+}

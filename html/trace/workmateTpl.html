@@ -1,0 +1,273 @@
+<!DOCTYPE HTML>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+		<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+		<link rel="stylesheet" type="text/css" href="../../css/aui.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/wbicon/style.css" />
+		<style type="text/css">
+			html {
+				font-family: "Microsoft YaHei";
+			}
+			
+			body {
+				color: #333;
+				background-color: #eeeef5;
+			}
+			
+			.aui-content-padded {
+				margin: 0;
+				margin-top: .5rem;
+			}
+			
+			.wb-flex {
+				display: -webkit-box;
+				display: -webkit-flex;
+				display: flex;
+				-webkit-box-pack: justify;
+				-webkit-justify-content: space-between;
+				justify-content: space-between;
+				-webkit-align-items: center;
+				align-items: center;
+			}
+			
+			.aui-list.aui-collapse {
+				background: #fff;
+				border-radius: .2rem;
+			}
+			
+			.aui-list .aui-list-item-title {
+				width: 80%;
+				min-height: 2.6rem;
+				line-height: 2.6rem;
+				font-size: .75rem;
+				color: #333;
+			}
+			
+			.wb-list-unity {
+				display: inline-block;
+				max-width: 70%;
+				vertical-align: middle;
+			}
+			
+			.aui-list .aui-list-item-title>b {
+				color: #ff961b;
+				vertical-align: -3px;
+			}
+			
+			.aui-list-item.aui-collapse-header {
+				padding-left: .2rem;
+			}
+			
+			.wb-error-ul li span {
+				display: inline-block;
+				max-width: 90%;
+				color: #666;
+			}
+			
+			.wb-error-ul li b {
+				color: #999;
+			}
+			
+			.aui-list-item-right.wb-error-text {
+				color: #a0a0a0;
+				font-size: .65rem;
+			}
+			
+			.wb-breakdown-title {
+				font-size: .72rem;
+				color: #666;
+			}
+			
+			.wb-breakdown-text {
+				color: #999;
+				font-size: .72rem;
+				margin-top: .05rem;
+			}
+			
+			.wb-breakdown-type b {
+				color: #bcbcbc;
+				vertical-align: -1px;
+			}
+			
+			.wb-breakdown-info {
+				font-size: .72rem;
+				color: #5a9cff;
+			}
+			
+			.wb-breakdown-list {
+				max-width: 71%;
+			}
+			
+			.wb-collapse-content-ul {
+				margin-left: .75rem;
+			}
+			
+			.wb-collapse-content-item {
+				padding-left: .25rem;
+				border-bottom: 1px solid #ddd;
+			}
+			
+			.wb-collapse-content-ul .wb-collapse-content-item:last-child {
+				border-bottom: 0;
+			}
+			
+			.wb-collapse-content-ul .aui-card-list-content-padded {
+				padding-left: 0;
+			}
+			
+			.aui-collapse-header.aui-active {
+				background: #fff;
+				border-bottom: 1px solid #ddd;
+				border-top-left-radius: .2rem;
+				border-top-right-radius: .2rem;
+			}
+			
+			[v-cloak] {
+				display: none;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div class="wb-content" id="eachItem" v-cloak>
+			<section class="aui-content-padded">
+				<!--手风琴-->
+				<ul class="aui-list aui-collapse">
+					<div class="aui-collapse-item" v-for="item in workData">
+						<li class="aui-list-item aui-collapse-header">
+							<div class="aui-list-item-inner">
+								<div class="aui-list-item-title"><b :class=item.classes></b><span class="wb-list-unity aui-ellipsis-1">{{item.legacyTime}} {{item.des}}</span></div>
+								<div class="aui-list-item-right wb-error-text">故障<span>{{item.maintenanceFaultList.length}}</span>条</div>
+							</div>
+						</li>
+						<div class="aui-collapse-content aui-border-b">
+							<ul class="wb-collapse-content-ul">
+								<li class="wb-collapse-content-item" v-for="each in item.maintenanceFaultList" @click="enterTpl(each)">
+									<div class="aui-card-list-content-padded wb-flex">
+										<div class="wb-breakdown-list">
+											<h3 class="wb-breakdown-title aui-ellipsis-1">{{each.check_item_type_parent_name}}<span class="aui-margin-l-10">{{each.handTime}}</span></h3>
+											<p class="wb-breakdown-text aui-ellipsis-1">{{each.deviceAddress}}</p>
+										</div>
+										<a class="wb-breakdown-type wb-breakdown-info" v-if="each.solved ==0"><b class="wbicon-arrowRight2 aui-margin-l-5 aui-font-size-14"></b></a>
+										<a class="wb-breakdown-type wb-breakdown-info" v-if="each.solved ==1"><b class="wbicon-sure" style="color: #00ab04;"></b><b class="wbicon-arrowRight2 aui-margin-l-5 aui-font-size-14"></b></a>
+									</div>
+								</li>
+							</ul>
+						</div>
+					</div>
+				</ul>
+			</section>
+		</div>
+	</body>
+	<script type="text/javascript" src="../../script/api.js"></script>
+	<script type="text/javascript" src="../../script/aui-tab.js"></script>
+	<script type="text/javascript" src="../../script/aui-collapse.js"></script>
+	<script type="text/javascript" src="../../script/vue.js"></script>
+	<script type="text/javascript" src="../../config/config.js"></script>
+	<script type="text/javascript">
+		var objVUe;
+
+		apiready = function() {
+			objVUe = new Vue({
+				el: "#eachItem",
+				data: function() {
+					return {
+						workData: []
+					}
+				},
+				methods: {
+					//进入详情
+					enterTpl: function(item) {
+						item.enterType = 2
+						item.enterpriseId = api.pageParam.proprietorId;
+						api.openWin({
+							name: 'trouble/win_detail.html',
+							url: '../trouble/win_detail.html',
+							rect: {
+								x: 0,
+								y: 0,
+								w: 320,
+								h: 480
+							},
+							pageParam: item,
+							bounces: false,
+							bgColor: 'rgba(0,0,0,0)',
+							vScrollBarEnabled: true,
+							hScrollBarEnabled: true
+						});
+					},
+					init: function() {
+						var userObj = localStorage.getItem("userObj");
+						var that = this;
+						api.ajax({
+							url: webapp_global.url + "/serverUnit/getLegacyFaultList",
+							method: 'get',
+							dataType: "json",
+							data: {
+								values: {
+									proprietorId: api.pageParam.proprietorId,
+									maintenanceUserId: JSON.parse(userObj).userid
+								}
+							}
+						}, function(ret, err) {
+							if(ret) {
+								that.workData = ret.data
+								if(that.workData.length > 0) {
+									that.workData.forEach(function(item) {
+										item.classes = "wbicon-add aui-margin-10"
+									})
+									that.after()
+								} else {
+									api.toast({
+										msg: '没有数据',
+										duration: 2000,
+										location: 'top'
+									});
+								}
+							}
+						})
+					},
+					after: function() {
+						this.$nextTick(function() {
+							var that = this;
+							new auiCollapse({
+								autoHide: false,
+							}, function(ret, index) {
+								//wbicon-add aui-margin-10 +号
+								//wbicon-remove aui-margin-10 -号
+								if(ret == 1) {
+									that.workData[index].classes = 'wbicon-add aui-margin-10'
+									//                                that.$set(that.initManData)
+									that.workData[index].mark = false
+								} else {
+									that.workData[index].classes = 'wbicon-remove2 aui-margin-10'
+									that.workData[index].mark = true
+									//请求数据（每一项）
+								}
+								that.$set(that.workData, index, that.workData[index])
+								//ret 1 代表关闭，2 代表展开
+								//index 代表那一行
+							});
+
+						})
+					}
+				},
+				created: function() {
+					this.init()
+				}
+			})
+		};
+
+		function closeWin() {
+			api.closeWin({});
+		}
+
+		function uploadHtml() {
+			objVUe.init()
+		}
+	</script>
+
+</html>

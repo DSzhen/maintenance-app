@@ -1,0 +1,338 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+		<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+		<link rel="stylesheet" type="text/css" href="../css/aui.css" />
+		<link rel="stylesheet" type="text/css" href="../css/wbicon/style.css" />
+		<link rel="stylesheet" href="../css/mint-ui.css" />
+		<style type="text/css">
+			html {
+				font-family: "Microsoft YaHei";
+			}
+
+			body {
+				background-color: #f6f6f6;
+			}
+
+			.wb-flex {
+				display: -webkit-box;
+				display: -webkit-flex;
+				display: flex;
+				-webkit-box-pack: justify;
+				-webkit-justify-content: center;
+				justify-content: center;
+				-webkit-box-align: center;
+				-webkit-align-items: center;
+				align-items: center;
+			}
+
+			.wb-space-between {
+				-webkit-justify-content: space-between;
+				justify-content: space-between;
+			}
+
+			.wb-margin-t-10 {
+				margin-top: 1rem;
+			}
+
+			.aui-content-padded {
+				margin: .5rem;
+			}
+
+			.aui-card-list {
+				margin-bottom: .5rem;
+				box-shadow: 0 4px 8px 0 rgba(229, 229, 229, .65);
+				border-radius: .2rem;
+			}
+
+			.wb-title-h5 {
+				color: #474747;
+				font-size: .75rem;
+			}
+
+			.wb-telphone {
+				display: inline-block;
+				line-height: .8rem;
+				color: rgba(7, 105, 252, .9);
+				border-bottom: 1px solid rgba(7, 105, 252, .9);
+			}
+
+			.wb-info-des {
+				font-size: .75rem;
+				color: #a0a0a0;
+			}
+
+			.wb-info-des b {
+				vertical-align: -1px;
+			}
+
+			.wb-margin-t-4 {
+				margin-top: .35rem;
+			}
+
+			.wb-list-inner {
+				max-width: 78%;
+			}
+
+			.aui-btn-info.aui-btn-outlined.wb-btn {
+				color: #0769fc !important;
+				background-color: #ecf6ff !important;
+				border: 1px solid rgba(7, 105, 252, .6) !important;
+			}
+
+			.aui-card-list-content-padded {
+				position: relative;
+			}
+
+			.wb-card-mark {
+				position: absolute;
+				top: -.1rem;
+				right: 0;
+			}
+
+			.wb-card-mark b {
+				font-size: 2.6rem;
+				color: #ff961b;
+			}
+
+			.wb-card-mark span {
+				position: absolute;
+				left: 0.7rem;
+				right: 0;
+				top: .5rem;
+				font-size: .6rem;
+				color: #fff;
+				transform: rotate(43deg);
+			}
+
+			.wb-text-danger {
+				color: #ff961b;
+			}
+
+			.wb-text-success {
+				color: #57bd59;
+			}
+
+			.wb-error-num {
+				font-size: .65rem;
+			}
+
+			.wb-error-num span {
+				font-size: 1.4rem;
+			}
+
+			[v-cloak] {
+				display: none;
+			}
+
+			.defaultDiv-layout {
+				margin-top: 35%;
+				height: 100%;
+				width: 100%;
+				text-align: center;
+			}
+
+			.defaultDiv-layout label {
+				color: #C4C4C4;
+			}
+
+			.defaultDiv {
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				margin-bottom: 1rem;
+			}
+
+			.defaultDiv img {
+				height: 5rem;
+				width: 6rem;
+			}
+		</style>
+	</head>
+
+	<body>
+		<section class="aui-content" id="workMate" v-cloak>
+			<div class="aui-content-padded" v-if="workData.length > 0">
+				<div class="aui-card-list" v-for="item in workData" @click="enterTpl(item)">
+					<div class="aui-card-list-content-padded aui-padded-t-15 aui-padded-b-15 wb-flex wb-space-between">
+						<div class="wb-list-inner">
+							<h5 class="wb-title-h5 aui-ellipsis-1">{{item.proprietorName}}</h5>
+							<p class="wb-info-des wb-margin-t-4 aui-ellipsis-1"><b class="wbicon-locationSolid aui-margin-r-10"></b>{{item.proprietorAddress}}</p>
+							<p class="wb-info-des wb-margin-t-4 aui-ellipsis-1"><b class="wbicon-linkman aui-font-size-18 aui-margin-r-10"></b>{{item.proprietorConact}}
+								<a class="wb-telphone aui-margin-l-10" @click="callPhone($event,item.proprietorPhone)">{{item.proprietorPhone}}</a>
+							</p>
+						</div>
+						<div class="wb-error-num wb-text-danger" v-if="item.countFault!=0"><span class="aui-margin-r-5">{{item.countFault}}</span>未解决</div>
+					</div>
+				</div>
+			</div>
+			<div class="routineDefaultImg" v-else>
+				<div class='defaultDiv-layout'>
+					<div class='defaultDiv'><img :src='defaultDiv' /></div>
+					<label>暂无需要跟进处置的故障</label>
+				</div>
+			</div>
+		</section>
+	</body>
+	<script type="text/javascript" src="../script/api.js"></script>
+	<script type="text/javascript" src="../script/vue.js"></script>
+	<script type="text/javascript" src="../script/mint-ui.js"></script>
+	<script type="text/javascript" src="../config/config.js"></script>
+	<script type="text/javascript">
+		var vueObj;
+		apiready = function() {
+			//维保追踪页埋点
+			var paramObj = JSON.parse(localStorage.getItem('userObj'));
+
+			//请求维保跟踪数据
+			_queryWorkmateData();
+			apiEvents();
+		};
+		//请求维保跟踪数据
+		function _queryWorkmateData() {
+			var obj = JSON.parse(localStorage.getItem("userObj"));
+			Vue.$indicator.open("加载中...");
+			api.ajax({
+				url: webapp_global.url + "/serverUnit/getTrackList",
+				method: 'get',
+				dataType: "json",
+				timeout: 20,
+				data: {
+					values: {
+						maintenanceUserId: obj.userid
+					}
+				}
+			}, function(ret, err) {
+				setTimeout(function() {
+					Vue.$indicator.close();
+					api.refreshHeaderLoadDone();
+					api.parseTapmode();
+					if(ret && ret.data) {
+						if(!vueObj) {
+							_fillPageData(ret.data, "../image/defaultPage/tracking.png")
+						} else {
+							vueObj.setWorkData(ret.data);
+							vueObj.setDefaultDiv("../image/defaultPage/tracking.png");
+						}
+					} else {
+						var connectionType = api.connectionType;
+						if(connectionType == "none") {
+							if(!vueObj) {
+								_fillPageData([], "../image/defaultPage/detectionNetwork.png");
+							} else {
+								vueObj.setWorkData([]);
+								vueObj.setDefaultDiv("../image/defaultPage/detectionNetwork.png");
+							}
+						}
+					}
+				}, 500)
+			})
+		}
+		//填充页面数据
+		function _fillPageData(workData, defaultDiv) {
+			vueObj = new Vue({
+				el: '#workMate',
+				data: function() {
+					return {
+						workData: workData,
+						defaultDiv: defaultDiv
+					}
+				},
+				methods: {
+					//拨打电话
+					callPhone: function(e, tel) {
+						e.stopPropagation()
+						if(api.systemType != 'ios'){
+							api.call({
+								type: 'tel_prompt',
+								number: tel
+							});
+						}
+					},
+					enterTpl: function(item) {
+						api.openWin({
+							name: 'trace/win_workmateTpl.html',
+							url: './trace/win_workmateTpl.html',
+							rect: {
+								x: 0,
+								y: 0,
+								w: 320,
+								h: 480
+							},
+							pageParam: item,
+							bounces: false,
+							bgColor: 'rgba(0,0,0,0)',
+							vScrollBarEnabled: true,
+							hScrollBarEnabled: true
+						});
+					},
+					init: function() {
+
+					},
+					setWorkData:function(workData) {
+						this.workData = workData
+					},
+					setDefaultDiv:function(defaultDiv) {
+						this.defaultDiv = defaultDiv
+					}
+				}
+			})
+		}
+
+		function updateHtml() {
+			_queryWorkmateData();
+		}
+
+		function apiEvents() {
+			// 下拉刷新。调用请求后台接口
+			api.setRefreshHeaderInfo({
+				visible: true,
+				bgColor: '#ccc',
+				textColor: '#fff',
+				textDown: '下拉刷新...',
+				textUp: '松开刷新...',
+				showTime: true
+			}, function(ret, err) {
+				_queryWorkmateData()
+			});
+
+
+
+			var connectionType = api.connectionType;
+			if(connectionType == "none") {
+				api.toast({
+					msg: '网络走丢了，请找回网络',
+					duration: 2000,
+					location: 'middle',
+					global: true
+				});
+			}
+			//监听设备断开网络的事件，字符串类型
+			api.addEventListener({
+				name: 'offline'
+			}, function(ret, err) {
+				api.toast({
+					msg: '网络走丢了，请找回网络',
+					duration: 2000,
+					location: 'middle',
+					global: true
+				});
+			});
+			//监听设备连接到网络的事件，字符串类型
+			api.addEventListener({
+				name: 'online'
+			}, function(ret, err) {
+				api.toast({
+					msg: '网络已经找回，请刷新页面',
+					duration: 2000,
+					location: 'middle',
+					global: true
+				});
+			});
+		}
+	</script>
+
+</html>

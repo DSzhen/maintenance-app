@@ -1,0 +1,52 @@
+{
+	"dangerId": "121321",
+	"dangerSource": "隐患来源",
+	"buildding": "楼栋",
+	"floor": "楼层",
+	"floorPlanUrl": "楼层平面图地址",
+	"address": "位置信息",
+	"deviceTypeId":"10060000",
+	"deviceType": "设备类型",
+	"deviceId": "设备编号",
+	"reportPerson": "小四",
+	"reportTime": "2018-04-02 09:00",
+	"coordinate": "0,0",
+	"description": "描述",
+	"solved":"false",
+	"attachment": [
+		{
+			"name": "附件名称",
+			"url": "附件地址"
+		}
+	],
+	"handleDetails": [
+		{
+			"serviceman": "维保人",
+			"time": "维保时间",
+			"problemFix": "问题定位",
+			"maintenanceDesc": "处置描述",
+			"emergencyHandle": "应急措施",
+			"attachment": [
+				{
+					"name": "附件名称",
+					"url": "附件地址"
+				}
+			],
+			"solved": "是否解决"
+		},
+		{
+			"serviceman": "维保人",
+			"time": "维保时间",
+			"problemFix": "问题定位",
+			"maintenanceDesc": "处置描述",
+			"emergencyHandle": "应急措施",
+			"attachment": [
+				{
+					"name": "附件名称",
+					"url": "附件地址"
+				}
+			],
+			"solved": "是否解决"
+		}
+	]
+}

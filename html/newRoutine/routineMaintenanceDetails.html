@@ -1,0 +1,1268 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>需要维保内容主页</title>
+		<link rel="stylesheet" type="text/css" href="../../css/api.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/aui.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/wbicon/style.css" />
+		<link rel="stylesheet" href="../../css/mint-ui.css" />
+		<link rel="stylesheet" href="../../css/suspension.css" />
+		<link rel="stylesheet" href="../../css/xficon/style.css" />
+
+		<style>
+			html,
+			body {
+				height: 100%;
+				display: flex;
+				display: -webkit-flex;
+				display: -webkit-box;
+				flex-flow: column;
+				-webkit-flex-flow: column;
+				-webkit-box-orient: vertical;
+				font-family: 微软雅黑;
+			}
+			
+			.header {
+				height: 57px;
+				width: 100%;
+				display: block;
+				line-height: 57px;
+				padding-top: 11px;
+				font-size: .8rem;
+			}
+			
+			.header.active {
+				display: block;
+				height: 5.4rem;
+			}
+			
+			.top-menu {
+				text-align: center;
+				color: #fff;
+				font-weight: bold;
+			}
+			/*按钮*/
+			
+			.backBtn {
+				height: 40px;
+				width: 35px;
+				position: absolute;
+				right: left;
+			}
+			
+			.backBtn::before {
+				position: absolute;
+				top: 1rem;
+				left: .75rem;
+				display: block;
+				content: '';
+				width: 10px;
+				height: 10px;
+				border-left: 1px solid;
+				border-top: 1px solid;
+				color: #fff;
+				transform: rotate(-45deg);
+			}
+			
+			.header.home>div.active {
+				opacity: 1;
+			}
+			
+			.header.home {
+				background-color: #ff961b;
+			}
+			
+			.header.home .top-menu>div {
+				color: #fff;
+				opacity: .8;
+			}
+			
+			.header.home .top-menu>div.active {
+				opacity: 1;
+			}
+			/*title样式结束*/
+			/*进度条开始*/
+			
+			.maintenance-progress-bar-div {
+				position: absolute;
+				margin-top: -2.7rem;
+				width: 90%;
+				height: 6.5rem;
+				margin-left: 5%;
+				background-color: white;
+				border-radius: 10px;
+			}
+			
+			.maintenance-progress-bar-div .zc-process-content {
+				display: flex;
+				justify-content: space-around;
+				background-color: #fff;
+				width: 98%;
+				height: 3rem;
+				z-index: 3;
+				margin-top: .5rem;
+			}
+			
+			.maintenance-progress-bar-div .zc-process-line {
+				display: -webkit-box;
+				display: -webkit-flex;
+				display: flex;
+				-webkit-box-pack: justify;
+				-webkit-justify-content: space-between;
+				justify-content: space-between;
+				-webkit-box-align: center;
+				-webkit-align-items: center;
+				align-items: center;
+				font-size: 0;
+				flex: 1;
+				margin-top: .5rem;
+			}
+			
+			.maintenance-progress-bar-div .zc-process-line+.zc-process-line {
+				margin-top: 1.5rem;
+			}
+			
+			.maintenance-progress-bar-div .zc-process-line li {
+				position: relative;
+				display: inline-block;
+				width: 100%;
+				text-align: center;
+				vertical-align: top;
+			}
+			
+			.maintenance-progress-bar-div .zc-process-line li a.aui-process-dot {
+				position: absolute;
+				display: inline-block;
+				width: 1.2rem;
+				height: 1.2rem;
+				margin-top: -.55rem;
+				margin-left: -.55rem;
+				background-color: #ceced0;
+				background-clip: padding-box;
+				border: .2rem solid rgba(206, 206, 206, .26);
+				border-radius: 50%;
+				z-index: 10;
+			}
+			
+			.maintenance-progress-bar-div .aui-process-dot:before {
+				content: '';
+				position: absolute;
+				top: 50%;
+				left: 50%;
+				display: inline-block;
+				width: .2rem;
+				height: .2rem;
+				margin-left: -.12rem;
+				margin-top: -.1rem;
+				background: transparent;
+				border-top: 1px solid #fff;
+				border-right: 1px solid #fff;
+				transform: rotate(45deg);
+				z-index: 10;
+			}
+			
+			.maintenance-progress-bar-div li.aui-active-zc .aui-process-dot:before {
+				content: '';
+				position: absolute;
+				top: 50%;
+				left: 50%;
+				display: inline-block;
+				width: .4rem;
+				height: .2rem;
+				margin-left: -0.25rem;
+				margin-top: -.2rem;
+				background: transparent;
+				border-top: 1px solid #fff;
+				border-right: 1px solid #fff;
+				transform: rotate(120deg);
+				z-index: 10;
+			}
+			
+			.maintenance-progress-bar-div .zc-process-line li:before,
+			.maintenance-progress-bar-div .zc-process-line li:after {
+				content: '';
+				position: absolute;
+				top: 0;
+				display: inline-block;
+				width: 50%;
+				height: .2rem;
+				background: #d8d8db;
+				;
+			}
+			
+			.maintenance-progress-bar-div .zc-process-line li:before {
+				left: 0;
+			}
+			
+			.maintenance-progress-bar-div .zc-process-line li:after {
+				right: 0;
+			}
+			
+			.maintenance-progress-bar-div .zc-process-line li:first-child:before,
+			.maintenance-progress-bar-div .zc-process-line li:last-child:after {
+				width: 0;
+				height: 0;
+			}
+			
+			.maintenance-progress-bar-div .zc-process-line li.aui-active-zc:before,
+			.maintenance-progress-bar-div .zc-process-line li.aui-active-zc:after {
+				background: #ff8409;
+			}
+			
+			.maintenance-progress-bar-div .zc-process-line li.aui-active-zc a.aui-process-dot {
+				background: #ff8409;
+				background-clip: padding-box;
+				border: .2rem solid rgba(255, 132, 9, .26);
+			}
+			
+			.maintenance-progress-bar-div .zc-process-line li a.zc-process-des {
+				display: block;
+				margin-top: .8rem;
+				color: #838383;
+				font-size: .6rem;
+				white-space: nowrap;
+			}
+			
+			.maintenance-progress-bar-div .ashplacing {
+				background-color: #CCCCCC;
+			}
+			
+			.maintenance-progress-bar-div span {
+				display: block;
+				position: absolute;
+				bottom: 0px;
+				height: 2.2rem;
+				line-height: 2.2rem;
+				width: 100%;
+				background-color: #ff961b;
+				color: white;
+				text-align: center;
+				border-bottom-left-radius: 10px;
+				border-bottom-right-radius: 10px;
+			}
+			/*维保内容*/
+			
+			.maintenance-content {
+				background-color: #f7f6f5;
+				width: 90%;
+				margin-left: 5%;
+				height: calc(100% - 5.4rem - 4.3rem - 2.5rem);
+				margin-top: 4.3rem;
+				overflow-y: auto;
+			}
+			
+			.aui-list.aui-collapse {
+				margin-top: 1px;
+				background: #fff;
+			}
+			
+			.aui-list .aui-list-item-title {
+				width: 100%;
+				min-height: 2rem;
+				line-height: 2rem;
+				font-size: .73rem;
+				color: #333;
+			}
+			
+			.wbicon-splice {
+				margin-left: .8rem;
+				color: #ff8202;
+			}
+			
+			.wb-list-unity {
+				display: inline-block;
+				max-width: 66%;
+				vertical-align: middle;
+			}
+			
+			.aui-list .aui-list-item-title>b {
+				vertical-align: -3px;
+			}
+			
+			.wb-upkeep {
+				position: absolute;
+				right: 0rem;
+				color: #c6c6cc;
+				line-height: 2rem;
+			}
+			
+			.aui-list-item-title .arrowTop {
+				-webkit-transform: rotate(-180deg);
+				-moz-transform: rotate(-180deg);
+			}
+			
+			.aui-list-item.aui-collapse-header {
+				padding-left: .2rem;
+			}
+			
+			.aui-collapse-header.aui-active {
+				background: #fff;
+				border-bottom: 1px solid #ddd;
+			}
+			
+			.aui-info {
+				padding-left: 1.4rem;
+				padding-top: .22rem;
+				padding-bottom: 0rem;
+				color: #000000;
+			}
+			
+			.aui-info>.aui-info-item:first-child {
+				width: 75%;
+			}
+			
+			.wb-collapse-title {
+				font-size: .73rem;
+			}
+			
+			.wb-error-ul {
+				color: #828285;
+				font-size: .73rem;
+			}
+			
+			.wb-error-ul li {
+				padding-left: 1.4rem;
+				padding-top: .4rem;
+				padding-bottom: .4rem;
+				border-bottom: 0.1px solid #f7f7f0;
+			}
+			
+			.wb-error-ul .wbicon-arrowRight2 {
+				position: absolute;
+				right: 0rem;
+				color: #c6c6cc;
+				vertical-align: 0px;
+				margin-right: .5rem;
+				margin-top: .2rem;
+			}
+			
+			.main-content-ul .wbicon-arrowRight2 {
+				position: absolute;
+				right: 0rem;
+				color: #c6c6cc;
+				vertical-align: -3px;
+				margin-right: .5rem;
+			}
+			
+			.main-content-ul li {
+				height: 2.46rem;
+				line-height: 2rem;
+				border-bottom: 0.1px solid #f7f7f0;
+			}
+			
+			.main-content-ul .aui-info-item {
+				color: #828285;
+			}
+			
+			.main-content-ul .aui-info img {
+				height: 1rem;
+				width: 1rem;
+				margin-right: 1.5rem;
+			}
+			
+			.footer-btn-list {
+				position: absolute;
+				height: 2.2rem;
+				width: 100%;
+				text-align: center;
+				background-color: white;
+				bottom: 0px;
+			}
+			
+			.footer-btn-list span {
+				width: 32%;
+				height: 2.2rem;
+				line-height: 2.5rem;
+				bottom: 0px;
+			}
+			
+			[v-cloak] {
+				display: none;
+			}
+			
+			.aui-bar-tab-item img {
+				display: inline-block;
+				height: .92rem;
+				margin-bottom: -.2rem;
+			}
+			
+			.aui-bar-tab-item {}
+		</style>
+	</head>
+
+	<body style="position: relative;">
+		<header id="header">
+			<div class="header home active">
+				<div class="backBtn" tapmode onclick="back()"></div>
+				<div id="title" class="top-menu"></div>
+			</div>
+		</header>
+		<div id="reportBtn">
+			<a href="#wheel" class="wheel-button " id="div1"><i class="xficon-add"></i></a>
+			<ul id="wheel" class="wheel">
+				<li class="item">
+					<a href="javascript:;" onclick="goIn('by')">上报</br>保养</a>
+				</li>
+				<li class="item">
+					<a href="javascript:;" onclick="goIn('wj')">上报</br>未检</a>
+				</li>
+				<li class="item">
+					<a href="javascript:;" onclick="goIn('gz')">上报</br>故障</a>
+				</li>
+			</ul>
+		</div>
+		<div id="progressBar" class="maintenance-progress-bar-div" v-cloak>
+			<div class="zc-process-content">
+				<ul id="zcProcess" class="zc-process-line">
+					<li :class="{'aui-active-zc':param.goLi===true}">
+						<a class="aui-process-dot"></a>
+						<a class="zc-process-des">{{param.goLiText}}</a>
+					</li>
+					<li :class="{'aui-active-zc':param.arriveLi===true}">
+						<a class="aui-process-dot"></a>
+						<a class="zc-process-des">{{param.arriveLiText}}</a>
+					</li>
+					<li :class="{'aui-active-zc':param.managementLi===true}">
+						<a class="aui-process-dot"></a>
+						<a class="zc-process-des">{{param.managementLiText}}</a>
+					</li>
+					<li :class="{'aui-active-zc':param.confirmLi===true}">
+						<a class="aui-process-dot"></a>
+						<a class="zc-process-des">{{param.confirmLiText}}</a>
+					</li>
+				</ul>
+			</div>
+			<span :class="param.planState == '3' ? 'ashplacing' : ''" style="font-size: .8rem;" @click="checkStateBtn(param.planState,param.lastState,param)">{{param.stateBtnName}}</span>
+		</div>
+		<div id="maintenanceContent" class="maintenance-content" v-cloak>
+			<ul class="aui-list aui-collapse" v-for="item in checkResultData">
+				<div class="aui-collapse-item">
+					<li class="aui-list-item aui-collapse-header">
+						<div class="aui-list-item-inner">
+							<div class="aui-list-item-title">
+								<b class="wbicon-splice"></b>
+								<span class="wb-list-unity aui-ellipsis-1">{{item.name}}</span>
+								<b :class=item.arrowClass></b>
+							</div>
+						</div>
+					</li>
+					<div class="aui-collapse-content aui-border-b wb-collapse-15">
+						<ul class="wb-collapse-content-ul">
+							<li class="wb-collapse-content-item wb-collapse-title" v-for="each in item.secondArray">
+								<div class="aui-info">
+									<div class="aui-info-item aui-ellipsis-1">{{each.name}}</div>
+								</div>
+								<ul class="wb-error-ul">
+									<li class="" v-for="(child,index) in each.checkItems" @click="writeCheckItemResult(child)">
+										<span class="aui-margin-r-10">{{child.name}}</span>
+										<b class="wbicon-arrowRight2"></b>
+									</li>
+								</ul>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</ul>
+			<ul class="aui-list aui-collapse" v-for="item in maintenanceContentData">
+				<div class="aui-collapse-item">
+					<li class="aui-list-item aui-collapse-header">
+						<div class="aui-list-item-inner">
+							<div class="aui-list-item-title">
+								<b class="wbicon-splice"></b>
+								<span class="wb-list-unity aui-ellipsis-1">{{item.name}}</span>
+								<b :class=item.arrowClass></b>
+							</div>
+						</div>
+					</li>
+					<div class="aui-collapse-content aui-border-b wb-collapse-15">
+						<ul class="wb-collapse-content-ul main-content-ul">
+							<li class="wb-collapse-content-item wb-collapse-title" v-for="each in item.secondArray" @click.stop="seeDetails(item,each)">
+								<div class="aui-info" style="font-size: .73rem;">
+									<div class="aui-info-item aui-ellipsis-1">{{each.name}}</div>
+									<img v-if="enterprisesType != '1' && each.isFireDetector == '1'" src="../../image/routine/fireDetector.png" @click.stop="historicalPointBitmap(each)"></img>
+									<b class="wbicon-arrowRight2"></b>
+								</div>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</ul>
+		</div>
+		<footer class="aui-bar aui-bar-tab footer" id="footer">
+			<div class="aui-bar-tab-item" tapmode onclick="openPage('_malfunctionList',1)">
+				<!--<i class="wbicon-phone wbicon"></i>-->
+				<img class="aui-iconfont" src="../../image/routine/faultLogging.png" alt="故障记录" />
+				<div class="aui-bar-tab-label">故障记录</div>
+			</div>
+			<div class="aui-bar-tab-item" tapmode onclick="openPage('_uncertainedList',2)">
+				<i class="aui-iconfont wbicon-uncheck wbicon"></i>
+				<img class="aui-iconfont" src="../../image/routine/undetected.png" alt="未检说明" />
+				<div class="aui-bar-tab-label">未检记录</div>
+			</div>
+			<div class="aui-bar-tab-item" tapmode onclick="openPage('_maintainDetail',3)">
+				<i class="aui-iconfont wbicon-mainten wbicon"></i>
+				<img class="aui-iconfont" src="../../image/routine/maintenanceLog.png" alt="保养记录" />
+				<div class="aui-bar-tab-label">保养记录</div>
+			</div>
+			<div class="aui-bar-tab-item" tapmode onclick="openPage('_remarks',4)">
+				<i class="aui-iconfont wbicon-mainten wbicon"></i>
+				<img class="aui-iconfont" src="../../image/routine/remarks.png" alt="备注" />
+				<div class="aui-bar-tab-label">备注</div>
+			</div>
+		</footer>
+		<script type="text/javascript" src="../../config/config.js"></script>
+		<script type="text/javascript" src="../../script/api.js"></script>
+		<script type="text/javascript" src="../../script/vue.js"></script>
+		<script type="text/javascript" src="../../script/mint-ui.js"></script>
+		<script type="text/javascript" src="../../script/aui-collapse.js"></script>
+		<script type="text/javascript" src="../../script/umeng/zhuge.js"></script>
+		<script type="text/javascript" src="../../script/jquery-1.7.2.min.js"></script>
+		<script type="text/javascript" src="../../script/jquery.wheelmenu.js"></script>
+		<script type="text/javascript" src="../../script/suspension.js"></script>
+		<script type="text/javascript" src="../../script/aui-tab.js"></script>
+		<script type="text/javascript" src="../../script/zepto.js"></script>
+		<script type="text/javascript" src="../../script/iphoneX.js"></script>
+		<script>
+			var baiduLocation; //百度模块
+			var userObj = JSON.parse(localStorage.getItem("userObj")); //缓存的用户信息
+			var dialogBox, progressBarVue, ajaxRequestStatus = true;
+			var collapse = new auiCollapse({
+				autoHide: false //是否自动隐藏已经展开的容器
+			});
+			var pageParam, contentVue;
+
+			apiready = function() {
+				if(isIphoneX()) {
+					$('.header').css('height', '6.5rem').css("line-height", "4.2rem");
+					$(".footer").css("margin-bottom", "20px");
+					$(".maintenance-content").css("height", "calc(100% - 5.4rem - 4.3rem - 2.5rem - 2.3rem)");
+					$('.backBtn').css('top', '1.5rem');
+				}
+				pageParam = api.pageParam;
+				$api.byId('title').innerHTML = pageParam.proprietorName;
+				api.ajax({
+					url: webapp_global.url + "/plan/getMaintenancePlanState",
+					method: 'get',
+					dataType: "json",
+					data: {
+						values: {
+							planId: pageParam.planId
+						}
+					}
+				}, function(ret, err) {
+					if(ret && ret["code"] == "success") {
+						var data = ret["data"];
+						if(data && data.status) {
+							pageParam.planStatus = data.status;
+						}
+					}
+					//初始化一些模块
+					_initMoudles();
+					_initProgressBar(pageParam.planStatus);
+					_initContent(pageParam.planId);
+					_initApiEvent();
+				})
+			}
+			//底部导航
+			function tabList() {
+				$(".aui-bar-tab-item").click(function() {
+					$(this).addClass(".aui-active")
+				})
+			}
+			//打开页面
+			function openPage(name, index) {
+				var idArr = [];
+				if(contentVue.maintenanceContentData && contentVue.maintenanceContentData.length > 0) {
+					var data = contentVue.maintenanceContentData;
+					for(var i = 0; i < data.length; i++) {
+						idArr.push(data[i].id);
+					}
+				}
+				pageParam.checkItemTypeParentIdArr = idArr;
+				//				$(".aui-bar-tab-item").click(function(){
+				//					$(this).addClass(".aui-active").siblings().removeClass(".aui-active")
+				//				})
+				// 故障记录
+				if(index == 1) {
+					//GrowingIO 埋点 在例行维保详情页，查看故障记录
+
+				} else if(index == 2) {
+					// 未检说明
+					//GrowingIO 埋点 在例行维保详情页，查看未检说明
+				} else if(index == 3) {
+					// 保养记录
+					//GrowingIO 埋点 在例行维保详情页，查看保养记录
+				} else if(index == 4) {
+
+				}
+				api.openWin({
+					name: name,
+					url: name + '.html',
+					rect: {
+						x: 0,
+						y: 0,
+						w: 320,
+						h: 480
+					},
+					pageParam: pageParam,
+					bounces: false,
+					bgColor: 'rgba(0,0,0,0)',
+					vScrollBarEnabled: false,
+					hScrollBarEnabled: false
+				});
+				//api.closeWin();
+			}
+
+			function _initMoudles() {
+				baiduLocation = api.require('bmLocation');
+				baiduLocation.configManager({
+					accuracy: 'device_sensors',
+					coordinateType: 'BMK09MC',
+					locationTimeout: 10
+				});
+				dialogBox = api.require('dialogBox');
+			}
+			//初始化进度条
+			function _initProgressBar(status) {
+				//已下发：1    出发：11    抵达：12    处置：2   完成：3   暂停维保：21    继续维保：2
+				var obj = {};
+				switch(status) {
+					case "1":
+						$("#reportBtn").hide()
+						obj = {
+							goLiText: "待出发",
+							arriveLiText: "待到达",
+							managementLiText: "待处置",
+							confirmLiText: "待确认",
+							goLi: false,
+							arriveLi: false,
+							managementLi: false,
+							confirmLi: false,
+							stateBtnName: "出发",
+							planState: "11",
+							lastState: "1"
+						}
+						break;
+					case "11":
+						$("#reportBtn").hide()
+						obj = {
+							goLiText: "已出发",
+							arriveLiText: "待抵达",
+							managementLiText: "待处置",
+							confirmLiText: "待确认",
+							goLi: true,
+							arriveLi: false,
+							managementLi: false,
+							confirmLi: false,
+							stateBtnName: "抵达",
+							planState: "12",
+							lastState: "11"
+						}
+						break;
+					case "12":
+						$("#reportBtn").hide()
+						obj = {
+							goLiText: "已出发",
+							arriveLiText: "已抵达",
+							managementLiText: "待处置",
+							confirmLiText: "待确认",
+							goLi: true,
+							arriveLi: true,
+							managementLi: false,
+							confirmLi: false,
+							stateBtnName: "处置",
+							planState: "2",
+							lastState: "12"
+						}
+						break;
+					case "2":
+						$("#reportBtn").show()
+						obj = {
+							goLiText: "已出发",
+							arriveLiText: "已抵达",
+							managementLiText: "处置中",
+							confirmLiText: "待确认",
+							goLi: true,
+							arriveLi: true,
+							managementLi: true,
+							confirmLi: false,
+							stateBtnName: "完成",
+							planState: "100",
+							lastState: "2"
+						}
+						break;
+					case "21":
+						$("#reportBtn").hide()
+						obj = {
+							goLiText: "已出发",
+							arriveLiText: "已抵达",
+							managementLiText: "处置中",
+							confirmLiText: "待确认",
+							goLi: true,
+							arriveLi: true,
+							managementLi: true,
+							confirmLi: false,
+							stateBtnName: "继续",
+							planState: "2",
+							lastState: "21"
+						}
+						break;
+					case "3":
+						$("#reportBtn").hide()
+						obj = {
+							goLiText: "已出发",
+							arriveLiText: "已抵达",
+							managementLiText: "处置中",
+							confirmLiText: "已完成",
+							goLi: true,
+							arriveLi: true,
+							managementLi: true,
+							confirmLi: true,
+							stateBtnName: "已完成",
+							planState: "3",
+							lastState: "3"
+						}
+						break;
+					default:
+						break;
+				}
+				if(progressBarVue) {
+					progressBarVue.param = obj;
+				} else {
+					progressBarVue = new Vue({
+						el: "#progressBar",
+						data() {
+							return {
+								param: obj
+							}
+						},
+						methods: {
+							checkStateBtn(planState, lastState, ii) {
+								if(planState == "3" && lastState == "3") {
+									return;
+								}
+								var groingObj = {
+									planId_var: pageParam.planId,
+									planState_var: ''
+								}
+								if(planState == '0') {
+									groingObj.planState_var = '未下发'
+								} else if(planState == '1') {
+									groingObj.planState_var = '已下发'
+								} else if(planState == '11') {
+									groingObj.planState_var = '已出发'
+								} else if(planState == '12') {
+									groingObj.planState_var = '已抵达'
+								} else if(planState == '2') {
+									groingObj.planState_var = '已开始'
+								} else if(planState == '21') {
+									groingObj.planState_var = '暂停'
+								} else if(planState == '3') {
+									groingObj.planState_var = '已完成'
+								}
+								//点击例行维保处理过程按钮
+								growingIoAddEvent('enterRoutingMaintenanceDetailsPage', groingObj);
+								var that = this;
+								//已下发：1    出发：11    抵达：12    处置：2   完成：3   暂停维保：21    继续维保：2  模拟完成按钮:100
+								switch(planState) {
+									case "11":
+										this.updatePlanState(planState, lastState);
+										break;
+									case "12":
+										this.updatePlanState(planState, lastState);
+										break;
+									case "2":
+										//查询是否有正在进行的单子
+										this.updatePlanState(planState, lastState);
+										break;
+									case "3":
+										this.updatePlanState(planState, lastState);
+										break;
+									case "21":
+										this.updatePlanState(planState, lastState);
+										break;
+									case "100":
+										if(pageParam.enterprisesType == "1") { //1是自建企业
+											api.alert({
+												title: '提示：',
+												msg: '业主单位服务升级后，可以依据监控中心的报警反馈判断例行维保过程是否规范。服务升级电话：0108765432',
+											}, function(ret, err) {
+												queryResult()
+											});
+										} else {
+											queryResult()
+										}
+
+										function queryResult() {
+											//打开维保过程核对页面
+											api.openWin({
+												name: 'maintenanceProcessChecking',
+												url: './maintenanceProcessChecking.html',
+												rect: {
+													x: 0,
+													y: 0,
+													w: 'auto',
+													h: 'auto'
+												},
+												pageParam: pageParam,
+												bounces: false,
+												bgColor: 'rgba(0,0,0,0)',
+												vScrollBarEnabled: false,
+												hScrollBarEnabled: false
+											});
+										}
+										break;
+									default:
+										break;
+								}
+							},
+							//更新状态
+							updatePlanState(planState, lastState) {
+								var that = this;
+								//保存状态
+								var longitude = "0",
+									latitude = "0";
+								baiduLocation.singleLocation({
+									reGeocode: false,
+									netWorkState: false
+								}, function(ret) {
+									var sta = ret.status;
+									if(sta) {
+										longitude = ret.location.longitude + "";
+										latitude = ret.location.latitude + "";
+										Vue.$indicator.open("加载中...");
+										ajaxRequest("/plan/updateMaintenancePlanState", "POST", {
+											values: {
+												planId: pageParam.planId,
+												planStatus: planState,
+												maintenanceUserId: userObj.userid,
+												lon: longitude,
+												lat: latitude
+											}
+										},callback)
+										
+										function callback(ret) {
+											Vue.$indicator.close();
+											ajaxRequestStatus = true;
+											if(ret) {
+												var code = ret["code"];
+												if(code == "success") {
+													var data = ret["data"];
+													if(data && data.jsonMsg) {
+														var jsonMsg = data.jsonMsg;
+														if(typeof jsonMsg == "string") {
+															jsonMsg = JSON.stringify(jsonMsg);
+														}
+														if(jsonMsg.saveStatus == "1" || jsonMsg.saveStatus == 1) {
+															that.dialogBox(planState);
+															if(planState == "3") {
+																//维保人员完成维保订单时候触发 埋点
+																if(data.ifguifan) {
+																	var groingObjs = {
+																		ifguifan_var: data.ifguifan.ifguifan_var,
+																		guifan1_var: data.ifguifan.guifan1_var,
+																		guifan2_var: data.ifguifan.guifan2_var,
+																		guifan3_var: data.ifguifan.guifan3_var,
+																		guifan4_var: data.ifguifan.guifan4_var,
+																		guifan5_var: data.ifguifan.guifan5_var,
+																		wbId_var: data.ifguifan.wbId_var
+																	}
+																	growingIoAddEvent('finishRoutingMaintenance', groingObjs);
+																}
+																//	if(pageParam.enterprisesType == "0") { //1是自建企业
+																//		that.standardDialog(pageParam.planId);
+																//	} else {
+																//	}
+															}
+															pageParam.planStatus = planState;
+															//弹框规范不规范
+															_initProgressBar(planState);
+														} else {
+															_initProgressBar(lastState);
+															pageParam.planStatus = lastState;
+															if(jsonMsg.msgType == "0") { //状态更新未成功，因为有其它人员点击了状态
+																api.toast({
+																	msg: jsonMsg.msg,
+																	duration: 3000,
+																	location: 'middle'
+																});
+															} else {
+																that.dialogBoxAlert(jsonMsg.persons, jsonMsg.planName);
+															}
+														}
+													} else {
+														pageParam.planStatus = lastState;
+													}
+												} else {
+													pageParam.planStatus = lastState;
+													api.toast({
+														msg: "更新状态失败",
+														duration: 2000,
+														location: 'bottom'
+													});
+												}
+											} else {
+												pageParam.planStatus = lastState;
+											}
+										}
+									}
+								})
+							},
+							dialogBox(planState) { //如果是处置按钮并且不是继续维保
+								if(planState == "2" && this.param.stateBtnName == "处置") {
+									dialogBox.evaluation({
+										styles: {
+											bg: '#fff',
+											w: 300,
+											title: {
+												marginT: 20,
+												size: 16,
+												color: '#000',
+												bold: true,
+												bg: '#ffa212',
+											},
+											content: {
+												marginT: 10,
+												marginL: 5,
+												marginR: 5,
+												color: '#111',
+												size: 14
+											},
+											buttons: [{
+												marginB: 0,
+												marginL: 0,
+												w: 300,
+												h: 35,
+												bg: '#ffa212',
+												color: '#fff',
+												size: 13
+											}]
+										},
+										texts: {
+											title: '温馨提示',
+											content: '如果维保计划无法当天完成，先点击【暂停维保】。否则会影响个人工作效率的考评。',
+											buttons: [{
+												text: '我知道了'
+											}]
+										}
+									}, function(ret, err) {
+										dialogBox.close({
+											dialogName: 'evaluation'
+										});
+									});
+								}
+							},
+							//有正在执行的单子
+							dialogBoxAlert(names, planName) {
+								api.openFrame({
+									name: 'maintenanceRunDialog',
+									url: './maintenanceRunDialog.html',
+									pageParam: {
+										names: names,
+										planName: planName
+									},
+									animation: {
+										type: "movein",
+										subType: "from_right",
+										duration: 300
+									},
+									rect: {
+										x: 0,
+										y: 0,
+										w: 'auto',
+										h: 'auto'
+									},
+									bounces: false,
+									bgColor: 'rgba(9,0,0,0)',
+									vScrollBarEnabled: true,
+									hScrollBarEnabled: true
+								});
+							},
+							//弹框规范不规范
+							standardDialog: function(planId) {
+								api.openFrame({
+									name: 'standardDialog',
+									url: './standardDialog.html',
+									pageParam: {
+										planId: planId
+									},
+									animation: {
+										type: "movein",
+										subType: "from_right",
+										duration: 300
+									},
+									rect: {
+										x: 0,
+										y: 0,
+										w: 'auto',
+										h: 'auto'
+									},
+									bounces: false,
+									bgColor: 'rgba(9,0,0,0)',
+									vScrollBarEnabled: true,
+									hScrollBarEnabled: true
+								});
+							},
+						}
+					})
+				}
+			}
+			//初始需要填写维保内容
+			function _initContent(planId) {
+				contentVue = new Vue({
+					el: "#maintenanceContent",
+					data() {
+						return {
+							checkResultData: [],
+							maintenanceContentData: [],
+							//无电子档案不展示探测器历史点位
+							enterprisesType: pageParam.enterprisesType
+						}
+					},
+					created: function() {
+						this._initData();
+					},
+					methods: { //查询需要填写结果的内容
+						_initData() {
+							var that = this;
+							Vue.$indicator.open("加载中...");
+							api.ajax({
+								url: webapp_global.url + "/plan/getPlanDetails",
+								method: 'get',
+								dataType: "json",
+								timeout: 20,
+								data: {
+									values: {
+										planId: planId
+									}
+								}
+							}, function(ret, err) {
+								Vue.$indicator.close();
+								if(ret) {
+									var code = ret["code"];
+									if(code == "success") {
+										var data = ret["data"];
+										if(data) {
+											var checkResultData = data.fillParameters;
+											if(checkResultData.length > 0) {
+												checkResultData.forEach(function(item) {
+													item.arrowClass = "wb-upkeep wbicon-arrowDown2"
+												})
+											}
+											that.checkResultData = checkResultData;
+											var noFillParameters = data.noFillParameters;
+											if(noFillParameters.length > 0) {
+												noFillParameters.forEach(function(item) {
+													item.arrowClass = "wb-upkeep wbicon-arrowDown2"
+												})
+											}
+											that.maintenanceContentData = noFillParameters;
+											that.initAuiCollapse();
+										}
+									}
+								}
+							})
+						},
+						//填写检查项结果明细
+						writeCheckItemResult(data) {
+
+						},
+						//查看维保内容的详细信息
+						seeDetails(data, item) {
+							//进入检查项要点页
+							growingIoAddEvent('enterCheckItemDetailsPage', {
+								planId_var: pageParam.planId
+							});
+							data.planId = pageParam.planId;
+							data.planStatus = pageParam.planStatus;
+							data.proprietorId = pageParam.proprietorId;
+							data.checkItemTypeId = item.id;
+							data.checkItemTypeName = item.name;
+							data.checkItemTypeParentId = data.id;
+							data.checkItemTypeParentName = data.name;
+							data.checkItemTypeParentIdArr = [];
+							data.item = item;
+							data.enterprisesType = pageParam.enterprisesType;
+							//查看详细信息
+							api.openWin({
+								name: '_inspectionContentAndKeyPoints',
+								url: './_inspectionContentAndKeyPoints.html',
+								pageParam: data,
+								bounces: false
+							});
+						},
+						//查看历史点位图
+						historicalPointBitmap(data) {
+							//进入检查项要点页
+							growingIoAddEvent('enterRoutingMaintenanceDeviceHistoryPage', {
+								planId_var: pageParam.planId
+							});
+
+							var obj = {
+								planId: pageParam.planId,
+								proprietorId: pageParam.proprietorId
+							}
+							api.openWin({
+								name: '_historyPointsBitmap',
+								url: './_historyPointsBitmap.html',
+								pageParam: obj,
+								bounces: false,
+								vScrollBarEnabled: false,
+								hScrollBarEnabled: false
+							});
+						},
+						initAuiCollapse() {
+							var that = this;
+							this.$nextTick(function() {
+								new auiCollapse({
+									autoHide: true,
+								}, function(ret, index) {
+									if(that.checkResultData.length == 0) {
+										index = index + 1;
+									}
+									if(index == 0) {
+										if(ret == 1) {
+											that.checkResultData[index].arrowClass = "wb-upkeep wbicon-arrowDown2"
+										} else {
+											that.checkResultData[index].arrowClass = "wb-upkeep wbicon-arrowDown2 arrowTop"
+										}
+										that.$set(that.checkResultData, index, that.checkResultData[index])
+									} else {
+										if(ret == 1) {
+											that.maintenanceContentData[index - 1].arrowClass = "wb-upkeep wbicon-arrowDown2"
+										} else {
+											that.maintenanceContentData[index - 1].arrowClass = "wb-upkeep wbicon-arrowDown2 arrowTop"
+										}
+										that.$set(that.maintenanceContentData, index - 1, that.maintenanceContentData[index - 1])
+									}
+								});
+							})
+						}
+					},
+					mounted() {
+
+					}
+				})
+			}
+
+			function ajaxRequest(urlMethod, method, param,callback) {
+					if(ajaxRequestStatus) {
+						ajaxRequestStatus = false;
+						api.ajax({
+							url: webapp_global.url + urlMethod,
+							method: method,
+							data: param,
+						}, function(ret) {
+							if(ret) {
+								callback(ret);
+							} else {
+								callback({
+									code: "network error"
+								});
+							}
+						})
+					}
+			}
+			// 跳转
+			function goIn(type) {
+				if($("#wheel").css("display") == 'block') {
+					$("#div1").click()
+				}
+				var urls = '';
+				if(type == 'gz') {
+					//例行维保 点击进入上报故障
+					growingIoAddEvent('enterFaultPage', {
+						planId_var: pageParam.planId
+					});
+					urls = '_reportFault'
+				} else if(type == 'wj') {
+					//例行维保 点击进入上报未检
+					growingIoAddEvent('enterUndetectPage', {
+						planId_var: pageParam.planId
+					});
+					urls = '_reportNotcheck'
+				} else if(type == 'by') {
+					//例行维保 点击进入上报保养
+					growingIoAddEvent('enterMaintainPage', {
+						planId_var: pageParam.planId
+					});
+					urls = '_maintainInsert'
+				}
+				//跳转页面吧系统大类带过去
+				var idArr = [];
+				if(contentVue.maintenanceContentData && contentVue.maintenanceContentData.length > 0) {
+					var data = contentVue.maintenanceContentData;
+					for(var i = 0; i < data.length; i++) {
+						idArr.push(data[i].id);
+					}
+				}
+				api.openWin({
+					name: urls,
+					url: './' + urls + '.html',
+					pageParam: {
+						planId: pageParam.planId,
+						proprietorId: pageParam.proprietorId,
+						checkItemTypeId: "",
+						checkItemTypeParentId: "",
+						checkItemTypeParentIdArr: idArr,
+						enterprisesType: pageParam.enterprisesType
+					},
+					bounces: true
+				});
+			}
+
+			function _initApiEvent() {
+				api.addEventListener({
+					name: 'keyback'
+				}, function(ret, err) {
+					back()
+				});
+				api.addEventListener({
+					name: 'maintenanceMonitoringFire'
+				}, function(ret, err) {
+					api.openFrame({
+						name: 'open_top.html',
+						url: '../open_top.html',
+						pageParam: ret.value.pageParam,
+						rect: {
+							y: 2,
+							x: 0,
+							// w: api.winWidth -20,
+							w: 'auto',
+							h: 80
+						},
+						bounces: false,
+						reload: true,
+						// bgColor: 'rgba(0,0,0,0)',
+						vScrollBarEnabled: false,
+						hScrollBarEnabled: false
+					});
+				});
+				//ios右滑控制
+				api.addEventListener({
+					name: 'swiperight'
+				}, function(ret, err) {});
+				api.addEventListener({
+					name: 'suspendOrComplete'
+				}, function(ret, err) {
+					progressBarVue.checkStateBtn(ret.value.num, ret.value.lastNum);
+				});
+			}
+			//监听暂停或者完成
+			function suspendOrComplete(num) {
+				progressBarVue.checkStateBtn(num);
+			}
+
+			function back() {
+				api.sendEvent({
+					name: 'updatePlanDataPage',
+					extra: {}
+				});
+				api.closeWin();
+			}
+		</script>
+	</body>
+
+</html>

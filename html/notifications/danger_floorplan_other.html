@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>展示报警点在楼层平面图上</title>
+		<link rel="stylesheet" href="../../css/api.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/aui.css" />
+		<link rel="stylesheet" href="../../css/emergency/danger_floorplan.css" />
+		<link rel="stylesheet" href="../../script/ts-gis/openlayers/ol.css" />
+		<style type="text/css">
+			.wb-flex {
+				display: -webkit-box;
+				display: -webkit-flex;
+				display: flex;
+				-webkit-box-pack: justify;
+				-webkit-justify-content: flex-start;
+				justify-content: flex-start;
+				-webkit-box-align: start;
+				-webkit-align-items: flex-start;
+				align-items: flex-start;
+			}
+
+			#xf-floor-info {
+				position: absolute;
+				bottom: 0;
+				left: 0;
+				right: 0;
+				padding: 1rem .5rem;
+				-webkit-box-shadow: 0 -3px 1px 0 rgba(0, 0, 0, .05);
+				-moz-box-shadow: 0 -3px 1px 0 rgba(0, 0, 0, .05);
+				box-shadow: 0 -3px 1px 0 rgba(0, 0, 0, .05);
+			}
+
+			.xf-floor-model {
+				font-size: .9rem;
+			}
+
+			.xf-floor-item {
+				display: block;
+				line-height: 1.6rem;
+				white-space: nowrap;
+			}
+
+			.xf-floor-model>span {
+				font-size: .9rem;
+				margin-left: .3rem;
+			}
+		</style>
+	</head>
+
+	<body>
+		<header id="header">
+			<div class="header home active">
+				<div class="backBtn" tapmode onclick="back()"></div>
+				<div id="title" class="top-menu"></div>
+			</div>
+		</header>
+		<div id="map"></div>
+		<section id="xf-floor-info">
+			<div class="wb-flex xf-floor-model">
+				<a class="xf-floor-item">设备：{{deviceType}}</a>
+				<span style="position: relative;top: .25rem;">{{deviceId}}</span>
+			</div>
+			<div class="wb-flex xf-floor-model">
+				<a class="xf-floor-item">楼栋楼层：</a>
+				<span style="position: relative;top: .25rem;">{{build}}<span style="margin-left: .3rem;position: relative;top: .25rem;">{{floor}}</span></span>
+			</div>
+			<div class="wb-flex xf-floor-model">
+				<a class="xf-floor-item">位置：</a>
+				<span style="margin-left: .3rem;position: relative;top: .25rem;">{{deviceAddress}}</span>
+			</div>
+		</section>
+		<script type="text/javascript" src="../../script/api.js"></script>
+		<script type="text/javascript" src="../../config/config.js"></script>
+		<script type="text/javascript" src="../../script/zepto.js"></script>
+		<script type="text/javascript" src="../../script/vue.js"></script>
+		<script type="text/javascript" src="../../script/ts-gis/openlayers/ol.js"></script>
+		<script type="text/javascript" src="../../script/ts-gis/proj4.js"></script>
+		<script type="text/javascript" src="../../script/ts-gis/tsgis.js"></script>
+		<script type="text/javascript" src="../../script/iphoneX.js"></script>
+		<script>
+			apiready = function() {
+				iphoneXfit();
+				if(isIphoneX()) {
+					$(".backBtn").css("top", "1.rem");
+				}
+				var parentParam = api.pageParam;
+				//初始化地图
+				initMap(parentParam);
+				$api.byId('title').innerHTML = api.pageParam.build + api.pageParam.floor;
+
+				//初始化楼层平面图的基本信息
+				initFloorInfo();
+			}
+			//初始化楼层平面图的基本信息
+			function initFloorInfo() {
+				var floor = new Vue({
+					el: "#xf-floor-info",
+					data: function() {
+						return {
+							build: api.pageParam.build,
+							floor: api.pageParam.floor,
+							deviceName: api.pageParam.deviceName,
+							deviceAddress: api.pageParam.deviceAddress,
+							deviceType: api.pageParam.deviceType,
+							deviceId: api.pageParam.deviceId
+						}
+					},
+					methods: {
+
+					},
+					created: function() {},
+					mounted: function() {
+						var header = $('#header').height()
+						var div = $('#xf-floor-info').height()
+						$('#map').height(api.winHeight - header - div)
+					}
+				})
+			}
+			//初始化地图
+			function initMap(options) {
+				// 创建地图
+				var g2map = new g2.maps.Map({
+					defaultExtent: {
+						center: [0, 0],
+						maxZoom: 15,
+						minZoom: 1,
+						level: 4,
+						// extent: [0, 0, 1800000, 1000000], //图片范围，请按照坐标系的范围给出，此为3857的坐标系范围
+						projection: "EPSG:3857" // 设置地图坐标系
+					} // 为方便展示设置视野中心点的范围
+				});
+				// 初始化地图，传入要初始化的DOM对象的id
+				g2map.init({
+					targetId: 'map'
+				});
+				//加载图标
+				var url = webapp_global.url + "/recordEnterprise/queryFloorDeviceList";
+				api.ajax({
+					url: url,
+					method: 'post',
+					dataType: "json",
+					timeout:20,
+					data: {
+						values: {
+							unitId: options.proprietorId,
+							buildId: options.buildId,
+							floorId: options.floorId,
+							deviceIds: options.deviceId
+						}
+					}
+				}, function(ret, err) {
+					if(ret && ret.data) {
+						api.refreshHeaderLoadDone();
+						api.parseTapmode();
+						if(ret.data[0] && ret.data[0].floorAreaImg){
+							var imgUrl = webapp_global.floorUrl + ret.data[0].floorAreaImg;
+							loadImg(imgUrl, options, g2map, ret.data[0].longitude, ret.data[0].latitude);
+						}
+					}else{
+						api.toast({
+							msg: '加载图标失败',
+							duration: 2000,
+							location: 'bottom'
+						});
+					}
+				})
+			}
+			//加载图片获取图片的宽和高
+			function loadImg(imgSrc, options, map, longitude, latitude) {
+				var img = new Image();
+				img.src = imgSrc;
+				img.onload = function() {
+					var w = img.width * 1000;
+					var h = img.height * 1000;
+					//创建一个图像图层
+					var imageLayer = new g2.lys.ImageLayer({
+						imageType: 702,
+						extent: [
+							0,
+							0,
+							w,
+							h
+						], //图片范围，请按照坐标系的范围给出，此为3857的坐标系范围
+						crossOrigin: "anonymous", //跨域
+						url: imgSrc // 图层服务 url
+					});
+
+					// 将 图像图层添加到地图
+					map.addLayer(imageLayer);
+					var point = new g2.geom.Point({
+						x: w / 2,
+						y: h / 2,
+						spatialReference: g2.geom.SpatialReference.EPSG3857
+					});
+//					map.pan(new g2.geom.Envelope({
+//						minx: 0,
+//						miny: 0,
+//						maxx: w,
+//						maxy: h
+//					}));
+					map.setCenter(point);
+					//加载元素图层和设备坐标点
+					initEquipmentPoint(map, options, longitude, latitude);
+				}
+			}
+			//加载元素图层和设备坐标点
+			function initEquipmentPoint(map, options, longitude, latitude) {
+				var pointLayer = new g2.lys.ElementLayer({});
+				map.addLayer(pointLayer);
+
+				api.ajax({
+					url: webapp_global.imageUrl + 'deviceIcons.json',
+					method: 'get',
+					dataType: "json",
+				}, function(ret) {
+					var defaultSymbol = new g2.syms.SimpleMarkersymbol({
+						fillColor: new g2.syms.Color({
+							a: 255,
+							r: 255,
+							g: 255,
+							b: 255
+						}),
+						borderColor: new g2.syms.Color({
+							a: 255,
+							r: 255,
+							g: 0,
+							b: 0
+						}),
+						size: 6
+					});
+					var markerSymbol;
+					var point = new g2.geom.Point({
+						x: longitude,
+						y: latitude,
+						spatialReference: g2.geom.SpatialReference.EPSG3857
+					});
+					map.setCenter(point);
+					if(ret.deviceIcons["normal"][options.deviceTypeid] && ret.deviceIcons["normal"][options.deviceTypeid].icon) {
+						var icon = ret.deviceIcons["normal"][options.deviceTypeid].icon;
+						var img = new Image();
+						img.src = "data:image/png;base64,"+icon;
+						img.onload = function() {
+							markerSymbol = new g2.syms.Picturemarkersymbol({
+								source: icon,
+								width: img.width,
+								height: img.height,
+								rotation: "0",
+								opacity: "1",
+								offsetX: img.width / 2,
+								offsetY: img.height / 2
+							});
+							var element = new g2.ele.Element({
+								geometry: point,
+								symbol: markerSymbol
+							});
+							pointLayer.add(element);
+						}
+					} else {
+						markerSymbol = defaultSymbol;
+						var element = new g2.ele.Element({
+							geometry: point,
+							symbol: markerSymbol
+						});
+						pointLayer.add(element);
+					}
+				})
+			}
+			//返回按钮点击
+			function back() {
+				api.closeWin({
+					name: 'danger_floorplan_other'
+				});
+			}
+		</script>
+	</body>
+
+</html>

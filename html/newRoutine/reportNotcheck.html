@@ -1,0 +1,702 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+		<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+		<link rel="stylesheet" type="text/css" href="../../css/api.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/aui.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/mobileSelect.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/wbicon/style.css" />
+		<link rel="stylesheet" href="../../css/xficon/style.css" />
+		<style type="text/css">
+			html {
+				font-family: "Microsoft YaHei";
+			}
+
+			body {
+				color: #333;
+				background-color: #eeeef5;
+			}
+
+			.aui-content-padded {
+				margin: 0;
+			}
+
+			.wb-flex {
+				display: -webkit-box;
+				display: -webkit-flex;
+				display: flex;
+				-webkit-box-pack: justify;
+				-webkit-justify-content: center;
+				justify-content: center;
+				-webkit-box-align: center;
+				-webkit-align-items: center;
+				align-items: center;
+			}
+
+			.wb-item-flexStart {
+				-webkit-align-items: flex-start;
+				align-items: flex-start;
+			}
+
+			.wb-space-between {
+				-webkit-justify-content: space-between;
+				justify-content: space-between;
+			}
+
+			.wb-flex-start {
+				-webkit-justify-content: flex-start;
+				justify-content: flex-start;
+			}
+
+			.wb-breakdown-title {
+				color: #666;
+			}
+
+			.wb-breakdown-text {
+				color: #999;
+				margin-top: .05rem;
+			}
+
+			.wb-list-item-inner {
+				width: 100%;
+				padding-right: .5rem;
+			}
+
+			.wb-update-image {
+				margin-top: .4rem;
+				padding-bottom: .5rem;
+			}
+
+			.wb-update-img {
+				margin-left: .2rem;
+			}
+
+			.wb-update-img img {
+				display: inline-block;
+				width: 3rem;
+				height: 3rem;
+				margin-right: .4rem;
+				border: 0;
+				background-color: #e0e0e0;
+			}
+
+			.wb-update-camrea {
+				display: inline-block;
+				width: 3rem;
+				height: 3rem;
+				text-align: center;
+				line-height: 3.3rem;
+				font-size: 2rem;
+				color: #999;
+				border: 1px dashed #efefef;
+				vertical-align: top;
+			}
+			/*删除图片*/
+
+			.xf-carera-content {
+				margin-right: .3rem;
+			}
+
+			.xf-carera-content li {
+				position: relative;
+				display: inline-block;
+				width: 3rem;
+				vertical-align: top;
+				margin-right: .3rem;
+			}
+
+			.xf-icon-imgDelete {
+				position: absolute;
+				right: -.2rem;
+				top: -.45rem;
+				color: red;
+			}
+
+			.xf-image-update {
+				display: inline-block;
+				width: 3rem;
+				height: 3rem;
+				text-align: center;
+				border: 1px solid #ddd;
+			}
+
+			.xf-image-icon {
+				font-size: 2rem;
+				line-height: 3rem;
+				color: #999;
+			}
+
+			.xf-iamge-model {
+				display: inline-block;
+				width: 3rem;
+				height: 3rem;
+			}
+
+			.nulls {
+				display: inline-block;
+				width: 15px;
+				padding-left: 2px;
+			}
+
+			.red {
+				color: #e91a1a;
+			}
+
+			.div-flex {
+				display: flex;
+				background-color: #fff;
+				font-size: .75rem;
+			}
+
+			.bottom_1 {
+				border-bottom: #f2f2f2 solid 1px;
+			}
+
+			.flex1 {
+				flex: 1;
+				font-size: .75rem;
+
+			}
+
+			.ju_center_start {
+				align-items: center;
+			}
+
+			.ju_center {
+				justify-content: center;
+				align-items: center;
+			}
+
+			.pd10px {
+				padding: 10px;
+			}
+
+			.nocur {
+				color: #ff961b;
+				display: inline-block;
+				width: 100%;
+				text-align: right;
+			}
+
+			.cur {
+				color: #828285!important;
+				text-align: left!important;
+			}
+
+			.input_css {
+				height: 24px!important;
+			}
+
+			.m-b10px {
+				margin-bottom: 10px;
+			}
+
+			.bg-white {
+				background-color: #fff;
+			}
+
+			.solve_css {
+				display: inline-block;
+				background-color: #f2f2f2;
+				border-radius: 2px;
+				padding: 5px 0;
+				text-align: center;
+				width: 70px;
+				color: #828285;
+				position: relative;
+			}
+
+			.text-right {
+				text-align: right;
+			}
+
+			.position_r {
+				position: relative;
+			}
+
+			.btn_b {
+				padding: 10px 15px;
+				text-align: center;
+				display: inline-block;
+				justify-content: center;
+				align-items: center;
+			}
+
+			.b-left {
+				background-color: #fff;
+				color: #ff8303;
+			}
+
+			.b-right {
+				background-color: #ff8303;
+				color: #fff;
+			}
+
+			.flex_bottom {
+				position: fixed;
+				bottom: 0;
+				left: 0;
+				right: 0;
+			}
+
+			.solve_css_cur {
+				background-color: #fff3e5!important;
+				color: #ff961b!important;
+			}
+
+			.solve_css_cur_img {
+				width: 10px;
+				position: absolute;
+				right: 0;
+				top: 0;
+				display: none;
+			}
+
+			.textarea_css {
+				padding: 5px;
+				height: 100px;
+				padding-left: 15px;
+				color: #666;
+				font-size: .75rem;
+			}
+
+			.color999 {
+				color: #999;
+			}
+
+			.mt10px {
+				margin-top: 10px;
+			}
+			.m-r10px{
+				margin-right: 10px;
+			}
+			.bottom_btn{
+				padding: 30px;
+			}
+			 .sub_btn{
+			 	 background-color: #ff961b;
+				 color: #fff;
+				 border-radius: 100px;
+				 font-size: .8rem;
+				 padding: 10px 0;
+				 text-align: center;
+			 }
+			 html,body{
+			 	background-color:#f7f6f5;
+				height:100%;
+			 }
+			 #numDesc,#area1_textarea_b{
+			 	display:none;
+			 }
+			 .wbicon-voice{
+				position: absolute;
+			    float: right;
+			    right: 1px;
+			    margin-top: -24px;
+			    margin-right: 14px;
+			    color: #A0A0A0;
+			}
+		</style>
+	</head>
+
+	<body >
+		<div id="addApp" class="wb-content">
+			<section class="aui-content-padded">
+				<div class="div-flex pd10px bottom_1">
+					<div class="m-r10px">
+						消防系统<span class="nulls red">*</span>
+					</div>
+					<div v-if="!systemData.checkItemTypeParentId" class="flex1 div-flex text-right">
+						<span id="area3" class="nocur">请选择</span>
+						<!-- <span class="nocur cur">{{systemData.checkItemTypeParentName}}</span>
+						<span id="area3" style="width:90px;" class="nocur">请选择</span> -->
+					</div>
+					<div v-else class="flex1 div-flex text-right">
+						<span class="nocur cur">{{systemData.checkItemTypeParentName}}</span>
+					</div>
+				</div>
+				<div class="div-flex pd10px bottom_1">
+					<div class="m-r10px">
+						楼栋楼层<span class="nulls red">*</span>
+					</div>
+					<div class="flex1 div-flex text-right">
+						<span id="area2" class="nocur">请选择</span>
+						<!-- <span class="nocur cur">{{getShe_value}}</span>
+						<span id="area2" style="width:90px;" class="nocur">请选择</span> -->
+					</div>
+				</div>
+				<div class="pd10px bottom_1 bg-white">
+					<div class="m-b10px div-flex ju_center_start">
+						具体设备或未检区域<span class="nulls red">*</span>
+					</div>
+					<div class="flex1 position_r">
+						<textarea id="no_check_area" class="textarea_css" onkeyup="change_word($(this))" name="name" placeholder="请输入具体设备或未检区域"></textarea>
+						<!--<b onclick="voiceInput('no_check_area')" class="wbicon-voice"></b>-->
+						<p class="text-right color999"><span class="cur_num">0</span>/<span class="cur_totle">300</span></p>
+					</div>
+				</div>
+				<div class=" pd10px bottom_1 bg-white">
+					<div class="div-flex">
+						<div class="m-r10px">
+							未检原因<span class="nulls red">*</span>
+						</div>
+						<div class="flex1 div-flex text-right">
+							<span id="area1" class="nocur">请选择</span>
+							<!-- <span id="areaX" class="nocur cur">{{getNocheck_value}}</span>
+							<span id="area1" style="width:90px;" class="nocur">请选择</span> -->
+						</div>
+					</div>
+					<textarea class="mt10px textarea_css" onkeyup="change_word($(this))" placeholder="请输入具体未检原因" name="name" id="area1_textarea" style="display:none" rows="8" cols="80"></textarea>
+					<!--<b id="area1_textarea_b" onclick="voiceInput('no_check_area')" class="wbicon-voice"></b>-->
+					<p id="numDesc" class="text-right color999"><span class="cur_num">0</span>/<span class="cur_totle">300</span></p>
+				</div>
+				<div class="pd10px bottom_1 bg-white">
+					<div class="m-b10px div-flex ju_center_start">
+						补充说明<span class="nulls "></span>
+					</div>
+					<div class="flex1 position_r">
+						<textarea id="supplement" class="textarea_css" onkeyup="change_word($(this))" name="name" placeholder="如有其他重要内容，请在这里补充"></textarea>
+						<!--<b onclick="voiceInput('supplement')" class="wbicon-voice"></b>-->
+						<p class="text-right color999"><span class="cur_num">0</span>/<span class="cur_totle">300</span></p>
+					</div>
+				</div>
+
+				<div class="bottom_btn">
+					<div onclick="sub_check()" class="sub_btn">确定</div>
+				</div>
+			</section>
+		</div>
+	</body>
+	<script type="text/javascript" src="../../script/api.js"></script>
+	<script type="text/javascript" src="../../config/config.js"></script>
+	<script type="text/javascript" src="../../script/vue.js"></script>
+	<script type="text/javascript" src="../../script/zepto.js"></script>
+	<script type="text/javascript" src="../../script/mobileSelect.js"></script>
+	<script type="text/javascript" src="../../script/umeng/zhuge.js"></script>
+
+	<script type="text/javascript">
+		var sumbitObj, formVm;
+		var checkItemTypeParentIdArr = [];
+		apiready = function() {
+			initEvent();
+			checkItemTypeParentIdArr = api.pageParam.checkItemTypeParentIdArr;
+			formVm = new Vue({
+				el: '#addApp',
+				data: function() {
+					return {
+						fire_extinguishing_system: '', //消防系统
+						imageArr: [],
+						isStop: null,
+						isRecord: null,
+						isSaveing: false,
+						getNocheck_value: '',
+						getShe_value: '',
+						systemData: {
+							checkItemTypeParentId: api.pageParam.checkItemTypeParentId,
+							checkItemTypeParentName: api.pageParam.checkItemTypeParentName
+						}
+					}
+				},
+				created: function() {
+					//初始化系统大类
+					if(!api.pageParam.checkItemTypeParentId) {
+						this.initSystem();
+					}
+					this.initBulid();
+				},
+				methods: {
+					initSystem() {
+						var that = this;
+						//获取系统大类
+						api.ajax({
+							url: webapp_global.url + '/maintenancePlanProcess/getSystemList',
+							dataType: "json",
+							method: 'get'
+						}, function(ret, err) {
+							if(ret) {
+								var code = ret["code"];
+								if(code == "success") {
+									var data = ret["data"];
+									if(data.length > 0) {
+										var arr = [];
+										for(var i = 0; i < data.length; i++) {
+											var temp = {
+												id: data[i].id,
+												value: data[i].name
+											}
+											for(var j = 0; j < checkItemTypeParentIdArr.length; j++) {
+												if(checkItemTypeParentIdArr[j] == data[i].id) {
+													arr.push(temp)
+												}
+											}
+										}
+										new MobileSelect({
+											trigger: '#area3',
+											title: '选择消防系统',
+											wheels: [{
+												data: arr
+											}],
+											position: [0, 1],
+											callback: function(indexArr, data) {
+												that.systemData.checkItemTypeParentId = data[0].id;
+												that.systemData.checkItemTypeParentName = data[0].value;
+												// $("#area3").text("请选择");
+												$("#area3").addClass("cur");
+											}
+										})
+									}
+								}
+							}
+						})
+					},
+					initBulid: function() {
+						var that = this;
+						var paramObj = JSON.parse(localStorage.getItem("userObj"));
+						setTimeout(function() {
+							new MobileSelect({
+								trigger: '#area1',
+								title: '选择未检原因',
+								wheels: [{
+									data: [{
+										id: '1',
+										value: '装修'
+									}, {
+										id: '2',
+										value: '活动'
+									}, {
+										id: '3',
+										value: '其他'
+									}]
+								}],
+								position: [0, 1],
+								callback: function(indexArr, data) {
+									$("#area1").addClass("cur");
+									// $("#area1").text("请选择");
+									that.getNocheck = data;
+									that.getNocheck_value = data[0].value;
+									if(data[0].value == '其他') {
+										$("#area1_textarea").show();
+										$("#numDesc").show();
+										$("#area1_textarea_b").show();
+									} else {
+										$("#area1_textarea").hide();
+										$("#numDesc").hide();
+										$("#area1_textarea_b").hide();
+									}
+								}
+							});
+						}, 1000)
+
+						// 获取楼栋楼层
+						api.ajax({
+							url: webapp_global.url + '/recordEnterprise/enterpriseBulidInfo',
+							dataType: "json",
+							data: {
+								values: {
+									unitId: api.pageParam.proprietorId,
+									orgId: paramObj.orgId
+								}
+							},
+							method: 'get'
+						}, function(ret, err) {
+							if(ret) {
+								var type = ret
+								var data = type.data;
+								var res = ''
+								if(typeof data == 'string') {
+									res = JSON.parse(data)
+								} else {
+									res = data
+								}
+								var tpl = res.builds;
+								if(tpl.length == 0) return
+								var retData = [];
+								tpl.forEach(function(item, index) {
+									var obj = {};
+									obj.id = item.buildId;
+									obj.value = item.buildName;
+									obj.childs = [];
+									for(var i = 0; i < item.floors.length; i++) {
+										var temp = {}
+										temp.id = item.floors[i].floorId;
+										temp.value = item.floors[i].floorName;
+										obj.childs.push(temp)
+									}
+									retData.push(obj)
+								})
+								new MobileSelect({
+									trigger: '#area2',
+									title: '选择楼层',
+									wheels: [{
+										data: retData
+									}],
+									position: [0, 1],
+									callback: function(indexArr, data) {
+											$("#area2").addClass("cur");
+										// console.log(data);
+										// $("#area2").text("请选择");
+										that.getShe = data;
+										that.getShe_value = data[0].value + data[1].value;
+									}
+								});
+							}
+						})
+					},
+					submitFun: function(solved, continueMaintenance) {
+						var ob1 = JSON.parse(localStorage.getItem("userObj"));
+						console.log(api.pageParam);
+						var that = this;
+						//验证
+						if(!that.systemData.checkItemTypeParentId) {
+							api.toast({
+								msg: '请选择消防系统',
+								location: 'bottom'
+							});
+							return false
+						}
+						if(!that.getShe) {
+							api.toast({
+								msg: '请选择楼层信息',
+								location: 'bottom'
+							});
+							return false
+						}
+						if($('#no_check_area').val().trim() == '') {
+							api.toast({
+								msg: '请输入具体设备或未检区域',
+								location: 'bottom'
+							});
+							return false
+						}
+						if(!that.getNocheck) {
+							api.toast({
+								msg: '请选择未检原因',
+								location: 'bottom'
+							});
+							return false
+						}
+						if($('#area1').text() == "其他"){
+							if(!$('#area1_textarea').val().trim() ){
+								api.toast({
+									msg: '请填写具体未检原因',
+									location: 'bottom'
+								});
+								return false
+							}
+						}
+
+
+						var params = {
+							planId: api.pageParam.planId,
+							unitId: api.pageParam.proprietorId,
+							orgId: ob1.orgId,
+							buildId: that.getShe[0].id,
+							build: that.getShe[0].value,
+							floorId: that.getShe[1].id,
+							floor: that.getShe[1].value,
+							uncheckedAddress: $('#no_check_area').val(),
+							uncheckedCauseId:that.getNocheck[0].id,
+							uncheckedCause: $('#area1').text() == '其他' ? $('#area1_textarea').val() || formVm.getNocheck_value : formVm.getNocheck_value,
+							description: $('#supplement').val() || "无",
+							userId: ob1.userid,
+							userName: ob1.username,
+							checkItemTypeParentName: that.systemData.checkItemTypeParentName,
+							checkItemTypeParentId: that.systemData.checkItemTypeParentId
+						}
+						api.confirm({
+							title: '提示',
+							msg: '是否上报未检？',
+							buttons: ['确定', '取消']
+						}, function(ret, err) {
+							var index = ret.buttonIndex;
+							if(index == 1) {
+								api.ajax({
+									url: webapp_global.url + '/maintenancePlanProcess/reportPlanUnchecked',
+									method: 'POST',
+									timeout: 20,
+									data: {
+										values: params,
+									}
+								}, function(ret, err) {
+									if(ret && ret.code == 'success') {
+										//例行维保 提交上报故障表单后继续添加下一个
+										growingIoAddEvent('submitUndetect',{planId_var:api.pageParam.planId});
+										api.toast({
+											msg: '提交成功！可在未检记录中查看',
+											duration: 2000,
+											location: 'bottom'
+										});
+										setTimeout(function() {
+											api.closeWin();
+										},2000)
+									} else {
+										api.toast({
+											msg: '提交失败！',
+											duration: 2000,
+											location: 'bottom'
+										});
+									}
+								});
+							}
+						})
+					}
+				}
+			});
+		}
+
+		// 监听提交保存未检查
+		function sub_check() {
+			formVm.submitFun()
+		}
+
+		// 限制输入文本域 300字以内
+		function change_word(that) {
+			if(that.val().length > 300) {
+				that.val(that.val().substring(0, 300))
+				that.parent().find(".cur_num").text(that.val().substring(0, 300).length)
+			} else {
+				that.parent().find(".cur_num").text(that.val().length)
+			}
+		}
+		function initEvent(){
+			//监听语音输入的值
+				api.addEventListener({
+					name: 'voiceInputModelValue'
+				}, function(ret, err) {
+					if(ret && ret.value.pageName == "reportNotcheck"){
+						$("#"+ret.value.inputFrame).text(ret.value.value);
+						document.getElementById(ret.value.inputFrame).onkeyup();
+					}
+				});
+				//ios右滑控制
+      api.addEventListener({
+        name:'swiperight'
+      }, function(ret, err){
+      });
+		}
+		//语音录入
+			function voiceInput(divId){
+				api.openWin({
+					name: 'voiceInput',
+					url: '../public/voiceInput.html',
+					rect: {
+						x: 0,
+						y: 0,
+						w: 320,
+						h: 480
+					},
+					pageParam: {
+						"pageName":"reportNotcheck",
+						"inputFrame":divId
+					},
+					bounces: false,
+					vScrollBarEnabled: true,
+					hScrollBarEnabled: true
+				});
+			}
+	</script>
+
+</html>

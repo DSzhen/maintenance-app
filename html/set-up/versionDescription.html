@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+		<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+		<title>版本说明</title>
+		<link rel="stylesheet" type="text/css" href="../../css/api.css" />
+		<link rel="stylesheet" href="../../css/aui.css" />
+		<link rel="stylesheet" href="../../css/MintUistyle.css" />
+		<link rel="stylesheet" href="../../css/wbicon/style.css" />
+		<style>
+			html,
+			body {
+				height: 100%;
+				display: flex;
+				display: -webkit-flex;
+				display: -webkit-box;
+				flex-flow: column;
+				-webkit-flex-flow: column;
+				-webkit-box-orient: vertical;
+				background-color: #eae6e6;
+			}
+
+			.header {
+				height: 57px;
+				width: 100%;
+				display: block;
+				line-height: 57px;
+				padding-top: 11px;
+				font-size: .8rem;
+			}
+			
+			.header.active {
+				display: block;
+			}
+			
+			.top-menu {
+				/*padding: 0 43px 0 8px;*/
+				text-align: center;
+				color: #fff;
+				font-weight: bold;
+			}
+			/*按钮*/
+			
+			.backBtn {
+				height: 40px;
+				width: 35px;
+				position: absolute;
+				right: left;
+			}
+			
+			.backBtn::before {
+				position: absolute;
+				left: .75rem;
+				top: 1.1rem;
+				display: block;
+				content: '';
+				width: 10px;
+				height: 10px;
+				border-left: 1px solid;
+				border-top: 1px solid;
+				color: #fff;
+				transform: rotate(-45deg);
+			}
+
+			.btn {
+				height: 40px;
+				width: 35px;
+				position: absolute;
+				right: .5rem;
+				bottom: 0;
+				color: white;
+			}
+			/*首页头部导航*/
+			/*字体颜色*/
+
+			.header.home>div.active {
+				opacity: 1;
+			}
+
+			.header.home {
+				/*background: -moz-linear-gradient(top, #febd00 0%, #ff951b 100%);
+				background: -webkit-gradient(linear, left top, right bottom, color-stop(0%, #febd00), color-stop(100%, #ff951b));
+				background: -webkit-linear-gradient(top, #febd00 0%, #ff951b 100%);
+				background: -o-linear-gradient(top, #febd00 0%, #ff951b 100%);
+				background: -ms-linear-gradient(top, #febd00 0%, #ff951b 100%);
+				background: linear-gradient(to top, #febd00 0%, #ff951b 100%);*/
+				background-color: #ff961b;
+			}
+
+			.header.home .top-menu>div {
+				color: #fff;
+				opacity: .8;
+			}
+
+			.header.home .top-menu>div.active {
+				opacity: 1;
+			}
+
+			.add_btn {
+				/*background: #d43d3d url('../image/head/add.png') center center no-repeat;*/
+				-webkit-background-size: 38px 43px;
+				background-size: 38px 43px;
+			}
+
+			.version {
+				height: 10rem;
+				text-align: center;
+			}
+
+			.version img {
+				margin-top: 1.5rem;
+				height: 5rem;
+				width: 5rem;
+				display: inline;
+			}
+
+			.version span {
+				color: #aab2bd;
+			}
+
+			.aui-content-padded {
+				margin: 0;
+			}
+
+			.aui-personal-info {
+				background-color: #fff;
+			}
+
+			.aui-info-item img {
+				width: 2.6rem;
+				height: 2.6rem;
+				border-radius: .3rem;
+			}
+
+			.aui-info {
+				padding: .7rem 0;
+				border-bottom: 1px solid #ddd;
+			}
+
+			.aui-personal-info .aui-info:last-child {
+				border-bottom: 0;
+			}
+
+			.aui-info .aui-info-item:first-child {
+				color: #040404;
+				font-size: .75rem;
+			}
+
+			.aui-info .aui-info-item:last-child {
+				color: #999;
+				font-size: .7rem;
+			}
+
+			.aui-info .aui-info-item .aui-info-item_icon {
+				font-size: .8rem;
+				color: #848484;
+			}
+		</style>
+	</head>
+
+	<body>
+		<header id="header">
+			<div class="header home active">
+				<div class="backBtn" tapmode onclick="back()"></div>
+				<div id="title" class="top-menu"></div>
+			</div>
+		</header>
+		<div class="version">
+			<img src="../../image/weibao.png" /><br />
+			<span id="appVersion"></span>
+		</div>
+		<div class="aui-content-padded">
+			<div class="aui-personal-info aui-padded-l-10">
+				<!--<div class="aui-info aui-padded-r-10" onclick="Toversion()">
+					<div class="aui-info-item">新功能介绍</div>
+					<div class="aui-info-item">
+						<a class="aui-info-item_icon aui-margin-l-10">
+							<b class="wbicon-arrowRight2"></b></a>
+					</div>
+				</div>-->
+			</div>
+		</div>
+	</body>
+	<script type="text/javascript" src="../../script/api.js"></script>
+	<script type="text/javascript" src="../../script/zepto.js" ></script>
+	<script type="text/javascript" src="../../script/vue.js"></script>
+	<script type="text/javascript" src="../../script/iphoneX.js"></script>
+	<script>
+		apiready = function() {
+			iphoneXfit();
+			if(isIphoneX()) {
+				$(".backBtn").css("top", "1.4rem");
+			}
+			$api.byId('title').innerHTML = "版本说明";
+			initEvents();
+			var appVersion = api.appVersion;
+			$("#appVersion").html("安云维保助手 V"+appVersion)
+		}
+		//版本说明
+		function Toversion() {
+			api.toast({
+				msg: '正在开发中，敬请期待！',
+				duration: 2000,
+				location: 'middle'
+			});
+
+			// api.openWin({
+			// 	name: "version",
+			// 	url: './version.html',
+			// 	rect: {
+			// 		x: 0,
+			// 		y: 0,
+			// 		w: 320,
+			// 		h: 480
+			// 	},
+			// 	pageParam: {},
+			// 	bounces: false,
+			// 	bgColor: 'rgba(0,0,0,0)',
+			// 	vScrollBarEnabled: true,
+			// 	hScrollBarEnabled: true
+			// });
+		}
+		//监听事件
+		function initEvents() {
+			api.addEventListener({
+				name: 'keyback'
+			}, function(ret, err) {
+				back();
+			});
+		}
+		//返回，关闭当前详情页，
+		function back() {
+			api.closeWin({
+				name: 'versionDescription'
+			});
+		}
+	</script>
+
+</html>

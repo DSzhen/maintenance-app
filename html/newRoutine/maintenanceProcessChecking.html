@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+		<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+		<title>维保过程核对</title>
+		<link rel="stylesheet" type="text/css" href="../../css/api.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/aui.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/wbicon/style.css" />
+		<link rel="stylesheet" href="../../css/mint-ui.css" />
+		<style type="text/css">
+			html,
+			body {
+				background-color: #FFFFFF;
+				padding: 0;
+				margin: 0;
+				display: -webkit-box;
+				height: 100%;
+				width: 100%;
+				-webkit-box-orient: vertical;
+			}
+			
+			.header {
+				height: 8rem;
+				width: 100%;
+				display: block;
+				line-height: 2.8rem;
+				text-align: center;
+			}
+			
+			.header img {
+				height: 100%;
+				width: 100%;
+			}
+			
+			.header-title {
+				position: absolute;
+				text-align: center;
+				width: 100%;
+				top: 1rem;
+			}
+			.header-content{
+				position: absolute;
+				text-align: center;
+				bottom: 1rem;
+				margin-left: .8rem;
+			}
+			
+			.header-content span{
+				font-weight:bold;
+				color:rgba(255,255,255,1);
+				font-size: .7rem;
+			}
+			
+			#isStandardText{
+				margin-top: -2px;
+				width: 4rem;
+				height: 1.5rem;
+				line-height: 1.5rem;
+				border-radius:40px;
+			}
+			.isStandardTextNoStandard{
+				background:rgba(255,193,169,1);
+			}
+			.isStandardTextStandard{
+				background:rgba(159,236,183,1);
+			}
+			#isStandardText .noStandard{
+				color:rgba(255,64,64,1);
+			}
+			
+			#isStandardText .standard{
+				color: #00A63B;
+			}
+			.top-menu {
+				text-align: center;
+				color: #fff;
+				font-weight: bold;
+			}
+			/*按钮*/
+			
+			.backBtn {
+				height: 40px;
+				width: 35px;
+				position: absolute;
+				right: left;
+			}
+			
+			.backBtn::before {
+				position: absolute;
+				top: 1rem;
+				left: .75rem;
+				display: block;
+				content: '';
+				width: 10px;
+				height: 10px;
+				border-left: 1px solid;
+				border-top: 1px solid;
+				color: #fff;
+				transform: rotate(-45deg);
+			}
+			/*头结束*/
+			
+			.standard_dialog {
+				border-bottom: 1px solid #E6E4E3;
+				min-height: 6.7rem;
+			}
+			.standard_dialog_height{
+				height: 6.7rem;	
+			}
+			
+			.standard_content {
+				height: 100%;
+				width: 100%;
+				/*position:*/
+			}
+			
+			.standard_content_b {
+				position: absolute;
+				top: .3rem;
+				display: inline-block;
+				background-color: coral;
+				width: 0.3rem;
+				height: 0.3rem;
+				border-radius: 100%;
+			}
+			
+			.standard_content ul {
+				height: 100%;
+				margin-left: 0.7rem;
+				font-size: 0.68rem;
+				overflow-y: auto;
+			}
+			
+			.standard_content ul li {
+				position: relative;
+				margin-top: 0.5rem;
+			}
+			
+			.standard_content ul li span {
+				display: inline-block;
+				width: 12rem;
+				padding-left: .5rem;
+			}
+			
+			.wbicon-removeOutline {
+				color: #ff4040;
+				right: .4rem;
+				display: inline-block;
+				position: absolute;
+				top: 50%;
+				margin-top: -.35rem;
+			}
+			
+			.wbicon-sureOutline {
+				color: #1bc35a;
+				right: .4rem;
+				display: inline-block;
+				position: absolute;
+				top: 50%;
+				margin-top: -.35rem;
+			}
+			.more{
+				height: 30px;
+				line-height: 30px;
+				width: 100%;
+				text-align: center;
+				font-size: .6rem;
+				color: #4CA3F8;
+				display: none;
+			}
+			.wbicon-down{
+				font-size: .6rem;
+				margin-left: 3px;
+			}
+			.wbicon-upArrow{
+				font-size: .6rem;
+				margin-left: 3px;
+			}
+			/*维保结果结束*/
+			
+			.wbicon-circle2 {
+				font-size: .4rem;
+				color: #ff961b;
+			}
+			
+			#app {
+				min-height: 0rem;
+				width: 100%;
+				overflow: auto;
+				border-top: 5px solid #F7F6F5;
+				margin-bottom: 2.4rem;
+			}
+			
+			.result-content {
+				padding: .7rem;
+				padding-top: .4rem;
+			}
+			
+			.result-content li {
+				height: 1.5rem;
+				line-height: 1.5rem;
+				font-size: 0.68rem;
+			}
+			
+			.right {
+				right: .8rem;
+				float: right;
+			}
+			
+			.normal {
+				color: #2dc171;
+			}
+			
+			.fault {
+				color: #fda803;
+			}
+			/*底部按钮*/
+			/*底部按钮*/
+			.footer{
+				position: fixed;
+				bottom: 0px;
+				height: 2.5rem;
+				width: 100%;
+				background-color: #FFFFFF;
+			}
+			.btn{
+				margin-top: .1rem;
+				display: inline-block;
+				height: 2.1rem;
+				line-height: 2.1rem;
+				text-align: center;
+				width: 30%;
+				margin-left: 2%;
+				border: 1px solid #FF961B;
+				border-radius:1.1rem;
+				color: #FF961B;
+			}
+			.generateReport{
+				background:rgba(255,150,27,1);
+				color: #FFFFFF;
+			}
+			.red{
+				color: #FF4040;
+			}
+			[v-cloak] {
+				display: none;
+			}
+		</style>
+	</head>
+
+	<body>
+		<header id="header">
+			<div class="header home active">
+				<img id="standardImg" style="height: 100%;width: 100%;" src="../../image/routine/standardNew.png"/>
+				<div class="header-title">
+					<div class="backBtn" tapmode onclick="back()"></div>
+					<span id="title" class="top-menu">维保过程核对</span>
+				</div>
+				<div class="header-content">
+					<span>本次维保过程</span>
+					<div id="isStandardText"></div>
+				</div>
+			</div>
+		</header>
+		<div class="standard_dialog standard_dialog_height" id="standardApp" v-cloak>
+			<div class="standard_content">
+				<ul>
+					<li v-for="item in dataList">
+						<i class="standard_content_b"></i><span :class="item.isStandard == '0' ? 'red' : ''">{{item.superviseContent}}</span><b :class="item.isStandard == '0' ? 'wbicon-removeOutline' : 'wbicon-sureOutline'"></b>
+					</li>
+				</ul>
+			</div>
+		</div>
+		<div class="more" onclick="more()">
+			<span>更多</span><b id="arrow" class="wbicon-down"></b></div>
+		</div>
+		<div class="undetected" id="app" v-cloak>
+			<ul class="result-content">
+				<li>
+					<b class="wbicon-circle2"></b>
+					<span>是否有设备未检</span>
+					<span class="right">{{undetected}}</span>
+				</li>
+				<li v-for="item in dataList">
+					<b class="wbicon-circle2"></b>
+					<span>{{item.name}}</span>
+					<span class="right normal" v-if="item.faultNum == 0">正常</span>
+					<span class="right fault" v-if="item.faultNum > 0">{{item.faultNum}}个故障</span>
+				</li>
+			</ul>
+		</div>
+		<footer class="footer">
+			<div class="btn" onclick="back()"><span>继续维保</span></div>
+			<div class="btn" onclick="suspendOrComplete('21','2')"><span>暂停维保</span></div>
+			<div class="btn generateReport" onclick="suspendOrComplete('3','2')"><span>生成报告</span></div>
+		</footer>
+		<script type="text/javascript" src="../../config/config.js"></script>
+		<script type="text/javascript" src="../../script/api.js"></script>
+		<script type="text/javascript" src="../../script/zepto.js"></script>
+		<script type="text/javascript" src="../../script/vue.js"></script>
+		<script type="text/javascript" src="../../script/mint-ui.js"></script>
+		<script type="text/javascript" src="../../script/iphoneX.js"></script>
+		<script>
+			var pageParam = {};
+			var allIsStandardList = [],allIsStandardBool=false;//allIsStandardBool true更多展开
+			var isStandardVue,pageVue;
+			apiready = function() {
+				if(isIphoneX()){
+					$(".header").css("height","8rem");
+					$(".header-title").css("top","30px");
+				}
+				pageParam = api.pageParam;
+				initPageVue(pageParam);
+				initEvent();
+			}
+
+			function initPageVue(pageParam) {
+				Vue.$indicator.open("加载中...");
+				//是否规范
+				isStandardVue = new Vue({
+					el: "#standardApp",
+					data() {
+						return {
+							dataList: []
+						}
+					},
+					created() {
+						this.init()
+					},
+					methods: {
+						init:function() {
+							var _this = this;
+							api.ajax({
+								url: webapp_global.url + "/plan/planIsStandard",
+								method: "post",
+								dataType: "json",
+								data: {
+									values: {
+										planId: pageParam.planId
+									}
+								},
+							}, function(ret) {
+								Vue.$indicator.close();
+								if(ret) {
+									var code = ret["code"];
+									if(code == "success") {
+										var data = ret["data"];
+										if(data && data.length > 0) {
+											allIsStandardList = data;
+											_this.dataList = data;
+											if(_this.dataList && _this.dataList.length>3){
+												_this.dataList = data.length;
+												_this.dataList.length = 3;
+											}
+											var bool = false;
+											for(var i = 0; i < data.length; i++) {
+												if(data[i].isStandard == "0") {
+													bool = true;
+												}
+											}
+											if(bool) {
+												document.getElementById("standardImg").src = "../../image/routine/noStandardNew.jpg";
+												$("#isStandardText").html("<span class='noStandard'>不规范</span>")
+												$("#isStandardText").addClass("isStandardTextNoStandard");
+											} else {
+												document.getElementById("standardImg").src = "../../image/routine/standardNew.png";
+												$("#isStandardText").html("<span class='standard'>规范</span>")
+												$("#isStandardText").addClass("isStandardTextStandard");
+											}
+										}
+									}
+								}
+							})
+						},
+						setDataList:function(list){
+							this.dataList = list;
+							this.$forceUpdate();
+						}
+					}
+
+				}) //获取是否未检记录
+				pageVue = new Vue({
+					el: "#app",
+					data() {
+						return {
+							dataList: [],
+							undetected: ""
+						}
+					},
+					created() {
+						this.init();
+					},
+					methods: {
+						init:function() {
+							var that = this;
+							api.ajax({
+								url: webapp_global.url + "/maintenancePlanProcess/getUncheckList",
+								data: {
+									values: {
+										maintenanceTaskId: pageParam.planId,
+										pageNo: 1,
+										pageSize: 10
+									}
+								},
+								methods: "get",
+								dataType: "json"
+							}, function(ret) {
+								if(ret) {
+									var code = ret["code"];
+									if(code == "success") {
+										var data = ret["data"];
+										if(data.list && data.list.length > 0) {
+											that.undetected = "是";
+										} else {
+											that.undetected = "否";
+										}
+									}
+								}
+							})
+							//请求设备是否有故障 
+							api.ajax({
+								url: webapp_global.url + "/plan/getPlanResult",
+								data: {
+									values: {
+										planId: pageParam.planId
+									}
+								},
+								methods: "get",
+								dataType: "json"
+							}, function(ret) {
+								if(ret) {
+									var code = ret["code"];
+									if(code == "success") {
+										var data = ret["data"];
+										if(data) {
+											that.dataList = data;
+										} else {
+											that.dataList = [];
+										}
+									}
+								}
+							})
+						}
+					}
+				})
+			}
+			//是否规范 更多
+			function more(){
+				//展示规不规范信息
+				if(allIsStandardBool){
+					var list = allIsStandardList;
+					if(list && list.length>3){
+						list.length = 3;
+					}
+					isStandardVue.setDataList(list);
+					allIsStandardBool = false;
+					$(".standard_dialog").addClass("standard_dialog_height");
+					$("#arrow").removeClass("wbicon-upArrow").addClass("wbicon-down");
+				}else{
+					isStandardVue.setDataList(allIsStandardList);
+					allIsStandardBool = true;
+					$(".standard_dialog").removeClass("standard_dialog_height");
+					$("#arrow").removeClass("wbicon-down").addClass("wbicon-upArrow");
+				}
+			}
+			//暂停或者完成
+			function suspendOrComplete(num,lastNum){
+				api.sendEvent({
+				    name: 'suspendOrComplete',
+				    extra: {
+				        num: num,
+				        lastNum:lastNum
+				    }
+				});
+				api.closeWin();
+			}
+			function back(){
+				api.closeWin();
+			}
+			function initEvent() {
+				//ios右滑控制
+				api.addEventListener({
+					name: 'swiperight'
+				}, function(ret, err) {});
+			}
+		</script>
+	</body>
+
+</html>

@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+		<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+		<title>我的业主单位信息</title>
+		<link rel="stylesheet" type="text/css" href="../../css/api.css" />
+		<link rel="stylesheet" href="../../css/aui.css" />
+		<link rel="stylesheet" href="../../css/MintUistyle.css" />
+		<link rel="stylesheet" href="../../css/wbicon/style.css" />
+
+		<style>
+			html,
+			body {
+				height: 100%;
+				display: flex;
+				display: -webkit-flex;
+				display: -webkit-box;
+				flex-flow: column;
+				-webkit-flex-flow: column;
+				-webkit-box-orient: vertical;
+			}
+			
+			.header {
+				height: 57px;
+				width: 100%;
+				display: block;
+				line-height: 57px;
+				padding-top: 11px;
+				font-size: .8rem;
+			}
+			
+			.header.active {
+				display: block;
+			}
+			
+			.top-menu {
+				/*padding: 0 43px 0 8px;*/
+				text-align: center;
+				color: #fff;
+				font-weight: bold;
+			}
+			/*按钮*/
+			
+			.backBtn {
+				height: 40px;
+				width: 35px;
+				position: absolute;
+				right: left;
+				bottom: 0;
+			}
+			
+			.backBtn::before {
+				position: absolute;
+				top: .65rem;
+				left: .75rem;
+				display: block;
+				content: '';
+				width: 10px;
+				height: 10px;
+				/*border-left: 2px solid;
+           border-top: 2px solid;*/
+				border-left: 1px solid;
+				border-top: 1px solid;
+				color: #fff;
+				transform: rotate(-45deg);
+			}
+			
+			.btn {
+				height: 40px;
+				width: 35px;
+				position: absolute;
+				right: .5rem;
+				bottom: 0;
+				color: white;
+			}
+			/*首页头部导航*/
+			/*字体颜色*/
+			
+			.header.home>div.active {
+				opacity: 1;
+			}
+			
+			.header.home {
+				/*background: -moz-linear-gradient(top, #febd00 0%, #ff951b 100%);
+				background: -webkit-gradient(linear, left top, right bottom, color-stop(0%, #febd00), color-stop(100%, #ff951b));
+				background: -webkit-linear-gradient(top, #febd00 0%, #ff951b 100%);
+				background: -o-linear-gradient(top, #febd00 0%, #ff951b 100%);
+				background: -ms-linear-gradient(top, #febd00 0%, #ff951b 100%);
+				background: linear-gradient(to top, #febd00 0%, #ff951b 100%);*/
+				background-color: #ff961b;
+			}
+			
+			.header.home .top-menu>div {
+				color: #fff;
+				opacity: .8;
+			}
+			
+			.header.home .top-menu>div.active {
+				opacity: 1;
+			}
+			
+			.add_btn {
+				/*background: #d43d3d url('../image/head/add.png') center center no-repeat;*/
+				-webkit-background-size: 38px 43px;
+				background-size: 38px 43px;
+			}
+			
+			.aui-content-padded {
+				margin: 0;
+			}
+			
+			.aui-personal-info {
+				background-color: #fff;
+			}
+			
+			.aui-info-item img {
+				width: 2.6rem;
+				height: 2.6rem;
+				border-radius: .3rem;
+			}
+			
+			.aui-info {
+				padding: .7rem 0;
+				border-bottom: 1px solid #ddd;
+			}
+			
+			.aui-personal-info .aui-info:last-child {
+				border-bottom: 0;
+			}
+			
+			.aui-info .aui-info-item:first-child {
+				color: #040404;
+				font-size: .75rem;
+			}
+			
+			.aui-info .aui-info-item:last-child {
+				color: #999;
+				font-size: .7rem;
+			}
+			
+			.aui-info .aui-info-item .aui-info-item_icon {
+				font-size: .8rem;
+				color: #848484;
+			}
+		</style>
+	</head>
+
+	<body>
+		<header id="header">
+			<div class="header home active">
+				<div class="backBtn" tapmode onclick="back()"></div>
+				<div id="title" class="top-menu"></div>
+			</div>
+		</header>
+		<section id="proprietorUnit"></section>
+	</body>
+	<script type="text/javascript" src="../../script/api.js"></script>
+	<script type="text/javascript" src="../../script/vue.js"></script>
+	<script type="text/javascript" src="../../script/zepto.js"></script>
+	<script type="text/javascript" src="../../config/config.js"></script>
+	<script type="text/javascript" src="../../script/umeng/zhuge.js"></script>
+	<script type="text/javascript" src="../../script/iphoneX.js"></script>
+	<script>
+		var pageParam = {};
+		apiready = function() {
+			iphoneXfit();
+			if(isIphoneX()) {
+				$(".backBtn").css("top", "1.9rem");
+			}
+			pageParam = api.pageParam
+			$api.byId('title').innerHTML = "我的业主单位";
+			initEvents();
+			//业主单位信息加载
+			initProprietorUnit();
+		}
+		//业主单位信息加载
+		function initProprietorUnit() {
+			new Vue({
+				el: "#proprietorUnit",
+				template: `<section class="aui-content">
+						        <div class="aui-content-padded">
+						            <div class="aui-personal-info aui-padded-l-10">
+						                <div class="aui-info aui-padded-r-10" @click="initUnitInfo('基本信息')">
+						                    <div class="aui-info-item">基本信息</div>
+						                    <div class="aui-info-item"><a class="aui-info-item_icon aui-margin-l-10">
+						                        <b class="wbicon-arrowRight2"></b></a>
+						                    </div>
+						                </div>
+						                <div v-if='enterprisesType != "1"' class="aui-info aui-padded-r-10" @click="initUnitInfo('设备设施')">
+						                    <div class="aui-info-item">设备设施</div>
+						                    <div class="aui-info-item"><a class="aui-info-item_icon aui-margin-l-10">
+						                        <b class="wbicon-arrowRight2"></b></a>
+						                    </div>
+						                </div>
+						                <div style="display:none;" class="aui-info aui-padded-r-10" @click="initUnitInfo('维保计划')">
+						                    <div class="aui-info-item">维保计划</div>
+						                    <div class="aui-info-item"><a class="aui-info-item_icon aui-margin-l-10">
+						                        <b class="wbicon-arrowRight2"></b></a>
+						                    </div>
+						                </div>
+						                <div v-if="showBle && false" class="aui-info aui-padded-r-10" @click="initUnitInfo('维保到场校验点')">
+						                    <div class="aui-info-item">维保到场校验点</div>
+						                    <div class="aui-info-item"><a class="aui-info-item_icon aui-margin-l-10">
+						                        <b class="wbicon-arrowRight2"></b></a>
+						                    </div>
+						                </div>
+						            </div>
+						        </div>
+						    </section>`,
+				data() {
+					return {
+						showBle: false,
+						enterprisesType:pageParam.enterprisesType
+					}
+				},
+				created() {
+					this.queryUnitBle();
+				},
+				methods: {
+					//查询该业主是否有蓝牙
+					queryUnitBle() {
+						this.showBle = false;
+//						var that = this;
+//						_queryUnitBle(pageParam).then(function(bool) {
+//							that.showBle = bool
+//						})
+					},
+					//维护业主单位信息
+					initUnitInfo: function(e) {
+						var name = "";
+						if(e == "基本信息") {
+							//alert('点击了基本信息');
+							name = "proprietorUnitBasicInfo";
+							//埋点  点击了基本信息
+							var paramObj = JSON.parse(localStorage.getItem('userObj'));
+						} else if(e == "设备设施") {
+							growingIoAddEvent('ckwdyzdwsbss');
+							//是自建单位
+							if(pageParam.enterprisesType == "1" || pageParam.enterprisesType == 1) {
+								api.toast({
+									msg: '正在开发中，敬请期待！',
+									duration: 2000,
+									location: 'middle'
+								});
+								return;
+							} else {
+								name = "equipment";
+							}
+						} else if(e == "维保计划") {
+							api.toast({
+								msg: '正在开发中，敬请期待！',
+								duration: 2000,
+								location: 'middle'
+							});
+							return;
+						} else if(e == "维保到场校验点") {
+							name = "win_maintenanceCheck";
+
+							//alert('维保到场校验点');
+							//埋点  维保到场校验点
+							var paramObj = JSON.parse(localStorage.getItem('userObj'));
+							name = "proprietorUnitBasicInfo";
+						}
+						api.openWin({
+							name: name,
+							url: './' + name + '.html',
+							rect: {
+								x: 0,
+								y: 0,
+								w: 320,
+								h: 480
+							},
+							pageParam: pageParam,
+							bounces: false,
+							bgColor: 'rgba(0,0,0,0)',
+							vScrollBarEnabled: true,
+							hScrollBarEnabled: true
+						});
+					}
+				}
+			})
+		}
+		//处置之后判断该业主企业有没有蓝牙
+		function _queryUnitBle(obj) {
+			var promise = new Promise(function(resolve, reject) {
+				//0:没有 1:有
+				api.ajax({
+					url: webapp_global.url + "/maintenance/checkEnterpriseExistBluetooth",
+					method: 'get',
+					dataType: "json",
+					data: {
+						values: {
+							unitId: obj.proprietorId
+						}
+					}
+				}, function(ret, err) {
+					if(ret) {
+						var code = ret["code"];
+						if(code == "success") {
+							var data = ret["data"];
+							if(data.exist == 1) {
+								resolve(true);
+							} else {
+								resolve(false);
+							}
+						} else {
+							//蓝牙查询失败
+							resolve(false);
+						}
+					} else {
+						resolve(false);
+					}
+				})
+
+				//				$.ajax({
+				//					type: "get",
+				//					url: webapp_global.url + "/maintenance/checkEnterpriseExistBluetooth",
+				//					data: {
+				//						unitId: obj.proprietorId
+				//					},
+				//					success(ret) {
+				//						var code = ret["code"];
+				//						if(code == "success") {
+				//							var data = ret["data"];
+				//							if(data.exist == 1) {
+				//								resolve(true);
+				//							} else {
+				//								resolve(false);
+				//							}
+				//						} else {
+				//							//蓝牙查询失败
+				//							resolve(false);
+				//						}
+				//					},
+				//					error(err) {
+				//						//蓝牙查询失败
+				//						resolve(false);
+				//					}
+				//				});
+			})
+			return promise;
+		}
+		//监听事件
+		function initEvents() {
+			api.addEventListener({
+				name: 'keyback'
+			}, function(ret, err) {
+				back();
+			});
+		}
+		//返回，关闭当前详情页，
+		function back() {
+			api.closeWin({
+				name: 'myProprietorUnit'
+			});
+		}
+	</script>
+
+</html>

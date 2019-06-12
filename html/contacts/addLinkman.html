@@ -1,0 +1,363 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+		<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+		<link rel="stylesheet" type="text/css" href="../../css/aui.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/wbicon/style.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/xficon/style.css" />
+		<style type="text/css">
+			html {
+				font-family: "Microsoft YaHei";
+				height: 100%;
+			}
+			
+			body {
+				color: #333;
+				background-color: #eeeef5;
+				height: 100%;
+			}
+			
+			.header {
+				height: 57px;
+				width: 100%;
+				display: block;
+				line-height: 57px;
+				padding-top: 11px;
+				font-size: .8rem;
+				background-color: #ff961b;
+			}
+			
+			.aui-bar-nav .aui-btn .aui-iconfont {
+				font-size: .7rem;
+			}
+			
+			.aui-bar-nav .aui-pull-left {
+				font-size: .7rem;
+			}
+			
+			.wb-bar.aui-bar {
+				text-align: left;
+				color: #333;
+				font-size: 0.67rem;
+				border-bottom: 1px solid #ddd;
+			}
+			.proprietorUnit{
+				font-size: 0.75rem;
+			}
+			.wb-bar.aui-bar-light .aui-iconfont {
+				color: #848484;
+			}
+			
+			.wb-add-list {
+				border-bottom: 1px solid #ddd;
+				font-size: 0.67rem;
+			}
+			
+			.wbicon-sureOutline {
+				font-size: 1rem;
+				margin-top: .4rem;
+			}
+			input::-webkit-input-placeholder {
+			    font-size: 0.67rem!important;
+			    line-height:.8rem!important;
+			}
+			input:-moz-placeholder {
+			    font-size: 0.67rem!important;
+			    line-height:.8rem!important;
+			}
+			input:-ms-input-placeholder {
+			   font-size: 0.67rem!important;
+			   line-height:.8rem!important;
+			}
+			/*input{
+				font-size: 0.5rem!important;
+			}*/
+			.wb-list-item{
+				margin-top:.12rem;
+			}
+			/*按钮*/
+			
+			.backBtn {
+				height: 40px;
+				width: 35px;
+				position: absolute;
+				right: left;
+				bottom: 0;
+			}
+			
+			.backBtn::before {
+				position: absolute;
+				top: .65rem;
+				left: .75rem;
+				display: block;
+				content: '';
+				width: 10px;
+				height: 10px;
+				border-left: 1px solid;
+				border-top: 1px solid;
+				color: #fff;
+				transform: rotate(-45deg);
+			}
+		</style>
+	</head>
+
+	<body>
+		<div class="wb-content">
+			<header class="aui-bar aui-bar-nav header">
+				<a class="aui-pull-left aui-btn aui-btn-header" onclick="back()">
+					<span class="backBtn"></span>
+				</a>
+				<div class="aui-title">新增业主单位联系人 </div>
+				<a class="aui-pull-right aui-btn aui-btn-header" onclick="linkmans()">
+					<span class="wbicon-sureOutline"></span>
+				</a>
+			</header>
+			<section class="wb-bar aui-bar aui-bar-nav aui-bar-light aui-padded-l-15 aui-margin-b-5"  onclick="openPage('selectUnit',{})">
+				<span class="proprietorUnit">选择添加到的业主单位</span>
+				<a class="aui-pull-right aui-btn ">
+					<span class="aui-iconfont aui-icon-right"></span>
+				</a>
+			</section>
+
+			<section class="aui-content" id="addLinkman">
+				<ul class="aui-list aui-form-list wb-add-list">
+					<li class="aui-list-item">
+						<div class="aui-list-item-inner">
+							<div class="aui-list-item-label-icon wb-list-item-icon">
+								<span class="wb-list-item">姓名：</span>
+							</div>
+							<div class="aui-list-item-input">
+								<input type="text" placeholder="请输入姓名（必填）" maxlength="10" v-model="contactName">
+							</div>
+						</div>
+					</li>
+					<li class="aui-list-item">
+						<div class="aui-list-item-inner">
+							<div class="aui-list-item-label-icon wb-list-item-icon">
+								<span class="wb-list-item">电话：</span>
+							</div>
+							<div class="aui-list-item-input">
+								<input type="text" placeholder="请输入手机号或者固话（必填）" v-model="contactPhone">
+							</div>
+						</div>
+					</li>
+					<li class="aui-list-item">
+						<div class="aui-list-item-inner">
+							<div class="aui-list-item-label-icon wb-list-item-icon">
+								<span class="wb-list-item">职务：</span>
+							</div>
+							<div class="aui-list-item-input">
+								<input type="text" placeholder="选填" maxlength="6" v-model="position">
+							</div>
+						</div>
+					</li>
+				</ul>
+			</section>
+		</div>
+	</body>
+	<script src="../../config/config.js"></script>
+	<script type="text/javascript" src="../../script/api.js"></script>
+	<script type="text/javascript" src="../../script/aui-tab.js"></script>
+	<script type="text/javascript" src="../../script/aui-list-swipe.js"></script>
+	<script type="text/javascript" src="../../script/zepto.js"></script>
+	<script type="text/javascript" src="../../script/vue.js"></script>
+	<script type="text/javascript" src="../../script/iphoneX.js"></script>
+	<script type="text/javascript">
+		var pageParam = {},
+			linkman, params = {},
+			paramObj;
+		apiready = function() {
+			iphoneXfit();
+			if(isIphoneX()){
+				$(".aui-btn-header").css("top","1rem");
+			}
+			pageParam = api.pageParam; 
+			paramObj = JSON.parse(localStorage.getItem('userObj'));
+			addLinkman();
+			apiEvents();
+
+		}
+
+		//打开页面
+		function openPage(name, pageParam) {
+			api.openWin({
+				name: name,
+				url: name + '.html',
+				rect: {
+					x: 0,
+					y: 0,
+					w: 320,
+					h: 480
+				},
+				pageParam: pageParam,
+				bounces: false,
+				bgColor: 'rgba(0,0,0,0)',
+				vScrollBarEnabled: true,
+				hScrollBarEnabled: true
+			});
+			//api.closeWin();
+		}
+
+		function addLinkman() {
+			if(linkman) {
+				linkman.initData()
+			} else {
+				linkman = new Vue({
+					el: "#addLinkman",
+					data() {
+						return {
+							contactName: '',
+							contactPhone: '',
+							position: ''
+
+						}
+					},
+					methods: {
+						initData() {
+							this.$nextTick(function() {
+								//								this.contactName = "";
+								//								this.contactPhone = "";
+								//								this.position = "";
+
+							})
+						},
+						getPageParam(pageParams) {
+							pageParam.proprietorId = pageParams.proprietorId;
+							pageParam.proprietorName = pageParams.proprietorName;
+						},
+						sendcode() {
+//							
+							var reg = /^((13[0-9])|(14[5|7])|(15([0-3]|[5-9]))|(18[0,3,5-9]))\d{8}$|^0\d{2,3}-?\d{7,8}$|^\d{7,8}$/;
+							if(this.contactPhone == '') {
+								api.toast({
+									msg: '请输入手机号码',
+									duration: 1500,
+									location: 'middle',
+									global: true
+								});
+							} else if(!reg.test(this.contactPhone)) {
+								api.toast({
+									msg: '手机格式不正确',
+									duration: 1500,
+									location: 'middle',
+									global: true
+								});
+							}
+						}
+					},
+					created() {
+						this.initData();
+
+					},
+					updated() {
+						params.contactName = this.contactName;
+						params.contactPhone = this.contactPhone;
+						params.position = this.position;
+					}
+				})
+			}
+
+		}
+		//添加联系人；
+		function linkmans() {
+			var reg = /^((13[0-9])|(14[0-9])|(15([0-9]))||(16([0-9]))||(17([0-9]))|(18[0-9]))\d{8}$|^0\d{2,3}-?\d{7,8}$|^\d{7,8}$/;
+			if(!pageParam.proprietorName) {
+				api.toast({
+					msg: '请选择业主单位',
+					duration: 1500,
+					location: 'middle',
+					global: true
+				});
+				return;
+			};
+			if(!params.contactName) {
+				api.toast({
+					msg: '姓名不能为空',
+					duration: 1500,
+					location: 'middle',
+					global: true
+				});
+				return;
+			};
+			if(!params.contactPhone) {
+				api.toast({
+					msg: '电话不能为空',
+					duration: 1500,
+					location: 'middle',
+					global: true
+				});
+				return;
+			}
+			if(!reg.test(params.contactPhone)) {
+				api.toast({
+					msg: '电话号码格式不正确',
+					duration: 1500,
+					location: 'middle',
+					global: true
+				});
+				return;
+			}
+			api.ajax({
+				url: webapp_global.url + "/userInfo/addContacts",
+				method: 'post',
+				dataType: "json",
+				data: {
+					values: {
+						userId: paramObj.userid,
+						proprietorId: pageParam.proprietorId,
+						proprietorName: pageParam.proprietorName,
+						contactName: params.contactName,
+						contactPhone: params.contactPhone,
+						position: params.position
+					}
+				}
+			}, function(ret, err) {
+				var code = ret["code"];
+				if(code == "success") {
+					data = ret["data"];
+					api.toast({
+						msg: '添加联系人成功',
+						duration: 2000,
+						location: 'middle',
+						global: true
+					});
+					api.sendEvent({
+						name: 'updateContactsList',
+						extra: {
+							content: 'updateContactsList'
+						}
+					});
+					back();
+				}
+			})
+		}
+
+		function apiEvents() {
+			//监听返回来的参数
+			api.addEventListener({
+				name: 'contactsSelectProprietorUnit'
+			}, function(ret, err) {
+				pageParam = ret.value.key_data;
+				if(!pageParam.proprietorName){
+					$('.proprietorUnit').html('选择添加到的业主单位')
+				}else{
+					$('.proprietorUnit').html(pageParam.proprietorName)
+				}
+
+			});
+			//ios右滑控制
+      api.addEventListener({
+        name:'swiperight'
+      }, function(ret, err){
+      });
+		}
+		//返回，关闭当前页，
+		function back() {
+			api.closeWin();
+		}
+	</script>
+
+</html>

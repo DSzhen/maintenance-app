@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+		<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+		<title>设备设施</title>
+		<link rel="stylesheet" type="text/css" href="../../css/api.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/aui.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/wbicon/style.css" />
+		<style>
+			html,
+			body {
+				height: 100%;
+				display: flex;
+				display: -webkit-flex;
+				display: -webkit-box;
+				flex-flow: column;
+				-webkit-flex-flow: column;
+				-webkit-box-orient: vertical;
+			}
+			
+			.header {
+				height: 57px;
+				width: 100%;
+				display: block;
+				line-height: 57px;
+				padding-top: 11px;
+				font-size: .8rem;
+			}
+			
+			.header.active {
+				display: block;
+			}
+			
+			.top-menu {
+				/*padding: 0 43px 0 8px;*/
+				text-align: center;
+				color: #fff;
+				font-weight: bold;
+			}
+			/*按钮*/
+			
+			.backBtn {
+				height: 40px;
+				width: 35px;
+				position: absolute;
+				right: left;
+				bottom: 0;
+			}
+			
+			.backBtn::before {
+				position: absolute;
+				top: .65rem;
+				left: .75rem;
+				display: block;
+				content: '';
+				width: 10px;
+				height: 10px;
+				/*border-left: 2px solid;
+           border-top: 2px solid;*/
+				border-left: 1px solid;
+				border-top: 1px solid;
+				color: #fff;
+				transform: rotate(-45deg);
+			}
+			
+			.btn {
+				height: 40px;
+				width: 35px;
+				position: absolute;
+				right: .5rem;
+				bottom: 0;
+				color: white;
+			}
+			/*首页头部导航*/
+			/*字体颜色*/
+			
+			.header.home>div.active {
+				opacity: 1;
+			}
+			
+			.header.home {
+				/*background: -moz-linear-gradient(top, #febd00 0%, #ff951b 100%);
+				background: -webkit-gradient(linear, left top, right bottom, color-stop(0%, #febd00), color-stop(100%, #ff951b));
+				background: -webkit-linear-gradient(top, #febd00 0%, #ff951b 100%);
+				background: -o-linear-gradient(top, #febd00 0%, #ff951b 100%);
+				background: -ms-linear-gradient(top, #febd00 0%, #ff951b 100%);
+				background: linear-gradient(to top, #febd00 0%, #ff951b 100%);*/
+				background-color: #ff961b;
+			}
+			
+			.header.home .top-menu>div {
+				color: #fff;
+				opacity: .8;
+			}
+			
+			.header.home .top-menu>div.active {
+				opacity: 1;
+			}
+			
+			.add_btn {
+				/*background: #d43d3d url('../image/head/add.png') center center no-repeat;*/
+				-webkit-background-size: 38px 43px;
+				background-size: 38px 43px;
+			}
+			
+			.aui-list.aui-collapse {
+				margin-top: 2px;
+				background: #fff;
+			}
+			
+			.aui-list .aui-list-item-title {
+				display: -webkit-box;
+				display: -webkit-flex;
+				display: flex;
+				-webkit-box-pack: justify;
+				-webkit-justify-content: space-between;
+				justify-content: space-between;
+				-webkit-box-align: center;
+				-webkit-align-items: center;
+				align-items: center;
+				width: 100%;
+				min-height: 2.6rem;
+				line-height: 2.6rem;
+				font-size: .75rem;
+				color: #333;
+			}
+			
+			.wb-list-unity {
+				display: inline-block;
+				max-width: 66%;
+				vertical-align: middle;
+			}
+			
+			.aui-list .aui-list-item-title>b {
+				color: #ff961b;
+				vertical-align: -3px;
+			}
+			
+			.wb-upkeep {
+				margin-left: 1rem;
+				color: #ff961b;
+				vertical-align: -2px;
+			}
+			
+			.aui-btn-info.wb-type-btn {
+				color: #0769fc !important;
+				background-color: #eaf2ff !important;
+				border-color: rgba(7, 105, 252, .6) !important;
+			}
+			
+			.aui-list-item.aui-collapse-header {
+				padding-left: .2rem;
+			}
+			
+			.aui-collapse-header.aui-active {
+				background: #fff;
+				border-bottom: 1px solid #ddd;
+			}
+			
+			.wb-collapse-15 {
+				padding-left: 1.25rem;
+			}
+			
+			.aui-info {
+				color: #666;
+			}
+			
+			.wb-collapse-content-ul .wb-collapse-content-item:last-child .aui-info {
+				border-bottom: 0;
+			}
+			
+			.wb-collapse-content-ul .wb-collapse-content-item:last-child .wb-error-ul {
+				border-top: 1px solid #ddd;
+			}
+			
+			.wb-collapse-content-item .aui-info {
+				padding-left: 0 !important;
+				border-bottom: 1px solid #ddd;
+			}
+			
+			.aui-info>.aui-info-item:first-child {
+				width: 75%;
+			}
+			
+			.wb-error-ul {
+				border-bottom: 1px solid #ddd;
+			}
+			
+			.aui-collapse-content li:last-child .wb-error-ul {
+				border-bottom: 0;
+			}
+			
+			.wb-collapse-content-ul li.wb-collapse-title .aui-info-item {
+				font-size: .75rem;
+			}
+			
+			.wb-collapse-content-item .aui-info-item {
+				font-size: .65rem;
+			}
+			
+			.wb-error-ul li {
+				font-size: .7rem;
+			}
+			
+			.aui-collapse+.aui-collapse {
+				margin-top: .5rem;
+			}
+			
+			.aui-list-item-title .wbicon-arrowRight2 {
+				display: inline-block;
+				transition: transform .5s ease-in-out;
+			}
+			
+			.icon-transform {
+				transform: rotate(90deg);
+			}
+			
+			[v-cloak] {
+				display: none;
+			}
+			
+			.defaultDiv-layout {
+				margin-top: 35%;
+				height: 100%;
+				width: 100%;
+				text-align: center;
+			}
+			
+			.defaultDiv-layout label {
+				color: #C4C4C4;
+			}
+			
+			.defaultDiv {
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				margin-bottom: 1rem;
+			}
+			
+			.defaultDiv img {
+				height: 6rem;
+				width: 6rem;
+			}
+		</style>
+
+	</head>
+
+	<body>
+		<div id="app" v-cloak>
+			<ul class="aui-list aui-collapse" v-for="item in dataList">
+				<div class="aui-collapse-item">
+					<li class="aui-list-item aui-collapse-header">
+						<div class="aui-list-item-inner">
+							<div class="aui-list-item-title">
+								<span class="wb-list-unity aui-ellipsis-1 aui-margin-l-15">{{item.buildName}}</span>
+								<b :class="item.classes"></b>
+							</div>
+						</div>
+					</li>
+					<div class="aui-collapse-content aui-border-b wb-collapse-15">
+						<ul class="wb-collapse-content-ul aui-padded-l-15">
+							<li class="wb-collapse-content-item wb-collapse-title" v-for="data in item.list">
+								<div class="aui-info aui-padded-15 aui-padded-r-10">
+									<div class="aui-info-item aui-ellipsis-1">{{data.deviceAddress}}</div>
+								</div>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</ul>
+			<div class="routineDefaultImg" v-if="dataList.length == 0">
+				<div class='defaultDiv-layout'>
+					<div class='defaultDiv'><img :src='defaultDiv' /></div>
+					<label style="">暂无维保到场校验点</label>
+				</div>
+			</div>
+		</div>
+	</body>
+	<script type="text/javascript" src="../../script/api.js"></script>
+	<script type="text/javascript" src="../../script/vue.js"></script>
+	<script type="text/javascript" src="../../script/zepto.js"></script>
+	<script type="text/javascript" src="../../script/aui-collapse.js"></script>
+	<script type="text/javascript" src="../../config/config.js"></script>
+	<script>
+		var collapse = new auiCollapse({
+			autoHide: false //是否自动隐藏已经展开的容器
+		});
+		var userObj = JSON.parse(localStorage.getItem("userObj"));
+		var pageParam;
+		apiready = function() {
+			pageParam = api.pageParam;
+			getCheckPoint();
+		}
+
+		function getCheckPoint() {
+			api.ajax({
+				url: webapp_global.url + "/maintenance/getEnterpriseBluetoothList",
+				method: 'get',
+				dataType: "json",
+				data: {
+					values: {
+						unitId: pageParam.proprietorId,
+					}
+				}
+			}, function(ret, err) {
+				if(ret) {
+					var code = ret["code"];
+					if(code == "success") {
+						var data = ret["data"];
+						initPage(data);
+					} else {
+						initPage([]);
+					}
+				} else {
+					initPage([]);
+				}
+			})
+		}
+
+		function initPage(data) {
+			var arr = [];
+			var obj = {};
+			if(data.length > 0) {
+				for(var i = 0; i < data.length; i++) {
+					obj[data[i].buildId] = data[i].buildName;
+				}
+			}
+			for(var key in obj) {
+				var param = {};
+				param.buildId = key;
+				param.buildName = obj[key];
+				param.classes = "wbicon-arrowRight aui-margin-10";
+				param.list = [];
+				for(var j = 0; j < data.length; j++) {
+					if(data[j].buildId == key) {
+						var obj1 = {
+							bluetoothId: data[j].bluetoothId,
+							floorName: data[j].floorName,
+							deviceAddress: data[j].deviceAddress,
+						}
+						param.list.push(obj1);
+					}
+				}
+				arr.push(param)
+			}
+			new Vue({
+				el: "#app",
+				data() {
+					return {
+						dataList: arr,
+						defaultDiv: "../../image/defaultPage/ble.png"
+					}
+				},
+				mounted() {
+					this.$nextTick(function() {
+						var that = this;
+						new auiCollapse({
+							autoHide: false,
+						}, function(ret, index) {
+							if(ret == 1) {
+								that.dataList[index].classes = 'wbicon-arrowRight2 aui-margin-10'
+							} else {
+								that.dataList[index].classes = 'wbicon-arrowRight2 aui-margin-10 icon-transform'
+							}
+						});
+						if(this.dataList.length == 1) {
+							$(".aui-collapse-content").addClass("aui-show");
+							that.dataList[0].classes = "wbicon-arrowRight2 aui-margin-10 icon-transform"
+						}
+					})
+				}
+			})
+		}
+	</script>
+
+</html>

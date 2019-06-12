@@ -1,0 +1,751 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>查看历史点位图</title>
+		<link rel="stylesheet" href="../../css/api.css" />
+		<link rel="stylesheet" href="../../css/aui.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/mobileSelect.css" />
+		<link rel="stylesheet" href="../../script/ts-gis/openlayers/ol.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/wbicon/style.css" />
+		<link rel="stylesheet" href="../../css/mint-ui.css" />
+		<style>
+			html,
+			body {
+				height: 100%;
+				display: flex;
+				display: -webkit-flex;
+				display: -webkit-box;
+				flex-flow: column;
+				-webkit-flex-flow: column;
+				-webkit-box-orient: vertical;
+				background-color: #f7f6f5;
+			}
+			
+			.remind {
+				height: 1.7rem;
+				line-height: 1.7rem;
+				text-align: center;
+				color: #f2584a;
+				font-size: .6rem;
+				background-color: #fcf3f2;
+			}
+			
+			.accumulative-point-count {
+				height: 3.5rem;
+				width: 100%;
+				background-color: white;
+			}
+			
+			.accumulative-point-count .accumulative-point-count-l,
+			.accumulative-point-count .accumulative-point-count-r {
+				height: 100%;
+				width: 49%;
+				float: left;
+				text-align: center;
+				font-size: 0.73rem;
+			}
+			
+			.accumulative-point-count .accumulative-point-count-l {
+				border-right: 1px solid #e9e9eb;
+			}
+			
+			.accumulative-point-count .accumulative-point-count-l div,
+			.accumulative-point-count .accumulative-point-count-r div {
+				margin-top: .5rem;
+			}
+			
+			.accumulative-point-count-l b {
+				color: #ff9229;
+				margin-left: .3rem;
+			}
+			
+			.select-floor {
+				width: 100%;
+				margin-top: .5rem;
+				height: 2.5rem;
+				background-color: white;
+				line-height: 2.5rem;
+				border-bottom: 1px solid #dfdfe5;
+				position: relative;
+			}
+			
+			.select-floor .floor-span {
+				font-size: 0.74rem;
+				width: 4.5rem;
+				text-align: center;
+			}
+			
+			.select-floor a {
+				width: calc(100% - 4.5rem - 1rem);
+				font-size: 0.74rem;
+				color: #828285;
+			}
+			
+			.select-floor .floor-select-span {
+				color: #ff961b;
+				font-size: 0.63rem;
+				position: absolute;
+				right: 1rem;
+				margin-top: .2rem;
+			}
+			
+			.filter-equipment {
+				height: 3rem;
+				background-color: white;
+				font-size: .63rem;
+			}
+			
+			.filter-equipment span {
+				margin-top: .5rem;
+				height: 2.1rem;
+				width: 29%;
+				line-height: 2.1rem;
+				margin-left: 2.5%;
+			}
+			
+			.filter-equipment .solve_css_cur_img {
+				width: 10px;
+				position: absolute;
+				right: 0;
+				top: 0;
+				display: none;
+			}
+			
+			.filter-equipment .solve_css {
+				display: inline-block;
+				background-color: #f2f2f2;
+				border-radius: 2px;
+				text-align: center;
+				color: #828285;
+				position: relative;
+			}
+			
+			.filter-equipment .solve_css_cur {
+				background-color: #fff3e5!important;
+				color: #ff961b!important;
+			}
+			
+			.map {
+				height: 20.3rem
+			}
+			
+			.ol-logo-only {
+				display: none;
+			}
+			
+			.ol-zoom {
+				display: none;
+			}
+			
+			.device-point-info {
+				position: absolute;
+				margin-top: .5rem;
+				font-size: .73rem;
+				padding: .7rem;
+				height: 6rem;
+				width: 100%;
+				overflow-x: auto;
+				background-color: white;
+				bottom: 0px;
+			}
+			
+			.device-point-info span {
+				display: block;
+			}
+			
+			.device-point-info img {
+				position: absolute;
+				float: right;
+				right: 0;
+				top: 0;
+				height: 1rem;
+			}
+			/* 楼层切换控件 */
+			
+			.monitor-floor-nav {
+				position: absolute;
+				background-color: #FFF;
+				width: 2.42rem;
+				height: 11rem;
+				bottom: 2.7rem;
+				right: 0.7rem;
+				border-radius: 2rem;
+				overflow: hidden;
+				box-shadow: 0 0 2px 3px rgba(37, 129, 243, .08);
+				border-bottom-left-radius: 0;
+				border-bottom-right-radius: 0;
+				padding-top: 1.5rem;
+				transition: all .5s;
+			}
+			
+			.pickerContainer {
+				display: flex;
+				justify-content: center;
+				background: #e5f1ff;
+				width: 100%;
+				height: 1rem;
+				align-items: center;
+				position: absolute;
+				bottom: 0;
+				padding: .8rem 0;
+			}
+			
+			.pickerContainer-arrow {
+				display: inline-block;
+				width: 7px;
+				height: 7px;
+				border-left: 1px solid rgb(39, 126, 236);
+				border-bottom: 1px solid rgb(39, 126, 236);
+				transform: rotate(-135deg);
+				line-height: 20rem;
+			}
+			
+			.wbicon-arrowRight2 {
+				color: #c7c7cd;
+				font-size: .8rem;
+			}
+			
+			.aui-actionsheet {
+				padding: 0;
+			}
+			
+			.aui-actionsheet-btn .aui-actionsheet-title {
+				line-height: 1.8rem;
+				color: #333;
+				font-size: .75rem !important;
+			}
+			
+			.aui-actionsheet-btn .aui-actionsheet-btn-item {
+				padding: .7rem .5rem;
+				font-size: .7rem !important;
+				color: #666 !important;
+			}
+			
+			[v-cloak] {
+				display: none;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div>
+			<!--<div class="remind">
+				<b class="wbicon-remind"></b> 累计已检点位的统计不含本次维保过程中检测的点位
+			</div>-->
+			<div id="app" class="accumulative-point-count" v-cloak>
+				<div class="accumulative-point-count-l">
+					<div onclick="enterHelp()">{{param.finishedCount}}<b class="wbicon-questionMark"></b></div>
+					<div>累计已检点位</div>
+				</div>
+				<div class="accumulative-point-count-r">
+					<div>{{param.unfinishedCount}}</div>
+					<div>未检点位</div>
+				</div>
+			</div>
+			<div class="select-floor">
+				<span class="floor-span">楼栋楼层</span>
+				<a id="area2" class="wb-text-info">请选择楼栋楼层</a>
+				<span class="floor-select-span"><b class="wbicon-arrowRight2"></b></span>
+			</div>
+			<div id="appNum" class="filter-equipment" v-cloak>
+				<span onclick="chenge_status($(this),2)" class="solve_css solve_css_cur">全部({{btnNum.totalDeviceCount}})<img style="display: block;" class="solve_css_cur_img" src="../../image/solve_cur.png"></span>
+				<span onclick="chenge_status($(this),1)" class="solve_css">已检({{btnNum.checkedDeviceCount}})<img class="solve_css_cur_img" src="../../image/solve_cur.png"></span>
+				<span onclick="chenge_status($(this),0)" class="solve_css">未检({{btnNum.uncheckedDeviceCount}})<img class="solve_css_cur_img"  src="../../image/solve_cur.png"></span>
+			</div>
+			<div id="map" class="map"></div>
+			<div id="deviceVue" class="device-point-info" v-cloak>
+				<div v-if="device && device.deviceName">
+					<span>设备：{{ device && device.deviceName }}</span>
+					<span>楼栋楼层：{{ device && device.buildName }}</span>
+					<span>位置：{{ device && device.deviceAddress }}</span>
+					<span>回路点位：{{ device && device.loopPoint}}</span>
+					<img v-if="device.isChecked == '0'" src="../../image/routine/undetected.jpg" />
+					<img v-if="device.isChecked == '1'" src="../../image/routine/checked.jpg" />
+				</div>
+			</div>
+		</div>
+	</body>
+	<script type="text/javascript" src="../../config/config.js"></script>
+	<script type="text/javascript" src="../../script/api.js"></script>
+	<script type="text/javascript" src="../../script/vue.js"></script>
+	<script type="text/javascript" src="../../script/mint-ui.js"></script>
+	<script type="text/javascript" src="../../script/zepto.js"></script>
+	<script type="text/javascript" src="../../script/mobileSelect.js"></script>
+	<script type="text/javascript" src="../../script/aui-actionsheet.js"></script>
+	<script type="text/javascript" src="../../script/ts-gis/openlayers/ol.js"></script>
+	<script type="text/javascript" src="../../script/ts-gis/proj4.js"></script>
+	<script type="text/javascript" src="../../script/ts-gis/tsgis.js"></script>
+	<script type="text/javascript" src="../../data/fireHistoryPointIcon.js" ></script>
+	<script>
+		var pageParam, deviceVue, appVue, btnVue;
+		var filterParam = {
+			floorData: [],
+			chengeStatus: 2
+		}; //请求平面图设备信息存储对象
+		var map, chooseLayer, pointLayer, imageLayer; //地图对象
+		var userObj = JSON.parse(localStorage.getItem('userObj'));
+		var pointIcon = {
+			undetected: "iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAADEklEQVRIibWWW1fiSBSFv0pCIOOQQAJ2y0XA7vn/v6fXUlCRO7mKhNzIPIC0IrZOr579WCdn76pdJ+eUyPM85x3EcYy9dAiCR8JwQ5ImSEJQUFWKqoqulzGtKsVi8T0KxCmBOI4Z3o9wHJdf6B9gWSbtyyaqqn4s4Loe/ZtbsiwDwKjoGIbOw3DMdrs9fNdsNVg9rvD9AABZluj2OliW+b7AdDrn/m54IK7Xa/hegOM4ZNn2VaIsy1g1E0PXmc3mBMEjAJeXLb5efHkr4Ngu19f9w+7y7ZbJZPahRUIILhpfARiPJgB8+947nESCneeDwS0ArVaD9XrNeDz9lP95njMeTUjihMZe6HZwRxwnPwWG9yOybIth6GTbLa7jfUh8jMViCUKg62WybMtoNN4JRFGMbTsA6IbOdDL7z+TPmIyn1M9rACwXNlEUI8ajST4cjn6b9BhCiIO17XYT6fn2/xRe3lsQPCKFYfhHBV4iDEOkJE3/N4EkSVGOFysVA1UtnExwXZ88z9H18sl4mqYcW64UFOVQswDVauVQCccIwx8AfP/n6mTccVyC4BFFUUjTlEJBQdE0jThOOD+vY9sOi8WSTRSdJIiiGCF25XgKvh+gaSWMisF0MkPTNBRdL+P7Aev1GtOqspgvqVYryMob95AkAUJQLL1tz2mys6fVarBc2gDoehnFtEyGwxGr1RP18zqL+ZIoiunuf/uXsPeJpll9E+v3b5FlmWKpyGYTIYTAtMxds7u5HmDbDmdnf1GtVnh4GFPWywghXpE8rZ6AnFKp9Go9z2G9XtPtdZhOZmw2G+r1Gr2rzq6K2pdNXNfj6WnN2d9nnH+pM58tqFQMGs2Lg9CgfwdAt9fZE+8anef5tFoNHNths9kgSRLNVmNnK4CqqvSudknz2YIszRBC4Hk+N9d9fM8HcoQQe7Ecfx/zPB+A5X60AvSuOodSf3fg/C7eHTjPOB6Zn4UsS3S7HazaL0bmM6IoZjh8wLHdT5GbVpV2u0Wx+Imhfyzk2M/PlpAk2fWtQkFB0zTKehnrg2fLvxamslVqxu+FAAAAAElFTkSuQmCC",
+			yiInspection: "iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAD+0lEQVRIibWWXUxbZRjHf+85B9p1KKWjfImOj5WxZclgCkw0QZ1h1TmzL4cXxl3MG8cN0QuCCdFdTheDSxYTMz/itsyZmE0RZI7JWBgJhcBmJh+jWIStQDvabtJCKT3HCzaQUoZb5v/mJM9znt8/58nzvs8RmqZpLKGRoJd6VyftPjsDgTG8oQkUIZOsiydVZ6LAmI3VnM8TetNSCEQ0g5GglxpHHefcV1A1dcliAAnB1qR8KjK3kapLWN7g4vgfVPWewB8OIiF41rSW4oS1HHHUE1RDc+8dWG2l686ftHn7UdEwyDo+tLzBK0mbljY4efMSnwz8iIrGc6ZcdqUUcdnTS4P7CoFwcEHhY8oKXk3aRJHRwnfOFmw+OwLB+1mv83Z6yWKDBvcVKnuOo6FxYLWVaW2Gb4abmNHC922RLCT2P7kFgC+GziMQHFr3FlZz/rzBSNDLzo6PCYSDlGdY6Ztw0njr9/uCI7UzpYhVMXEcG76AQdZRW1CFOfZxJIDPHHUEwkGKE3KZCoceGA5wZrQNWcgUGi0EwkGODjYAIDmnvDS4ugDYnGDh6xtNDwy/p2PDjexOKQLg7JgN55QH8eXQBa3G8fNDQyMlCWlutCsyX0Oy+eyPDA4sODdtvutI9sDIIzX4twYCY0i+kP9/M/BOT6BEBktM6zHr4qMWXBy/xoymUmhcEzXvC/mJbLlijFmJK3h7LvBi4gZ2pWyOChgIjAJweN2+qPnzt65i89kxxqzEF/KTEBuHssaQgit4m72pxdS7O/lhpI2hyVtRAc4pL7KQ+Gr4t6j5Vm8fWYZknjfl8u2NZrINySiFRgut3j76/E5KE/M4M9rGS4kbiFcMiwA6SUEWEun6VVHb0+6zU55h5aexDgCKjDkoVnMeRxx1XL0zyO6UzZwdbcM55WG/ZcsiSK1rtrDUvHFRrrrvFHGKnnT9KoYm3UhCwmrOQ0nTmyg159Hg7uKUs4V3M7ZydLABR8CFIskLIHb/KGFN5c3OTxfEVTT6JpxUW/bw+V/nANiRXECa3jR/2e3oOMRkeJq9acUIBKedlykxreedp14mRpodto+un5595pQBEFJnODbUSLOnm/IMK+2+AWy+flbIsdQ+U0WSLn72skvVJXAwpwyB4HtnK3/PTCIJiWZPN5W9x2nx9KBqKoqQUYSMqqm0eHqo7D1Os6cbgLqxTmy+fgSCgzllJN0d9QUL58TNSxy+u3AeRgLBe1nb2Zf+wnwscmU2jV/jg96T+CM22HIyyDqqLXvYlvT0QtNoS9855aXGUcuv7qvLfo2EoNS8kYrM7aTp/8PSjzT6xT3722IPjOKZngDAFBtHtiGZAqMFqzkv6rm4p38ANnO45Qu/MeEAAAAASUVORK5CYII="
+		}
+		apiready = function() {
+			pageParam = api.pageParam;
+			//初始化地图
+			_initMap();
+			//展示未检和已检和合同信息
+			showFinishedandUnfinished();
+			//请求企业楼栋楼层数据
+			queryUnitFloor(pageParam);
+			//展示点击的点位信息
+			showPointInfo();
+			//ios右滑控制
+      api.addEventListener({
+        name:'swiperight'
+      }, function(ret, err){
+      });
+		}
+
+		//初始化地图
+		function _initMap() {
+			// 创建地图
+			map = new g2.maps.Map({
+				defaultExtent: {
+					center: [0, 0],
+					maxZoom: 15,
+					minZoom: 1,
+					level: 4,
+					// extent: [0, 0, 1800000, 1000000], //图片范围，请按照坐标系的范围给出，此为3857的坐标系范围
+					projection: "EPSG:3857" // 设置地图坐标系
+				} // 为方便展示设置视野中心点的范围
+			});
+			// 初始化地图，传入要初始化的DOM对象的id
+			map.init({
+				targetId: 'map'
+			});
+			//点击标记元素图层
+			chooseLayer = new g2.lys.ElementLayer({
+				id: 'chooseLayer',
+				zIndex: 4
+			});
+			map.addLayer(chooseLayer);
+			//创建元素图层
+			pointLayer = new g2.lys.ElementLayer({
+				id: 'pointLayer',
+				zIndex: 3
+			});
+			map.addLayer(pointLayer);
+			mapClick()
+		}
+
+		//请求企业楼栋楼层数据
+		function queryUnitFloor(param) {
+			api.ajax({
+				url: webapp_global.url + '/recordEnterprise/enterpriseBulidInfo',
+				dataType: "json",
+				data: {
+					values: {
+						unitId: pageParam.proprietorId,
+						orgId: userObj.orgId
+					}
+				},
+				method: 'get'
+			}, function(ret, err) {
+				if(ret) {
+					var code = ret["code"];
+					if(code == "success") {
+						var data = ret["data"];
+						var builds = data.builds;
+						if(builds.length > 0) {
+							var resultData = [];
+							builds.forEach(function(item, index) {
+								var obj = {};
+								obj.id = item.buildId;
+								obj.value = item.buildName;
+								obj.childs = [];
+								for(var i = 0; i < item.floors.length; i++) {
+									var temp = {}
+									temp.id = item.floors[i].floorId;
+									temp.value = item.floors[i].floorName;
+									obj.childs.push(temp)
+								}
+								resultData.push(obj)
+							})
+							var mySelect = new MobileSelect({
+								trigger: '#area2',
+								title: '选择楼层',
+								wheels: [{
+									data: resultData
+								}],
+								position: [0, 0],
+								callback: function(indexArr, data) {
+									filterParam.floorData = data;
+									deviceVue.device.buildName = filterParam.floorData[0].value + filterParam.floorData[1].value;
+									queryFloorImg(data);
+								}
+							});
+							if(resultData[0].childs.length > 0) {
+								var dataArr = [];
+								dataArr.push(resultData[0]);
+								dataArr.push(resultData[0].childs[0]);
+								$("#area2").html(resultData[0].value + "" + resultData[0].childs[0].value);
+								filterParam.floorData = dataArr;
+								deviceVue.device.buildName = resultData[0].value + "" + resultData[0].childs[0].value;
+								queryFloorImg(dataArr);
+							}
+						}
+					} else {
+						msg();
+					}
+				} else {
+					msg();
+				}
+			})
+
+			function msg() {
+				api.toast({
+					msg: '该企业没有楼栋信息！',
+					duration: 2000,
+					location: 'middle'
+				});
+			}
+		}
+		//查询楼层平面图
+		function queryFloorImg(data) {
+			Vue.$indicator.open("加载中...");
+			var url = webapp_global.url + "/recordEnterprise/queryFloorDeviceList";
+			api.ajax({
+				url: url,
+				method: 'post',
+				dataType: "json",
+				data: {
+					values: {
+						unitId: pageParam.proprietorId,
+						buildId: data[0].id,
+						floorId: data[1].id
+					}
+				}
+			}, function(ret, err) {
+				if(ret && ret.data) {
+					api.refreshHeaderLoadDone();
+					api.parseTapmode();
+					if(ret.data[0] && ret.data[0].floorAreaImg) {
+						var imgUrl = webapp_global.floorUrl + ret.data[0].floorAreaImg;
+						loadImg(imgUrl);
+					}
+				} else {
+					Vue.$indicator.close();
+				}
+			})
+		}
+		//加载楼层平面图
+		function loadImg(imgSrc) {
+			var img = new Image();
+			img.src = imgSrc;
+			img.onload = function() {
+				Vue.$indicator.close();
+				var w = img.width * 1000;
+				var h = img.height * 1000;
+				//创建一个图像图层
+				if(imageLayer) {
+					map.removeLayer(imageLayer);
+					imageLayer = undefined;
+				}
+				imageLayer = new g2.lys.ImageLayer({
+					imageType: 702,
+					extent: [
+						0,
+						0,
+						w,
+						h
+					], //图片范围，请按照坐标系的范围给出，此为3857的坐标系范围
+					crossOrigin: "anonymous", //跨域
+					url: imgSrc // 图层服务 url
+				});
+
+				// 将 图像图层添加到地图
+				map.addLayer(imageLayer);
+				var point = new g2.geom.Point({
+					x: w / 2,
+					y: h / 2,
+					spatialReference: g2.geom.SpatialReference.EPSG3857
+				});
+				map.setCenter(point);
+				//查询设备信息
+				queryEquipment();
+			};
+			img.error = function() {
+				Vue.$indicator.close();
+			}
+		}
+		//查询设备列表
+		function queryEquipment() {
+			if(filterParam.floorData.length == 0) {
+				api.toast({
+					msg: '请选择楼栋楼层！',
+					duration: 2000,
+					location: 'bottom'
+				});
+				return false;
+			}
+			//查询按钮上的未检数据
+			btnNum();
+			Vue.$indicator.open("加载中...");
+			api.ajax({
+				url: webapp_global.url + '/maintenancePlanProcess/getDeviceInfoByUnitInfo',
+				dataType: "json",
+				method: 'POST',
+				data: {
+					values: {
+						maintenanceId: userObj.orgId,
+						unitId: pageParam.proprietorId,
+						buildId: filterParam.floorData[0].id,
+						floorId: filterParam.floorData[1].id,
+						isChecked: filterParam.chengeStatus
+					}
+				}
+			}, function(ret, err) {
+				setTimeout(function() {
+					Vue.$indicator.close();
+				}, 200)
+				if(ret) {
+					var code = ret["code"]
+					if(code == "success") {
+						var data = ret["data"];
+						loadDevice(data)
+					}
+				}
+			})
+		}
+		//加载设备数据
+		function loadDevice(list) {
+			pointLayer.clear();
+			if(!list.length) return
+			var pointArr = [];
+			var defaultSymbol = new g2.syms.SimpleMarkersymbol({
+				fillColor: new g2.syms.Color({
+					a: 255,
+					r: 255,
+					g: 255,
+					b: 255
+				}),
+				borderColor: new g2.syms.Color({
+					a: 255,
+					r: 255,
+					g: 0,
+					b: 0
+				}),
+				size: 6
+			});
+			for(var i = 0; i < list.length; i++) {
+				var item = list[i];
+				var markerSymbol;
+				if(item.isChecked == "0") { //判断未检
+					markerSymbol = new g2.syms.Picturemarkersymbol({
+						source: hisstoryPointsIcons.undetected[item.deviceTypeId] || pointIcon.undetected,
+						width: 24,
+						height: 24,
+						offsetX: 12,
+						offsetY: 12
+					});
+				} else if(item.isChecked == "1") { //和已检
+					markerSymbol = new g2.syms.Picturemarkersymbol({
+						source: hisstoryPointsIcons.yiInspection[item.deviceTypeId] || pointIcon.yiInspection,
+						width: 24,
+						height: 24,
+						offsetX: 12,
+						offsetY: 12
+					});
+				} else {
+					markerSymbol = defaultSymbol;
+				}
+
+				var point = new g2.geom.Point({
+					y: item.latitude + "",
+					x: item.longitude + "",
+					spatialReference: g2.geom.SpatialReference.EPSG3857
+				});
+				var ele = new g2.ele.Element({
+					geometry: point,
+					symbol: markerSymbol,
+					tag: item
+				});
+				pointArr.push(ele);
+			}
+			pointLayer.addElements(pointArr);
+		}
+
+		function mapClick() {
+			map.on("click", function(button, shift, screenX, screenY, mapX, mapY, handle) {
+				chooseLayer.clear();
+				var ele = pointLayer.hitTest(screenX, screenY);
+				if(ele) {
+					var element = ele.element;
+					deviceVue.device.loopPoint = element.tag.laMake + "-" + element.tag.laLoop + "-" + element.tag.laPoint
+					deviceVue.device.unitId = pageParam.proprietorId
+					deviceVue.device.buildId = filterParam.floorData[0].id;
+					deviceVue.device.floorId = filterParam.floorData[1].id;
+					deviceVue.device.deviceName = element.tag.deviceName;
+					deviceVue.device.deviceAddress = element.tag.deviceAddress;
+					deviceVue.device.deviceName = element.tag.deviceName;
+					deviceVue.device.isChecked = element.tag.isChecked
+					// 选择设备效果
+					var p = new g2.geom.Point({
+						x: element.geometry.x,
+						y: element.geometry.y,
+						spatialReference: g2.geom.SpatialReference.EPSG3857
+					});
+					var picMarker = new g2.syms.Picturemarkersymbol({
+						source: 'iVBORw0KGgoAAAANSUhEUgAAAB4AAAAoCAYAAADpE0oSAAAB80lEQVRYhcXXv2oUURQH4G9HDYKoKSwUi4CImBcQxAQtrITkBSzs1QdQsBErwcLGQgTRN9BKC0VJtLBNoSERDIhEUEgEE0hM9ljsTLJZdnd29s/shVMMy/w+zjB77p1K6GgluIQrOIczGE1/W8UCPuEV3qOamxjtayS4GSwF0WEtpfeMtMtuh54P5guAjTWfZhSCbwSbPaBZbaZZHcG3+wA21q08+GpQHQBcTbObwuPB2gDQrNZSYw9cCWYGiGY1k1o78HQJaFbT9fBsifBsqLV9Cl9RyZ02/VmB0wmmSkSl1lSCiRLRbE0mODsEeLwSrNjdacpafyrBttq2V+aKBOslo7CSYHEI8PcEH4YAf0zwYgjw62yDWChxZP4KDiRqI+xxid0+w79skzgWrJfQ7UZwMuz+f3/jUQndPscPqD+BjKbPf1Dd/g1OZF79xFrF3QF2+wDLO1ext/YHXwbQ7WJwsN5qdrydCLb7DF9udFod6B/2EX3azGgFH4r+DJVvwZEisOBCsNUDuhVcbJWf97V4pwf4XrvsPHhf8KYL9F16b9ew4HiwXAD9GXWDohdYMBm1OZuHbkTt3cjN7BQWXO8AvtZpXhFY8KQNer9IVlF4JHjbBH0ZOS9Tr7DgaDBXh84Fh4vmdAMLxoLPUdtQxrrJ+A8T7ueKw5k8gQAAAABJRU5ErkJggg==',
+						width: 32,
+						height: 42,
+						offsetX: 14,
+						offsetY: 42
+					});
+					var pointEle = new g2.ele.Element({
+						geometry: p,
+						symbol: picMarker
+					});
+					chooseLayer.add(pointEle);
+				} else {
+					deviceVue.device.deviceName = "";
+					deviceVue.device.deviceAddress = "";
+					deviceVue.device.loopPoint = "";
+					deviceVue.device.unitId = "";
+					deviceVue.device.buildId = "";
+					deviceVue.device.floorId = "";
+					deviceVue.device.isChecked = "";
+				}
+			});
+		}
+		//展示未检和已检和合同信息
+		function showFinishedandUnfinished() {
+			appVue = new Vue({
+				el: "#app",
+				data() {
+					return {
+						param: {
+							"finishedCount": 0,
+							"serviceUnitStart": "",
+							"unfinishedCount": 0,
+							"serviceUnitEnd": "",
+							"contractName": ""
+						}
+					}
+				},
+				created() {
+					var that = this;
+					Vue.$indicator.open("加载中...");
+					api.ajax({
+						url: webapp_global.url + "/maintenancePlanProcess/getDeviceCountOfFinishedandUnfinished",
+						method: 'get',
+						dataType: "json",
+						data: {
+							values: {
+								unitId: pageParam.proprietorId,
+								maintenanceId: userObj.orgId
+							}
+						}
+					}, function(ret, err) {
+						Vue.$indicator.close();
+						if(ret) {
+							var code = ret["code"];
+							if(code == "success") {
+								var data = ret["data"];
+								that.param = data
+							}
+						}
+					})
+				}
+			})
+		}
+		//展示点位信息填充页面
+		function showPointInfo() {
+			deviceVue = new Vue({
+				el: "#deviceVue",
+				data() {
+					return {
+						device: {
+							deviceName: "",
+							buildName: "",
+							deviceAddress: "",
+							loopPoint: "",
+							laMake: "",
+							laLoop: "",
+							laPoint: ""
+						}
+					}
+				}
+			})
+		}
+		//查询按钮上的未检数据
+		function btnNum() {
+			if(btnVue) {
+				btnVue.init();
+			} else {
+				btnVue = new Vue({
+					el: "#appNum",
+					data() {
+						return {
+							btnNum: {
+								totalDeviceCount: "0",
+								uncheckedDeviceCount: "0",
+								totalDeviceCount: "0"
+							}
+						}
+					},
+					created() {
+						this.init();
+					},
+					methods: {
+						init() {
+							var that = this;
+							api.ajax({
+								url: webapp_global.url + "/maintenancePlanProcess/getDeviceCountInfo",
+								method: 'get',
+								dataType: "json",
+								data: {
+									values: {
+										unitId: pageParam.proprietorId,
+										maintenanceId: userObj.orgId,
+										buildId: filterParam.floorData[0].id,
+										floorId: filterParam.floorData[1].id
+									}
+								}
+							}, function(ret, err) {
+								if(ret) {
+									var code = ret["code"];
+									if(code == "success") {
+										var data = ret["data"];
+										that.btnNum = data;
+									}
+								}
+							})
+						}
+					}
+				})
+			}
+		}
+		// 选择解决结果的
+		function chenge_status(that, status) {
+			that.addClass("solve_css_cur").siblings().removeClass("solve_css_cur");
+			that.parent().find("img").hide();
+			that.find("img").show();
+			filterParam.chengeStatus = status; //0:全部 1：已检 2：未检
+			queryEquipment();
+		}
+		//查看帮助
+		function enterHelp() {
+			var actionsheet = new auiActionsheet();
+			actionsheet.init({
+				frameBounces: true, //当前页面是否弹动，（主要针对安卓端）
+				title: "提示",
+				destructiveTitle: "维保点位是针对当前" + appVue.param.contractName + "合同（" + appVue.param.serviceUnitStart + "至" + appVue.param.serviceUnitEnd + "）进行的统计。"
+			}, function(ret) {
+
+			})
+		}
+	</script>
+
+</html>

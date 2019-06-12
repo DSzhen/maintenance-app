@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <link rel="stylesheet" type="text/css" href="../../css/aui.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/wbicon/style.css" />
+    <style type="text/css">
+        html {
+            font-family: "Microsoft YaHei";
+        }
+        body {
+            color: #333;
+            background-color: #eeeef5;
+        }
+        .aui-content-padded {
+            margin: 0;
+        }
+        .wb-flex {
+            display: -webkit-box;
+            display: -webkit-flex;
+            display: flex;
+            -webkit-box-pack: justify;
+            /*-webkit-justify-content: center;
+            justify-content: center;
+            -webkit-box-align: center;
+            -webkit-align-items: center;
+            align-items: center;*/
+        }
+        .wb-flex-start {
+            -webkit-justify-content: flex-start;
+            justify-content: flex-start;
+        }
+        .wb-item-flexStart {
+            -webkit-align-items: flex-start;
+            align-items: flex-start;
+        }
+        .wb-space-between {
+            -webkit-justify-content: space-between;
+            justify-content: space-between;
+        }
+        .wb-list-shadow {
+            box-shadow: 0 1px 0px 0px rgba(153,153,153,.4);
+        }
+        .wb-text-info {
+            font-size: .72rem;
+            color: #5a9cff;
+            margin-top: 2.5rem;
+        }
+        .wb-breakdown-title {
+            color: #666;
+        }
+        .wb-breakdown-text {
+            color: #999;
+            font-size: .72rem;
+            margin-top: .05rem;
+        }
+        .wb-icon-info {
+            color: #0769fc;
+        }
+        .aui-list,
+        .aui-list .aui-list-item {
+            border: 0;
+            background: #fff;
+        }
+        .aui-list .aui-list-item-label {
+            width: 100%;
+            padding-bottom: .3rem;
+            line-height: inherit;
+            font-size: .75rem;
+            color: #333;
+        }
+        .aui-list-item-info {
+            padding-right: .5rem;
+            color: #666;
+            font-size: .72rem;
+        }
+        .aui-form-list .aui-list-item {
+            padding-left: 0;
+            padding-top: .6rem;
+            padding-bottom: .5rem;
+            border-bottom: 1px solid #ddd;
+        }
+        .aui-form-list .aui-list-item:last-child {
+            border-bottom: 0;
+        }
+        .wb-update-img img {
+            display: inline-block;
+            width: 3rem;
+            height: 3rem;
+            margin-right: .4rem;
+            border: 0;
+            background-color: #e0e0e0;
+        }
+        .wb-card-title {
+            color: #333;
+            font-size: .75rem;
+            white-space: nowrap;
+        }
+        .aui-card-list-header {
+            padding: .45rem .5rem .35rem;
+            font-size: .75rem;
+            border-bottom: 1px solid #ddd;
+        }
+        .wb-card-list-header {
+            font-size: .75rem;
+        }
+        .wb-card-list-header b {
+            color: #fd9905;
+            margin-left: -.2rem;
+            vertical-align: -1px;
+            font-weight: bold;
+        }
+        .wb-disposition-ul {
+            margin-top: .3rem;
+        }
+        .wb-disposition-ul li {
+            position: relative;
+            padding-bottom: .7rem;
+        }
+        .wb-disposition-ul li:before {
+            position: absolute;
+            top: 6px;
+            left: 5px;
+            content: '';
+            width: 1px;
+            height: 100%;
+            border-left: 1px dashed #ff961b;
+        }
+        .wb-disposition-ul li:last-child:before {
+            width: 0;
+            height: 0;
+            border-left: 0;
+        }
+        .wb-text-primary {
+            color: #ff961b;
+        }
+        .wb-text-primary {
+            font-size: .6rem;
+        }
+        .aui-card-list-content-padded {
+            padding: 0.5rem 0.5rem;
+        }
+        .wb-trouble-pos {
+            padding-left: 1rem;
+            margin-bottom: .15rem;
+            line-height: 1.4rem;
+            color: #333;
+            font-size: .72rem;
+        }
+        .wb-trouble-pos + span {
+            color: #999;
+            line-height: 1.4rem;
+            font-size: .72rem;
+        }
+        .wb-record-h5 {
+            padding-bottom: .3rem;
+            font-size: .72rem;
+            color: #ff961b;
+        }
+        .wb-text-danger {
+            color: #ff2626;
+        }
+        .wb-text-warning {
+            color: #ff961b;
+        }
+        .wb-breakdown-list {
+            /*max-width: 76%;*/
+        }
+        .wb-breakdown-list,
+        .wb-breakdown-list > h3{
+            font-size: .72rem;
+        }
+        .aui-card-list-content-padded .wb-flex + .wb-flex {
+            margin-top: .35rem;
+        }
+        .wb-btn-content {
+            margin-top: 1rem;
+            padding-bottom: 1rem;
+            padding-left: .8rem;
+            padding-right: .8rem;
+        }
+        .wb-btn-content .aui-btn {
+            height: 2.2rem;
+            line-height: 2.4rem;
+            color: #fff;
+            font-size: .8rem;
+        }
+        .wb-btn-content .wb-btn-primary {
+            background-color: #ff961b !important;
+        }
+        .wb-btn-content .wb-btn-success {
+            background-color: #57bd59 !important;
+        }
+        .wb-model-content {
+            max-width: 100%;
+            width:100%;
+        }
+        .wb-info-text-deviceAddress{
+        	/*width:100%;
+			overflow:hidden;
+			text-overflow:ellipsis;
+			white-space:nowrap;
+			word-break:keep-all;*/
+        }
+        [v-cloak]{
+        	display: none;
+        }
+    </style>
+</head>
+<body>
+<div id="detailApp" class="wb-content" v-cloak>
+    <section class="aui-content-padded">
+        <div class="aui-card-list wb-list-shadow aui-margin-b-10">
+            <div class="aui-card-list-content-padded wb-flex wb-space-between">
+                <div id="faultList" class="wb-breakdown-list">
+                    <div class="wb-flex wb-flex-start">
+                        <h5 class="wb-card-title">设施大类：</h5>
+                        <span class="wb-info-text">{{ fault.checkItemTypeParentName }}</span>
+                    </div>
+                    <div class="wb-flex wb-flex-start">
+                        <h5 class="wb-card-title">维保类型：</h5>
+                        <span class="wb-info-text">{{ fault.checkItemTypeName }}</span>
+                    </div>
+                    <div class="wb-flex wb-flex-start">
+                        <h5 class="wb-card-title">楼栋楼层：</h5>
+                        <span class="wb-info-text">{{ fault.build + fault.floor }}</span>
+                    </div>
+                    <div class="wb-flex wb-flex-start" v-if="fault.deviceId != ''">
+                        <h5 class="wb-card-title">设施：</h5>
+                        <span class="wb-info-text">{{ fault.deviceTypeName }}<span class="aui-margin-l-15">{{ fault.deviceId }}<b v-if="fault.deviceId != ''" class="wbicon-locationSolid wb-icon-info aui-margin-l-5" @click="openPosition()"></b></span></span>
+                    </div>
+                    <div class="wb-flex wb-flex-start">
+                        <h5 class="wb-card-title">位置：</h5>
+                        <span class="wb-info-text wb-info-text-deviceAddress">{{ fault.deviceAddress }}</span>
+                    </div>
+                </div>
+                <a class="wb-text-info aui-font-size-16" v-if="fault.continueMaintenance==0&&fault.solved == 1"><b class="wbicon-sure" style="color: #00ab04;"></b></a>
+                <a class="wb-text-info aui-font-size-16" v-if="fault.continueMaintenance==1&&fault.solved == 1"><b class="wbicon-sure" style="color: #00ab04;"></b></a>
+            </div>
+        </div>
+        <ul class="aui-list aui-form-list aui-padded-l-15 aui-margin-b-10">
+            <li class="aui-list-item">
+                <div class="wb-list-item-inner">
+                    <div class="aui-list-item-label">故障情况</div>
+                    <div class="aui-list-item-info">{{ fault.faultDescription }}</div>
+                </div>
+            </li>
+            <li class="aui-list-item">
+                <div class="wb-update-image">
+                    <div class="wb-flex wb-flex-start wb-item-flexStart">
+                        <h5 class="wb-card-title aui-margin-r-10">现场照片</h5>
+                        <div id="imgUpdate" class="wb-update-img">
+
+                        </div>
+                    </div>
+                </div>
+            </li>
+        </ul>
+        <!--维修记录-->
+        <div class="aui-card-list aui-margin-b-10">
+            <div class="aui-card-list-header">
+                <h3 class="aui-ellipsis-1 wb-card-list-header"><b class="wbicon-splice"></b>维修记录</h3>
+            </div>
+            <div class="aui-card-list-content-padded">
+                <div class="wb-card-list wb-disposition-list">
+                    <ul class="wb-disposition-ul">
+
+                        <li v-for="item in fault.handRecords">
+                            <h5 class="wb-record-h5">
+                                <b class="wbicon-circle2 wb-text-primary"></b>
+                                <span class="aui-margin-l-5">{{ item.handler }}</span>
+                                <span class="aui-margin-l-5">{{ item.handleTime }}</span>
+                            </h5>
+                            <div class="wb-trouble-pos" v-if="item.stopUsing==1"><b class="wbicon-forbid wb-text-danger aui-margin-r-10"></b>停用系统</div>
+                            <div class="wb-trouble-pos" v-if="item.reportRecord==1"><b class="wbicon-security wb-text-warning aui-margin-r-10"></b>报消防部门备案</div>
+                            <div class="wb-flex wb-flex-start wb-item-flexStart"  v-if="item.safetyMeasures!=''">
+                                <a class="wb-trouble-pos" style="white-space: nowrap">安全保护措施：</a>
+                                <span>{{ item.safetyMeasures }}</span>
+                            </div>
+                            <div class="wb-flex wb-flex-start wb-item-flexStart" style="margin-top: 0" v-if="item.handleMethod!=''">
+                                <a class="wb-trouble-pos" style="white-space: nowrap">维修方法：</a>
+                                <span>{{ item.handleMethod }}</span>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <!--按钮-->
+        <div v-if="enterType == 2&&fault.solved!=1" class="aui-content-padded wb-btn-content wb-mt-1">
+            <div class="aui-btn aui-btn-block aui-btn-warning aui-btn-sm wb-btn-primary" @click="openHandle()">处置</div>
+        </div>
+    </section>
+</div>
+</body>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../config/config.js"></script>
+<script type="text/javascript" src="../../script/vue.js"></script>
+<script type="text/javascript" src="../../script/zepto.js"></script>
+<script type="text/javascript">
+
+    var vm;
+    var fileatt = [];
+    apiready = function(){
+        vm = new Vue({
+            el: '#detailApp',
+            data: {
+                fault: {},
+                enterType: 1
+            },
+            methods: {
+                loadImg: function(){
+                    var tpl = '';
+                    for(var i=0; i<fileatt.length; i++){
+                        var src = webapp_global.imageUrl + fileatt[i].attachPath;
+                        var tempId = "div_" +(new Date()).getTime();
+                        tpl += '<img id='+tempId+' src="'+src+'" onclick="openPicture('+i+')"  >';
+                    }
+                    $('#imgUpdate').html(tpl);
+                },
+                openHandle: function(){
+                    api.openWin({
+                        name: "win_handle",
+                        url: './win_handle.html',
+                        vScrollBarEnabled: false,
+                        pageParam: {
+                            faultId: api.pageParam.id
+                        }
+                    })
+                },
+                openPosition: function(){
+                    this.fault.enterpriseId = api.pageParam.enterpriseId;
+                    this.fault.deviceType= this.fault.deviceTypeName;
+                    api.openWin({
+                        name: "position",
+                        url: './position.html',
+                        vScrollBarEnabled: false,
+                        pageParam: this.fault
+                    })
+                }
+            },
+            created: function(){
+
+            },
+            mounted: function(){
+                var self = this;
+                self.enterType = api.pageParam.enterType;
+                api.ajax({
+                    url: webapp_global.url +'/maintenancePlanProcess/queryFaultDetailById',
+                    method: 'GET',
+                    data : {
+                        values: {
+                            id: api.pageParam.id
+                        }
+                    }
+                },function(ret, err){
+                    if (ret && ret.code == 'success') {
+                        self.fault = ret.data;
+
+                        if(self.fault.solved == 0){
+                            $('#faultList').addClass('wb-model-content');
+                        }
+
+                        fileatt = ret.data.attachment;
+                        self.loadImg();
+                    }else{
+                        api.toast({
+                            msg: '获取信息失败！',
+                            location: 'bottom'
+                        });
+                    }
+                });
+            }
+        });
+    }
+
+    function openPicture(index) {
+
+        var res;
+        res=fileatt;
+
+        var passObj = {
+            "index": index,
+            "attaches": res,
+            "flag":0
+        }
+        api.openWin({
+            name: 'picture',
+            url: './picture.html',
+            rect: {
+                x: 0,
+                y: 0,
+                w: 320,
+                h: 480
+            },
+            pageParam: passObj,
+            bounces: true,
+            bgColor: 'rgba(0,0,0,0)',
+            vScrollBarEnabled: true,
+            hScrollBarEnabled: true
+        });
+    }
+
+    function closeWin(){
+        setTimeout(function(){
+            api.closeWin();
+        }, 500)
+    }
+
+
+</script>
+</html>

@@ -1,0 +1,266 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <link rel="stylesheet" type="text/css" href="../../css/aui.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/wbicon/style.css" />
+    <style type="text/css">
+        html {
+            font-family: "Microsoft YaHei";
+        }
+        body {
+            color: #333;
+            background-color: #eeeef5;
+        }
+        .aui-content-padded {
+            margin: 0;
+        }
+        .wb-flex {
+            display: -webkit-box;
+            display: -webkit-flex;
+            display: flex;
+            -webkit-box-pack: justify;
+            -webkit-justify-content: space-between;
+            justify-content: space-between;
+            -webkit-box-align: center;
+            -webkit-align-items: center;
+            align-items: center;
+        }
+        .aui-card-list-header {
+            padding: .5rem;
+            color: #333;
+            font-size: .75rem;
+            border-bottom: 1px solid #ddd;
+        }
+        .wb-card-list-header {
+            font-size: .75rem;
+        }
+        .wb-card-list-header b {
+            color: #fd9905;
+            margin-left: -.2rem;
+            font-size: .9rem;
+            vertical-align: -2px;
+        }
+        .aui-card-list-content-padded {
+            padding: 0.5rem 0.5rem;
+        }
+        .wb-trouble-pos + span {
+            color: #999;
+        }
+        .wb-type-btn {
+            height: 1.4rem;
+            line-height: 1.45rem;
+            padding: 0 .7rem;
+            border-radius: .7rem;
+        }
+        .aui-btn-success.wb-type-btn {
+            color: #fff !important;
+            background-color: #57bd59 !important;
+        }
+        .aui-btn-default.wb-type-btn {
+            color: #666 !important;
+            background-color: #eee !important;
+        }
+        .aui-btn-danger.wb-type-btn {
+            color: #fff !important;
+            background-color: #ff2626 !important;
+        }
+        .wb-enablement-text {
+            font-size: .72rem;
+        }
+        .aui-list-item-input input {
+            height: 1.6rem;
+            line-height: 1.6rem;
+            padding-left: .5rem;
+            background-color: #fafafa;
+            border: 1px solid #e8e8e8;
+        }
+        .aui-list .aui-list-item {
+            background: #fff;
+        }
+        .aui-list .aui-list-item-label {
+            width: auto;
+            line-height: 1.6rem;
+            font-size: .75rem;
+            padding-right: 0;
+        }
+        .aui-card-list {
+            margin-bottom: .5rem;
+            box-shadow: 0 4px 8px 0px rgba(229,229,229,.65);
+        }
+        .wb-text-default {
+            color: #999;
+        }
+        .wb-enablement-type button {
+            border: 0;
+        }
+        .wb-btn-content {
+            margin-top: 1.2rem;
+            margin-bottom: 1.2rem;
+            padding-left: .8rem;
+            padding-right: .8rem;
+        }
+        .wb-btn-content .aui-btn-block.aui-btn-sm {
+            height: 2.2rem;
+            line-height: 2.2rem;
+            font-size: .8rem;
+        }
+        .wb-btn-content .wb-btn-primary {
+            color: #fff;
+            background-color: #ff961b !important;
+        }
+        .wb-btn-content .wb-btn-primary:hover,
+        .wb-btn-content .wb-btn-primary:focus {
+            color: #fff;
+            background-color: #fb8d0c !important;
+        }
+        .wb-enablement-type button {
+            border: 0;
+        }
+    </style>
+</head>
+<body>
+<div class="wb-content" id="dynamo">
+    <section class="aui-content-padded">
+        <!--发电机-->
+        <div class="aui-card-list" v-for="item in dynamoData ">
+            <div class="aui-card-list-header">
+                <h3 class="aui-ellipsis-1 wb-card-list-header"><b class="wbicon-splice"></b>{{item.name}}<span class="aui-margin-l-10">{{item.address}}</span></h3>
+            </div>
+            <div class="aui-card-list-content-padded aui-padded-b-15" v-for="each in item.children">
+                <div class="wb-flex aui-padded-l-15 aui-padded-r-15">
+                    <h4 class="wb-enablement-text">{{each.name}}</h4>
+                    <div class="wb-enablement-type">
+                        <button type="button" :class=each.btnClassSuccess @click="isOk(each)" v-if="isShowBtn">正常</button>
+                        <button type="button" :class=each.btnClassSuccess @click="isOk(each)" v-else disabled >正常</button>
+                        <button type="button" :class=each.btnClassError   @click="isErr(each) "  v-if="isShowBtn" >故障</button>
+                        <button type="button" :class=each.btnClassError   @click="isErr(each)" v-else disabled  >故障</button>
+                    </div>
+                </div>
+                <div class="wb-form-content aui-padded-l-15 aui-padded-r-15 aui-margin-t-10" v-show=each.mark>
+                    <h4 class="wb-enablement-text">启动后达到额定转速并发出电所需时间</h4>
+                    <div class="aui-list aui-form-list">
+                        <div class="aui-list-item aui-padded-l-0">
+                            <div class="aui-list-item-inner aui-margin-t-0">
+                                <div class="aui-list-item-input">
+                                    <input type="text"  :value="each.value" @input="change($event,each)">
+                                </div>
+                                <div class="aui-list-item-label">秒</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <div class="aui-content-padded wb-btn-content">
+        <div class="aui-btn aui-btn-block aui-btn-warning aui-btn-sm wb-btn-primary" v-if="isShowBtn" @click="submit()">提交</div>
+    </div>
+</div>
+</body>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/aui-tab.js"></script>
+<script type="text/javascript" src="../../script/aui-collapse.js" ></script>
+<script type="text/javascript" src="../../script/vue.js" ></script>
+<script type="text/javascript" src="../../script/zepto.js" ></script>
+<script type="text/javascript" src="../../config/config.js" ></script>
+<script type="text/javascript">
+
+
+    apiready = function(){
+        new Vue({
+            el : '#dynamo',
+            data : function () {
+                return {
+                    dynamoData : [
+                        {
+                            name : '发电机',
+                            address : '1楼301室',
+                            children : [
+                                {
+                                    name : '能够自动启动',
+                                    state : 0,
+                                    btnClassSuccess : 'aui-btn aui-btn-default wb-type-btn aui-margin-l-10',
+                                    btnClassError : 'aui-btn aui-btn-default wb-type-btn aui-margin-l-10',
+                                    value : 15 ,
+                                    mark : false
+                                }
+                            ]
+                        },
+                        {
+                            name : '发电机',
+                            address : '2楼301室',
+                            children : [
+                                {
+                                    name : '备用电源',
+                                    state : 0,
+                                    btnClassSuccess : 'aui-btn aui-btn-default wb-type-btn aui-margin-l-10',
+                                    btnClassError : 'aui-btn aui-btn-default wb-type-btn aui-margin-l-10',
+                                    value : 15,
+                                    mark : false
+                                }
+                            ]
+                        }
+                    ]
+                }
+            },
+             methods : {
+                 //change
+                 change : function ($event,each) {
+                   each.value = $($event.target).val()
+                 },
+                 //提交方法
+                 submit : function () {
+                     localStorage.setItem('dynamoObj',JSON.stringify(this.dynamoData));
+                     api.closeWin({
+                     });
+                 },
+                 isOk : function (each) {
+                     each.btnClassSuccess= 'aui-btn aui-btn-success wb-type-btn aui-margin-l-10'
+                     each.btnClassError= 'aui-btn aui-btn-default wb-type-btn aui-margin-l-10'
+                     each.state =1
+                     each.mark = true
+                 },
+                 isErr : function (each) {
+                     each.btnClassSuccess= 'aui-btn aui-btn-default wb-type-btn aui-margin-l-10'
+                     each.btnClassError= 'aui-btn aui-btn-danger wb-type-btn aui-margin-l-10'
+                     each.state =2
+                     each.mark = false
+                     //跳转到异常页面
+                     //此处少代码
+                     each.mainId = api.pageParam.id
+                     each.enterType = 3
+                     each.enterpriseId = api.pageParam.proprietorId
+                     //进入故障详情的页面
+                     api.openWin({
+                         name: "win_add",
+                         url: '../trouble/win_add.html',
+                         vScrollBarEnabled: false,
+                         pageParam: api.pageParam
+                     })
+
+                 },
+                 init : function(){
+                     var obj =  JSON.parse(localStorage.getItem('dynamoObj'));
+                    //  if(!obj) return
+                    //  this.dynamoData =obj
+                 }
+            },
+            created : function () {
+                this.init()
+                this.isShowBtn = api.pageParam.isShowBtn
+            }
+        })
+
+    };
+    function closeWin(){
+        api.closeWin({
+        });
+    }
+
+
+
+</script>
+</html>

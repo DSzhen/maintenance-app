@@ -1,0 +1,291 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+		<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+		<link rel="stylesheet" type="text/css" href="../../css/api.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/aui.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/MintUistyle.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/wbicon/style.css" />
+		<style type="text/css">
+			html,
+			body {
+				font-family: "Microsoft YaHei";
+				background-color: rgba(0, 0, 0, 0.1);
+			}
+
+			.aui-content {
+				width: 100%;
+				height: 100%;
+			}
+
+			.wb-filtrateCon {
+				margin-top: calc(100vh - 14.1rem);
+				width: 100%;
+				z-index: 10;
+				background-color: #eeeef5;
+				transition: .8s;
+			}
+
+			.wb-shade {
+				height: 100%;
+				width: 100%;
+				z-index: 9;
+				background-color: #000;
+				opacity: 0.3;
+				filter: alpha(opacity=30);
+				position: absolute;
+				top: 0;
+				left: 0;
+				display: none;
+			}
+
+			.wb-filtrateList {
+				background-color: #fff;
+			}
+
+			.wb-filtrateLi>p {
+				height: 1.33rem;
+				font-size: .67rem;
+				line-height: 1.33rem;
+				color: #666;
+				background-color: #eeeef5;
+				padding-left: .25rem;
+			}
+
+			.searchCon {
+				padding: .3rem .4rem;
+			}
+
+			.check_input {
+				border: 1px solid #a6a6a6!important;
+				height: 1.2rem!important;
+				font-size: .6rem!important;
+				border-radius: .15rem!important;
+				padding-left: .2rem!important;
+				-webkit-appearance: searchfield!important;
+			}
+
+			.wb-filtrateLi p {
+				height: 2rem;
+				line-height: 2rem;
+				color: #303033;
+				font-size: .75rem;
+				background-color: #fff;
+			}
+
+			.wb-filtrateLi>ul {
+				display: flex;
+				justify-content: space-between;
+				padding: .15rem 0;
+				flex-wrap: wrap;
+				/*CSS3��ʽ��֧��webkit��ms*/
+				-ms-flex-wrap: wrap;
+				/*IE9�Լ�һ�²�֧��*/
+				-webkit-flex-wrap: wrap;
+			}
+
+			.wb-filtrateLi>ul li {
+				height: 2rem;
+				min-width: 32%;
+				/*margin:.15rem .33rem;*/
+				font-size: .67rem;
+				color: #828285;
+				background: #f5f5f5;
+				border-radius: .2rem;
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				/*line-height: 2.2rem;*/
+				overflow: hidden;
+			}
+
+			.wb-active {
+				background-color: #fff3e5!important;
+				color: #ffbc7f!important;
+				position: relative;
+			}
+			.wb-active:before{
+				content: '';
+				height:1.2rem;
+				width:1.2rem;
+				background-color: #ff961b;
+				border-radius: 100%;
+				position:absolute;
+				right:-.45rem;
+				top:-.55rem;
+			}
+			.wb-active:after{
+				content: '';
+				height:.15rem;
+				width:.4rem;
+				border-bottom:.075rem solid #fff;
+				border-left:.075rem solid #fff;
+				position:absolute;
+				right:.11rem;
+				top:.15rem;
+				transform-style: preserve-3d;
+				transform:rotateZ(-45deg);
+			}
+			/*.wb-active:before {
+				content: url(../../image/routine/right.png);
+				position: absolute;
+				right: 0;
+				top: 0;
+			}*/
+
+			.wb-btnCon {
+				/*position:absolute;
+       		bottom:2rem;
+       		left:0;*/
+				width: 100%;
+				padding-top: 1.66rem;
+				background-color: #fff;
+				display: flex;
+				justify-content: space-around;
+			}
+
+			.wb-btnCon .aui-btn {
+				width: 50%;
+				height: 2rem;
+				line-height: 2rem;
+				border-radius: initial;
+			}
+
+			.wb-btnCon .aui-btn-warning {
+				background-color: #ff961b!important;
+			}
+
+			.wbFiltrate {
+				height: 1.83rem;
+				border-bottom: 1px solid #dfdfe6;
+				text-align: center;
+				font-size: .75rem;
+				color: #2b2b2b;
+				background-color: #fff;
+				line-height: 1.83rem;
+			}
+
+			.wbicon-delete2 {
+				float: right;
+				margin-top: 0.5rem;
+				margin-right: .6rem;
+				color:#cac8cc;
+			}
+
+			.wb-filtrateUl {
+				padding: 0 .7rem;
+			}
+		</style>
+	</head>
+
+	<body>
+		<section class="aui-content">
+			<div id="wb-filter" class="wb-filtrateCon">
+				<p class="wbFiltrate">筛选<span class="wbicon-delete2" onclick="closeFrame()"></span></p>
+				<div class="wb-filtrateList">
+					<ul class="wb-filtrateUl">
+						<li class="wb-filtrateLi">
+							<p>维保规范性</p>
+							<ul>
+								<li class="wb-active isNormal _isNormal" @click="_isNormal($event,null)">不限</li>
+								<li class="isNormal" @click="_isNormal($event,0)">规范</li>
+								<li class="isNormal" @click="_isNormal($event,1)">不规范</li>
+							</ul>
+						</li>
+						<li class="wb-filtrateLi">
+							<p>业主单位签字</p>
+							<ul>
+								<li class="wb-active isSign _isSign" @click="_isSign($event,null)">不限</li>
+								<li class="isSign" @click="_isSign($event,0)">已签字</li>
+								<li  class="isSign" @click="_isSign($event,1)">未签字</li>
+							</ul>
+						</li>
+
+					</ul>
+				</div>
+				<div class="aui-content wb-btnCon">
+					<div class="aui-btn" @click="clear()">清空</div>
+					<div class="aui-btn aui-btn-warning" @click="confirm()">确认</div>
+				</div>
+			</div>
+		</section>
+	</body>
+	<script type="text/javascript" src="../../config/config.js" ></script>
+	<script type="text/javascript" src="../../script/api.js"></script>
+	<script type="text/javascript" src="../../script/vue.js"></script>
+	<script type="text/javascript" src="../../script/zepto.js"></script>
+	<script type="text/javascript" src="../../script/MintUI.js"></script>
+	<script type="text/javascript" src="../../script/umeng/zhuge.js"></script>
+	
+	<script type="text/javascript">
+		var toutineFilterPage
+		apiready = function() {
+			routineFilter();
+			//ios右滑控制
+		      api.addEventListener({
+		        name:'swiperight'
+		      }, function(ret, err){
+		      });
+		}
+		function routineFilter(){
+			if(toutineFilterPage){
+				toutineFilterPage.initData()
+			}else{
+				toutineFilterPage = new Vue({
+					el: '#wb-filter',
+					data: {
+						isNormal: null, 
+						isSign: null
+					},
+					methods: {
+						initData:function(){
+							this.isNormal =  null,
+							this.isSign = null
+						},
+						_isNormal:function(event,index){
+							$(".isNormal").removeClass("wb-active")
+							$(event.currentTarget).addClass("wb-active")
+							var that = this;
+							that.isNormal = index;
+						},
+						_isSign:function(event,index){
+							$(".isSign").removeClass("wb-active")
+							$(event.currentTarget).addClass("wb-active")
+							var that = this;
+							that.isSign = index;
+						},
+						clear:function(){
+							var that = this;
+							that.isSign = null;
+							that.isNormal = null;
+							$(".isNormal").removeClass("wb-active")
+							$(".isSign").removeClass("wb-active")
+							$("._isSign").addClass("wb-active")
+							$("._isNormal").addClass("wb-active")
+						},
+						confirm:function(){
+							var that = this;
+//							alert(that.isNormal+","+that.isSign)
+							api.execScript({
+							    frameName: 'completedPlan',
+							    script: "filterConpletedRoutineData("+that.isNormal+","+that.isSign+")"
+							});
+							closeFrame();
+						}
+					}
+				});
+			}
+
+		}
+
+		function closeFrame() {
+			api.closeFrame({
+				name: ''
+			});
+		}
+	</script>
+
+</html>

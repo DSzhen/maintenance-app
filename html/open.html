@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+		<title>主页展示</title>
+		<link rel="stylesheet" type="text/css" href="../css/api.css" />
+		<link rel="stylesheet" type="text/css" href="../css/aui.css" />
+		<link rel="stylesheet" type="text/css" href="../css/wbicon/style.css" />
+		<link rel="stylesheet" type="text/css" href="../css/messageIcon/style.css" />
+
+		<style>
+			html,
+			body {
+				background-color: transparent !important;
+				margin-right: 0;
+			}
+			
+			body {
+				min-width: 320px;
+			}
+			
+			.xf-eme-mine {
+				height: 2.5rem;
+				width: 4rem;
+				background-color: cadetblue;
+				color: white;
+				line-height: 2.5rem;
+				font-size: .7rem;
+				text-align: center;
+			}
+			/*弹框样式开始*/
+			
+			p {
+				margin: 0;
+			}
+			
+			.win-panel * {
+				-webkit-box-sizing: border-box;
+				-moz-box-sizing: border-box;
+				box-sizing: border-box;
+				position: relative;
+				top: 10;
+				left: 15;
+			}
+			
+			.win-panel {
+				margin-left: 30px;
+				margin-right: 30px;
+				border: 1px solid #bbd7fa;
+				border-radius: .3rem;
+				font-size: 14px;
+				color: #6c6c6c;
+				-webkit-box-sizing: border-box;
+				-moz-box-sizing: border-box;
+				box-sizing: border-box;
+				background-color: #FFFFFF
+			}
+			
+			.win-panel_hd {
+				color: #252134;
+				border-bottom: 1px solid #e1e1e7;
+				font-size: .8rem;
+				line-height: 1;
+				padding: .3rem .5rem;
+				;
+			}
+			
+			.win-panel_bd {
+				padding: 15px 20px;
+			}
+			
+			.win-panel_ft {
+				background-color: rgba(222, 233, 248, .96);
+				color: #2981f0;
+				padding: 10px 20px;
+				font-size: 18px;
+				line-height: 1;
+			}
+			
+			.win-panel_ft>a {
+				display: block;
+				text-align: center;
+				color: inherit;
+				text-decoration: none;
+			}
+			
+			.win-text-right {
+				float: right;
+				font-size: 12px;
+			}
+			
+			.win-panel_btn-close {
+				float: right;
+				vertical-align: middle;
+				position: relative;
+				display: inline-block;
+				width: 24px;
+				height: 24px;
+				border: 1px solid transparent;
+				-webkit-transform: rotate(45deg) scale(.9);
+				-moz-transform: rotate(45deg) scale(.9);
+				-ms-transform: rotate(45deg) scale(.9);
+				-o-transform: rotate(45deg) scale(.9);
+				transform: rotate(45deg) scale(.9);
+			}
+			
+			.win-panel_btn-close:before,
+			.win-panel_btn-close:after {
+				display: block;
+				content: '';
+				position: absolute;
+				width: 10px;
+				height: 10px;
+			}
+			
+			.win-panel_btn-close:before {
+				top: 0;
+				left: 0;
+				border-right: 2px solid #c4c4c4;
+				border-bottom: 2px solid #c4c4c4;
+			}
+			
+			.win-panel_btn-close:after {
+				right: 0%;
+				bottom: 0%;
+				border-left: 2px solid #c4c4c4;
+				border-top: 2px solid #c4c4c4;
+			}
+			
+			.win-icon-arlm {
+				display: inline-block;
+				width: 32px;
+				height: 21px;
+				vertical-align: middle;
+				background: url("../icon/alrm.png") no-repeat left center;
+				background-size: 90%;
+				margin-right: -10px
+			}
+			/*结束*/
+			
+			.dialog_container {
+				z-index: 999;
+				position: fixed;
+				top: 50%;
+				width: 90%;
+				margin-top: -25%;
+				margin-left: 5%;
+			}
+			
+			.jiequ_p {
+				display: inline-block;
+				width: 80%;
+				position: relative;
+				top: 3px;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div class="dialog_container" id="dialog_containerId"></div>
+		<script type="text/javascript" src="../script/api.js"></script>
+		<script type="text/javascript" src="../script/zepto.js"></script>
+		<script type="text/javascript" src="../config/config.js"></script>
+		<script>
+			var tempDialogObj;
+			var iflyRecognition;
+			var readNum = 1;
+			var readList = [];
+			//新订单播报
+			apiready = function() {
+				var tempDialogObj = api.pageParam
+				dialog_message(api.pageParam);
+				// 监听
+				inits()
+			}
+
+			function inits() {
+				api.addEventListener({
+					name: 'dialogMessageBobao'
+				}, function(ret, err) {
+					dialog_message(ret.value.pageParam);
+				});
+			}
+
+			function dialog_message(obj) {
+				to_show(obj)
+				// if(readNum==1){
+				// 	//读完继续走
+				// 	readList.push(obj);
+				// 	to_to()
+				// }else{
+				// 	//没读完，放到list
+				// 	readList.push(obj);
+				// }
+			}
+
+			function to_show(obj) {
+				var one_html = '';
+				if(obj.type == "1") {
+					one_html = '<span class="mes-police_one icon_size"> </span> '
+				} else {
+					one_html = '<i class="wbicon-horn" style="color: #0a85ff" > </i>'
+				}
+				var tpl = '<div class="win-panel" id="showMessageId">' +
+					'<div class="win-panel_hd"> ' + one_html +
+					'<span class="aui-ellipsis-1 jiequ_p">' + obj.title + '</span>' + '<a href="javascript:;" onclick="closeIconFun()" class="win-panel_btn-close"></a>' +
+					'</div>' +
+					'<div class="win-panel_bd">' +
+					'<p class="aui-ellipsis-1" style="width: 100%">' + obj.content + '</p></div>' +
+					'<div class="win-panel_ft">' +
+					'<a href="javascript:;" onclick="showMessage()" style="font-size: .75rem;border-bottom-left-radius: .3rem;border-bottom-right-radius: .3rem">查看详情</a></div></div>';
+				$('#dialog_containerId').html(tpl);
+			}
+			// 去播报
+			function to_to() {
+				readNum = 0;
+				iflyRecognition = api.require('iflyRecognition');
+				iflyRecognition.createUtility({
+					ios_appid:iflyRecognitionIdIos,
+					android_appid: iflyRecognitionId // 填写讯飞平台上获得的appid
+				}, function(ret, err) {
+					if(ret.status) {} else {}
+				});
+				// 当播报数组里为空的时候 readNum为1，
+				// 当不为空的时候去播报
+				if(readList.length > 0) {
+					var one_html = '';
+					if(readList[0].type == "1") {
+						one_html = '<span class="mes-police_one icon_size"> </span> '
+					} else {
+						one_html = '<i class="wbicon-horn" style="color: #0a85ff" > </i>'
+					}
+					var tpl = '<div class="win-panel" id="showMessageId">' +
+						'<div class="win-panel_hd"> ' + one_html +
+						readList[0].title + '<a href="javascript:;" onclick="closeIconFun()" class="win-panel_btn-close"></a>' +
+						'</div>' +
+						'<div class="win-panel_bd">' +
+						'<p class="aui-ellipsis-1" style="width: 100%">' + readList[0].content + '</p></div>' +
+						'<div class="win-panel_ft">' +
+						'<a href="javascript:;" onclick="showMessage()" style="font-size: .75rem;border-bottom-left-radius: .3rem;border-bottom-right-radius: .3rem">查看详情</a></div></div>';
+					$('#dialog_containerId').html(tpl);
+
+					iflyRecognition = api.require('iflyRecognition');
+					iflyRecognition.createUtility({
+						ios_appid:iflyRecognitionIdIos,
+						android_appid: iflyRecognitionId // 填写讯飞平台上获得的appid
+					}, function(ret, err) {
+						if(ret.status) {} else {}
+					});
+					iflyRecognition.read({
+						readStr: readList[0].content,
+						speed: 60,
+						volume: 60,
+						rate: 16000,
+						audioPath: 'fs://speechRecogniser/read.mp3'
+					}, function(ret, err) {
+						if(ret.status) {
+							if(ret.speakProgress == 100) {
+								readNum = 1;
+								readList.splice(0, 1);
+								to_to()
+							}
+						} else {
+							api.alert({
+								msg: err.msg
+							});
+						}
+					});
+				} else {
+					readNum = 1;
+				}
+			}
+
+			//    //关闭弹框
+			function closeIconFun() {
+				$('#showMessageId').html();
+				// iflyRecognition.stopRead();
+				api.closeFrame();
+			}
+			// 修改消息推送状态
+			function changeState(id, stateID) {
+				var datas = {
+					id: id,
+					state: stateID
+				}
+				api.ajax({
+					url: webapp_global.url + "/maintenance/message/updateMsgState",
+					method: 'post',
+					dataType: "json",
+					data: {
+						values: datas
+					}
+				}, function(ret, err) {})
+			}
+			//查看新消息详情
+			function showMessage() {
+				var obj = api.pageParam;
+				obj.newMessage = true;
+				changeState(obj.id, '2')
+				$('#showMessageId').html();
+				// iflyRecognition.stopRead();
+
+				// obj.type ==	"1", "火警"
+				// obj.type == "211", "新应急维保订单"
+				// obj.type == "212", "应急维保订单改派"
+				// obj.type =="221", "新例行维保订单"
+				// obj.type =="222", "维保计划改派"
+				// obj.type =="223", "已下发计划删除"
+				// obj.type =="31", "服务关系绑定提醒"
+				// obj.type =="32", "服务关系解除提醒"
+
+				if(obj.type == '1') {
+					var obj = JSON.parse(obj.extend)
+					openPage("./notifications/danger_floorplan_other.html", 'danger_floorplan_other', obj);
+
+				} else if(obj.type == '211' || obj.type == '212') {
+					var obj = JSON.parse(obj.extend)
+					obj.gname = "emergency";
+					obj.fname = "eme_tobe";
+					openPage("./emergency/win_eme.html", 'win_eme', obj);
+				} else if(obj.type == '221') {
+					var obj = JSON.parse(obj.extend);
+					api.ajax({
+						url: webapp_global.url + "/maintenancePlanProcess/getPlanExistById",
+						method: 'get',
+						dataType: "json",
+						data: {
+							values: {
+								planId: obj.id
+							}
+						}
+					}, function(ret, err) {
+						if(ret && ret["code"]) {
+							var data = ret["data"];
+							if(data.status == "1" || data.status == 1) {
+								obj.planId = obj.id
+								openPage("./newRoutine/_routineMaintenanceDetails.html", '_routineMaintenanceDetails', obj);
+							} else {
+								api.toast({
+									msg: '此条维保计划不在本月计划当中，不能查看详情！',
+									duration: 4000,
+									location: 'middle'
+								});
+							}
+						}
+					})
+				}
+				setTimeout(function() {
+					api.closeFrame();
+				}, 200)
+			}
+
+			function openPage(file, name, pageParam) {
+				api.openWin({
+					name: name,
+					url: file,
+					rect: {
+						x: 0,
+						y: 0,
+						w: 320,
+						h: 480
+					},
+					pageParam: pageParam,
+					bounces: false,
+					bgColor: 'rgba(0,0,0,0)',
+					vScrollBarEnabled: true,
+					hScrollBarEnabled: true
+				});
+			}
+		</script>
+	</body>
+
+</html>

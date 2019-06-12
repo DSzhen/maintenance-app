@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>电子签名</title>
+		<link rel="stylesheet" type="text/css" href="../../css/api.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/aui.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/wbicon/style.css" />
+		<style>
+			body {
+				background-color: #f5f5f9;
+			}
+			.signatureDiv{
+				width: 100%;
+			}
+			.aui-bar-btn{
+				display: inline-block;
+				width:49%;
+				
+			}
+			.save{
+				margin-left: -1%;
+				background-color: #FF961B;
+				color: white;
+			}
+			.reset{
+				margin-left: 1%;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div class="signatureDiv">
+			<input class="aui-bar-btn reset" onclick="reset()" type="button" value="重置" />
+			<input class="aui-bar-btn save" onclick="addSignatureBtn()" type="button" value="保存" />
+		</div>
+		<script type="text/javascript" src="../../script/api.js"></script>
+		<script type="text/javascript" src="../../script/zepto.js"></script>
+		<script>
+			var drawingBoard;
+			apiready = function() {
+				drawingBoard = api.require('drawingBoard');
+				var height = api.winHeight - 130;
+				$(".signatureDiv").css("margin-top", height+"px");
+				//ios右滑控制
+				api.addEventListener({
+					name: 'swiperight'
+				}, function(ret, err) {});
+				drawingBoard.open({
+					rect: {
+						x: 0,
+						y: 0,
+						w: api.winWidth,
+						h: height
+					},
+					styles: {
+						brush: {
+							color: '#000',
+							width: 6
+						},
+						bgColor: '#fff'
+					},
+					fixedOn: "signature"
+				});
+			}
+
+			function reset() {
+				drawingBoard.clear();
+			}
+			//添加按钮点击
+			function addSignatureBtn() {
+				api.confirm({
+					msg: '保存签名后不可修改，确认保存吗？',
+					buttons: ['确定', '取消']
+				}, function(ret, err) {
+					var index = ret.buttonIndex;
+					if(index == 1) {
+						//确定
+						addSignature()
+					}
+				});
+			}
+
+			function addSignature() {
+				drawingBoard.save({
+					savePath: 'fs://drawingBoard/result.png',
+					copyToAlbum: false
+				}, function(ret) {
+					var img = ret.absolutePath; //imgurl 就是你的图片路径  
+
+					function getBase64Image(img) {
+						var canvas = document.createElement("canvas");
+						canvas.width = img.width;
+						canvas.height = img.height;
+						var ctx = canvas.getContext("2d");
+						ctx.drawImage(img, 0, 0, img.width, img.height);
+						var ext = img.src.substring(img.src.lastIndexOf(".") + 1).toLowerCase();
+						var dataURL = canvas.toDataURL("image/" + ext);
+						return dataURL;
+					}
+
+					var image = new Image();
+					image.src = img;
+					image.onload = function() {
+						var base64 = getBase64Image(image);
+						if(base64 == "") {
+							api.toast({
+								msg: '请签名后保存',
+								duration: 2000,
+								location: 'bottom'
+							});
+						} else {
+							api.sendEvent({
+								name: 'lookPdf',
+								extra: {
+									baseImg: base64
+								}
+							});
+							drawingBoard.clear();
+							drawingBoard.close();
+							api.closeWin();
+						}
+					}
+					image.onerror = function() {
+						api.toast({
+							msg: '签名转码错误，请确认签名',
+							duration: 2000,
+							location: 'bottom'
+						});
+					}
+				});
+			}
+		</script>
+	</body>
+
+</html>

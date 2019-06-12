@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>检查内容及检查要点</title>
+		<link rel="stylesheet" href="../../css/api.css" />
+		<link rel="stylesheet" href="../../css/aui.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/wbicon/style.css" />
+		<link rel="stylesheet" href="../../css/suspension.css" />
+		<link rel="stylesheet" href="../../css/xficon/style.css" />
+
+		<style>
+			html,
+			body {
+				height: 100%;
+				display: flex;
+				display: -webkit-flex;
+				display: -webkit-box;
+				flex-flow: column;
+				-webkit-flex-flow: column;
+				-webkit-box-orient: vertical;
+				font-family: 微软雅黑;
+			}
+
+			.title {
+				height: 2.33rem;
+				width: 100%;
+				line-height: 2.33rem;
+				background-color: white;
+			}
+
+			.title span {
+				font-size: 0.87rem;
+				color: #ff961b;
+				margin-left: 0.73rem;
+			}
+
+			#app {
+				width: 100%;
+				background-color: #f7f6f5;
+				overflow: auto;
+				height: calc(100% - 2.33rem);
+				padding-bottom: 20px;
+			}
+
+			.maintenance-content {
+				margin-top: .5rem;
+				width: 90%;
+				margin-left: 5%;
+				background-color: white;
+			}
+
+			.maintenance-content b {
+				/*margin-left: .5rem;*/
+				color: #ff8202;
+				/*margin-top: 1rem;*/
+			}
+
+			.maintenance-content .maintenance-content-title {
+				height: 2rem;
+				line-height: 2rem;
+				font-size: .8rem;
+			}
+
+			.maintenance-content .maintenance-content-key {
+				margin-bottom: .6rem;
+				color:#666;
+			}
+
+			.maintenance-content ul {
+				border-top: 1px solid #e6e4e3;
+			}
+
+			.maintenance-content ul li {
+				margin-left: 1rem;
+				margin-right: .8rem;
+				font-size: .8rem;
+			}
+
+			[v-cloak] {
+				display: none;
+			}
+
+			#reportBtn {
+				display: none;
+			}
+			.p-t10px{
+				padding-top: 10px;
+			}
+			.div-flex{
+				display: flex;
+			}
+			.flex1{
+				flex: 1
+			}
+			.ju_center_start{
+				display: inline-block;
+				align-items: center;
+				vertical-align: top;
+			}
+			.pd_5_10px{
+				padding: 5px 10px;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div id="reportBtn">
+			<a href="#wheel" class="wheel-button " id="div1"><i class="xficon-add"></i></a>
+			<ul id="wheel" class="wheel">
+				<li class="item">
+					<a href="javascript:;" onclick="goIn('by')">上报</br>保养</a>
+				</li>
+				<li class="item">
+					<a href="javascript:;" onclick="goIn('wj')">上报</br>未检</a>
+				</li>
+				<li class="item">
+					<a href="javascript:;" onclick="goIn('gz')">上报</br>故障</a>
+				</li>
+			</ul>
+		</div>
+		<div class="title">
+			<span>检查内容及检查要点:</span>
+		</div>
+		<div id="app" v-cloak>
+			<div class="maintenance-content" v-for="item in dataList">
+				<div class="div-flex pd_5_10px">
+					<div class="div-flex ju_center_start">
+						<b class="wbicon-splice"></b>
+					</div>
+					<span class="flex1 div-flex ju_center_start">{{item.name}}</span>
+				</div>
+				<ul class="p-t10px">
+					<li v-for="(data,index) in item.maintenanceStandard">
+						<span class="maintenance-content-key">{{data}}</span>
+					</li>
+				</ul>
+			</div>
+		</div>
+		<script type="text/javascript" src="../../script/api.js"></script>
+		<script type="text/javascript" src="../../script/vue.js"></script>
+		<script type="text/javascript" src="../../config/config.js"></script>
+		<script type="text/javascript" src="../../script/jquery-1.7.2.min.js"></script>
+		<script type="text/javascript" src="../../script/jquery.wheelmenu.js"></script>
+		<script type="text/javascript" src="../../script/suspension.js"></script>
+		<script type="text/javascript" src="../../script/umeng/zhuge.js"></script>
+
+		<script>
+			var pageParam;
+			apiready = function() {
+				pageParam = api.pageParam;
+				if(pageParam.planStatus == "2") {
+					$("#reportBtn").show()
+				}
+				_initMainVue(pageParam);
+				//ios右滑控制
+      api.addEventListener({
+        name:'swiperight'
+      }, function(ret, err){
+      });
+			}
+			//初始化页面内容
+			function _initMainVue(param) {
+				var mainVue = new Vue({
+					el: "#app",
+					data() {
+						return {
+							dataList: []
+						}
+					},
+					created() {
+						this.init()
+					},
+					methods: {
+						init() {
+							var that = this;
+							api.ajax({
+								url: webapp_global.url + "/plan/getInspecrContent",
+								method: "get",
+								dataType: "json",
+								data: {
+									values: {
+										checkItemId: param.item.id
+									}
+								}
+							}, function(ret) {
+								if(ret) {
+									var code = ret["code"];
+									if(code == "success") {
+										var data = ret["data"];
+										if(data && data.length > 0) {
+											that.dataList = data;
+										}
+									}
+								}
+							})
+						}
+					},
+					mounted() {
+
+					}
+				})
+			}
+			// 跳转
+			function goIn(type) {
+				if($("#wheel").css("display")=='block'){
+	          $("#div1").click()
+	      }
+				var urls = '';
+				if(type == 'gz') {
+					//例行维保 点击进入上报故障
+					urls = '_reportFault'
+				} else if(type == 'wj') {
+					//例行维保 点击进入上报未检
+					urls = '_reportNotcheck'
+				} else if(type == 'by') {
+					//例行维保 点击进入上报保养
+
+					urls = '_maintainInsert'
+				}
+				api.openWin({
+					name: urls,
+					url: './' + urls + '.html',
+					pageParam: api.pageParam
+				});
+			}
+		</script>
+	</body>
+
+</html>

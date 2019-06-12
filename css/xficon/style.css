@@ -1,0 +1,203 @@
+@font-face {
+  font-family: 'xficon';
+  src:  url('fonts/xficon.eot?w3aids');
+  src:  url('fonts/xficon.eot?w3aids#iefix') format('embedded-opentype'),
+    url('fonts/xficon.ttf?w3aids') format('truetype'),
+    url('fonts/xficon.woff?w3aids') format('woff'),
+    url('fonts/xficon.svg?w3aids#xficon') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+
+[class^="xficon-"], [class*=" xficon-"] {
+  /* use !important to prevent issues with browser extensions that change fonts */
+  font-family: 'xficon' !important;
+  speak: none;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+
+  /* Better Font Rendering =========== */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.xficon-alerm:before {
+  content: "\e932";
+}
+.xficon-forbindden:before {
+  content: "\e933";
+}
+.xficon-splice:before {
+  content: "\e969";
+}
+.xficon-voice:before {
+  content: "\e968";
+}
+.xficon-backward:before {
+  content: "\e954";
+}
+.xficon-security:before {
+  content: "\e955";
+}
+.xficon-attention:before {
+  content: "\e956";
+}
+.xficon-reportInfo:before {
+  content: "\e957";
+}
+.xficon-mail:before {
+  content: "\e958";
+}
+.xficon-hornSolid:before {
+  content: "\e931";
+}
+.xficon-location:before {
+  content: "\e918";
+}
+.xficon-add2:before {
+  content: "\e919";
+}
+.xficon-schedule:before {
+  content: "\e91a";
+}
+.xficon-fire:before {
+  content: "\e91b";
+}
+.xficon-locationPos:before {
+  content: "\e91c";
+}
+.xficon-minus:before {
+  content: "\e91d";
+}
+.xficon-sure2:before {
+  content: "\e91e";
+}
+.xficon-file:before {
+  content: "\e91f";
+}
+.xficon-localSolid:before {
+  content: "\e920";
+}
+.xficon-monitor:before {
+  content: "\e921";
+}
+.xficon-home:before {
+  content: "\e922";
+}
+.xficon-message:before {
+  content: "\e923";
+}
+.xficon-person:before {
+  content: "\e924";
+}
+.xficon-notice:before {
+  content: "\e925";
+}
+.xficon-orientation:before {
+  content: "\e926";
+}
+.xficon-illumination:before {
+  content: "\e927";
+}
+.xficon-report:before {
+  content: "\e928";
+}
+.xficon-edit2:before {
+  content: "\e929";
+}
+.xficon-questionMark:before {
+  content: "\e92a";
+}
+.xficon-camera2:before {
+  content: "\e92b";
+}
+.xficon-arrowDown2:before {
+  content: "\e92c";
+}
+.xficon-seat:before {
+  content: "\e92d";
+}
+.xficon-lineChart2:before {
+  content: "\e92e";
+}
+.xficon-new:before {
+  content: "\e92f";
+}
+.xficon-horn:before {
+  content: "\e930";
+}
+.xficon-add:before {
+  content: "\e900";
+}
+.xficon-arrowLeft:before {
+  content: "\e901";
+}
+.xficon-user:before {
+  content: "\e902";
+}
+.xficon-lock:before {
+  content: "\e903";
+}
+.xficon-scan:before {
+  content: "\e904";
+}
+.xficon-arrowRight:before {
+  content: "\e905";
+}
+.xficon-warning:before {
+  content: "\e906";
+}
+.xficon-sure:before {
+  content: "\e907";
+}
+.xficon-bell:before {
+  content: "\e908";
+}
+.xficon-service:before {
+  content: "\e909";
+}
+.xficon-woodenHorse2:before {
+  content: "\e90a";
+}
+.xficon-counsel:before {
+  content: "\e90b";
+}
+.xficon-gear:before {
+  content: "\e917";
+}
+.xficon-time:before {
+  content: "\e90c";
+}
+.xficon-lineChart:before {
+  content: "\e90d";
+}
+.xficon-arrowDown:before {
+  content: "\e90e";
+}
+.xficon-fireDisaster:before {
+  content: "\e90f";
+}
+.xficon-timer:before {
+  content: "\e910";
+}
+.xficon-feedback:before {
+  content: "\e911";
+}
+.xficon-camera:before {
+  content: "\e912";
+}
+.xficon-alertor:before {
+  content: "\e913";
+}
+.xficon-edit:before {
+  content: "\e914";
+}
+.xficon-telphone:before {
+  content: "\e915";
+}
+.xficon-picture:before {
+  content: "\e916";
+}

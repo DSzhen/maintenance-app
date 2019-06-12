@@ -1,0 +1,522 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport"
+          content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <link rel="stylesheet" type="text/css" href="../../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/aui.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/MintUistyle.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/mobileSelect.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/wbicon/style.css"/>
+    <link rel="stylesheet" href="../../css/xficon/style.css"/>
+    <style type="text/css">
+        html {
+            font-family: "Microsoft YaHei";
+        }
+
+        body {
+            color: #333;
+            background-color: #eeeef5;
+        }
+
+        .aui-content-padded {
+            margin: 0;
+        }
+
+        .wb-flex {
+            display: -webkit-box;
+            display: -webkit-flex;
+            display: flex;
+            -webkit-box-pack: justify;
+            -webkit-justify-content: center;
+            justify-content: center;
+            -webkit-box-align: center;
+            -webkit-align-items: center;
+            align-items: center;
+        }
+
+        .wb-item-flexStart {
+            -webkit-align-items: flex-start;
+            align-items: flex-start;
+        }
+
+        .wb-space-between {
+            -webkit-justify-content: space-between;
+            justify-content: space-between;
+        }
+
+        .wb-flex-start {
+            -webkit-justify-content: flex-start;
+            justify-content: flex-start;
+        }
+
+        .wb-breakdown-title {
+            color: #666;
+        }
+
+        .wb-breakdown-text {
+            color: #999;
+            margin-top: .05rem;
+        }
+
+        .wb-list-item-inner {
+            width: 100%;
+            padding-right: .5rem;
+        }
+
+        .wb-update-image {
+            margin-top: .4rem;
+            padding-bottom: .5rem;
+        }
+
+        .wb-update-img {
+            margin-left: .2rem;
+        }
+
+        .wb-update-img img {
+            display: inline-block;
+            width: 3rem;
+            height: 3rem;
+            margin-right: .4rem;
+            border: 0;
+            background-color: #e0e0e0;
+        }
+
+        .wb-update-camrea {
+            display: inline-block;
+            width: 3rem;
+            height: 3rem;
+            text-align: center;
+            line-height: 3.3rem;
+            font-size: 2rem;
+            color: #999;
+            border: 1px dashed #efefef;
+            vertical-align: top;
+        }
+
+        /*删除图片*/
+
+        .xf-carera-content {
+            margin-right: .3rem;
+        }
+
+        .xf-carera-content li {
+            position: relative;
+            display: inline-block;
+            width: 3rem;
+            vertical-align: top;
+            margin-right: .3rem;
+        }
+
+        .xf-icon-imgDelete {
+            position: absolute;
+            right: -.2rem;
+            top: -.45rem;
+            color: red;
+        }
+
+        .xf-image-update {
+            display: inline-block;
+            width: 3rem;
+            height: 3rem;
+            text-align: center;
+            border: 1px solid #ddd;
+        }
+
+        .xf-image-icon {
+            font-size: 2rem;
+            line-height: 3rem;
+            color: #999;
+        }
+
+        .xf-iamge-model {
+            display: inline-block;
+            width: 3rem;
+            height: 3rem;
+        }
+
+        .nulls {
+            display: inline-block;
+            width: 15px;
+            padding-left: 2px;
+        }
+
+        .red {
+            color: #e91a1a;
+        }
+
+        .div-flex {
+            display: flex;
+            background-color: #fff;
+            	font-size: .75rem;
+        }
+
+        .bottom_1 {
+            border-bottom: #f2f2f2 solid 1px;
+        }
+
+        .flex1 {
+            flex: 1;
+            font-size: .75rem;
+
+        }
+
+        .ju_center_start {
+            align-items: center;
+        }
+
+        .ju_center {
+            justify-content: center;
+            align-items: center;
+        }
+
+        .pd10px {
+            padding: 10px;
+        }
+
+        .nocur {
+            color: #ff961b;
+            display: inline-block;
+            width: 100%;
+            text-align: right;
+        }
+
+        .cur {
+            color: #828285 !important;
+            text-align: left !important;
+        }
+
+        .input_css {
+            height: 24px !important;
+        }
+
+        .m-b10px {
+            margin-bottom: 10px;
+        }
+
+        .bg-white {
+            background-color: #fff;
+        }
+
+        .solve_css {
+            display: inline-block;
+            background-color: #f2f2f2;
+            border-radius: 2px;
+            padding: 5px 0;
+            text-align: center;
+            width: 70px;
+            color: #828285;
+            position: relative;
+        }
+
+        .text-right {
+            text-align: right;
+        }
+
+        .position_r {
+            position: relative;
+        }
+
+        .btn_b {
+            padding: 10px 15px;
+            text-align: center;
+            display: inline-block;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .b-left {
+            background-color: #fff;
+            color: #ff8303;
+        }
+
+        .b-right {
+            background-color: #ff8303;
+            color: #fff;
+        }
+
+        .flex_bottom {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+        }
+
+        .solve_css_cur {
+            background-color: #fff3e5 !important;
+            color: #ff961b !important;
+        }
+
+        .solve_css_cur_img {
+            width: 10px;
+            position: absolute;
+            right: 0;
+            top: 0;
+            /*display: none;*/
+        }
+
+        .textarea_css {
+            padding-top: 5px;
+            padding-left: 15px;
+            color:#666;
+            font-size: .7rem;
+            padding-right: 5px;
+   			min-height: 1rem;
+
+        }
+
+        .color999 {
+            color: #999;
+        }
+
+        [v-cloak] {
+            display: none
+        }
+        .m-r10px{
+          margin-right: 10px;
+        }
+    </style>
+    <script src="../../config/config.js"></script>
+</head>
+
+<body>
+<div id="addApp" class="wb-content" v-cloak>
+    <section class="aui-content-padded">
+        <div class="div-flex pd10px bottom_1">
+          <div class="m-r10px">
+            消防系统<span class="nulls red">*</span>
+          </div>
+            <!-- <div class="flex1 text-right">
+                <span id="area1" class="nocur cur">{{pageObj.checkItemTypeParentName}}</span>
+            </div> -->
+            <div class="flex1 text-right">
+                <span class="nocur cur">{{pageObj.checkItemTypeParentName}}</span>
+            </div>
+        </div>
+        <div class="div-flex pd10px bottom_1">
+            <div class="m-r10px">
+              维保类型<span class="nulls red">*</span>
+            </div>
+
+            <!-- <div class="flex1 text-right">
+                <span id="area1" class="nocur cur">{{pageObj.checkItemTypeParentName}}</span>
+            </div> -->
+            <div class="flex1 text-right">
+                <span class="nocur cur">{{pageObj.checkItemTypeName}}</span>
+            </div>
+        </div>
+        <div class="div-flex pd10px bottom_1">
+            <div class="m-r10px">
+              楼栋楼层<span class="nulls red">*</span>
+            </div>
+            <div class="flex1 text-right">
+                <span id="area2" class="nocur cur" v-if='!!pageObj.build&&!!pageObj.floor'>{{pageObj.build+''+pageObj.floor}}</span>
+            </div>
+        </div>
+        <div class="div-flex pd10px bottom_1">
+          <div class="m-r10px">
+            具体设备<span class="nulls"></span>
+          </div>
+            <div class="flex1 text-right">
+                <span class="nocur cur">{{pageObj.deviceTypeName}}</span>
+            </div>
+        </div>
+        <div class="div-flex pd10px bottom_1">
+          <div class="m-r10px">
+            设备位置<span class="nulls red">*</span>
+          </div>
+            <div class="flex1 text-right">
+                <span id="deviceLocation" class="nocur cur">{{pageObj.deviceAddress}}</span>
+            </div>
+        </div>
+        <div class="div-flex pd10px m-b10px">
+          <div class="m-r10px">
+            回路点位<span class="nulls"></span>
+          </div>
+            <div class="flex1 text-right">
+                <span class="nocur cur">{{pageObj.loopPoint}}</span>
+            </div>
+        </div>
+
+        <div class="div-flex pd10px bottom_1">
+          <div class="m-r10px">
+            故障类型<span class="nulls"></span>
+          </div>
+            <div class="flex1 text-right">
+                <span id="area3" class="nocur cur">{{pageObj.deviceFaultName}}</span>
+            </div>
+        </div>
+
+        <div class=" bottom_1 bg-white">
+            <div class="pd10px">
+                <div class="m-b10px">
+                    照片:
+                </div>
+                <div class="wb-update-image">
+                    <div class="wb-flex wb-flex-start wb-item-flexStart">
+                        <ul class="xf-carera-content" id="imgUpdate">
+                            <li class="xf-image-update" v-for='(item,index) in pageObj.attachList'>
+                              <img width="100%" height="100%" :src="item.attachPath|concatUrl" @click='prevPic(index)'>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <p style="color:#f8bba5">注：如维保过程中更换设备，需将新旧设备都拍照留证</p>
+            </div>
+        </div>
+
+        <div class="div-flex pd10px bottom_1 m-b10px">
+          <div class="div-flex ju_center_start">
+            解决结果<span class="nulls red">*</span>
+          </div>
+            <div class="flex1 text-right">
+                <span :class="['solve_css',{solve_css_cur:pageObj.solved==0}]">未解决<img v-if="pageObj.solved==0" class="solve_css_cur_img" src="../../image/solve_cur.png"></span>
+                <span :class="['solve_css',{solve_css_cur:pageObj.solved==1}]">已解决<img v-if="pageObj.solved==1" class="solve_css_cur_img" src="../../image/solve_cur.png"></span>
+            </div>
+        </div>
+
+        <!-- 已解决 -->
+        <div v-if='pageObj.solved==1' class="yi_solved">
+            <div class="pd10px bottom_1 bg-white">
+                <div class="m-b10px div-flex ju_center_start">
+                    维修过程<span class="nulls red">*</span>
+                </div>
+                <div class="flex1 position_r">
+                    <div id='disposeProcess' class="textarea_css" name="name" >{{pageObj.disposeProcess}}</div>
+                    <!-- <p class="text-right color999"><span class="cur_num">0</span>/<span class="cur_totle">300</span></p> -->
+                </div>
+            </div>
+        </div>
+
+        <!-- 未解决 -->
+        <div v-else class="no_solved">
+            <div class="pd10px bottom_1 bg-white">
+              <div class="m-b10px div-flex ju_center_start">
+                未解决原因<span class="nulls red">*</span>
+              </div>
+                <div class="flex1 position_r">
+                    <div id="unsolvedCause" class="textarea_css" name="name">{{pageObj.unsolvedCause}}</div>
+                    <!-- <p class="text-right color999"><span class="cur_num">0</span>/<span class="cur_totle">300</span></p> -->
+                </div>
+            </div>
+            <div class="div-flex pd10px bottom_1">
+              <div class="div-flex ju_center_start">
+                建议报消防局备案<span class="nulls red">*</span>
+              </div>
+                <div class="flex1 text-right">
+                    <span :class="['solve_css',{solve_css_cur:pageObj.reportRecord==1}] ">是<img v-if='pageObj.reportRecord==1' class="solve_css_cur_img" src="../../image/solve_cur.png"></span>
+                    <span :class="['solve_css',{solve_css_cur:pageObj.reportRecord==0}]">否<img v-if='pageObj.reportRecord==0' class="solve_css_cur_img" src="../../image/solve_cur.png"></span>
+                </div>
+            </div>
+            <div class="div-flex pd10px bottom_1">
+              <div class="div-flex ju_center_start">
+                建议停用系统<span class="nulls red">*</span>
+              </div>
+                <div class="flex1 text-right">
+                    <span :class="['solve_css',{solve_css_cur:pageObj.stopUsing==1}]">是<img v-if="pageObj.stopUsing==1" class="solve_css_cur_img" src="../../image/solve_cur.png"></span>
+                    <span :class="['solve_css',{solve_css_cur:pageObj.stopUsing==0}]">否<img v-if="pageObj.stopUsing==0" class="solve_css_cur_img" src="../../image/solve_cur.png"></span>
+                </div>
+            </div>
+            <div class="pd10px bottom_1 bg-white">
+                <div class="flex1 position_r">
+                    <div id="stopSystem" class="textarea_css" name="name" >{{pageObj.stopUsingText}}</div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+</body>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../config/config.js"></script>
+<script type="text/javascript" src="../../script/vue.js"></script>
+<script type="text/javascript" src="../../script/zepto.js"></script>
+<script type="text/javascript" src="../../script/mint-ui.js"></script>
+<script type="text/javascript" src="../../script/mobileSelect.js"></script>
+<script type="text/javascript">
+  var paramObj = JSON.parse(localStorage.getItem("userObj"));
+  apiready = function () {
+    var nextApi = api.pageParam;
+    new Vue({
+      el: '#addApp',
+      data: function () {
+        return {
+          pageObj:{}
+        }
+      },
+      created: function () {
+        this.initData();
+      },
+      filters:{
+        concatUrl:function(url){
+          return webapp_global.imageUrl+url;
+        }
+      },
+      methods: {
+        initData: function () {
+          var _this = this;
+          Vue.$indicator.open("加载中...");
+          api.ajax({
+            url: webapp_global.url + '/maintenancePlanProcess/getPlanFaultInfoById',
+            dataType: "json",
+            method: 'get',
+            data: {
+              values: {
+                id:nextApi.id
+              }
+            }
+          }, function (ret, err) {
+            	Vue.$indicator.close();
+            console.log(JSON.stringify(ret));
+            if(ret.code=='success'){
+              _this.pageObj = ret.data;
+            }
+
+          });
+        },
+        prevPic:function(index){
+          var baseImg = this.pageObj.attachList.map(item=>(
+            webapp_global.imageUrl+item.attachPath
+          ));
+    			var passObj = {
+    				"index": index,
+    				"attaches": baseImg,
+    				"flag": 1
+    			}
+    			api.openWin({
+    				name: 'picture',
+    				url: './picture.html',
+    				rect: {
+    					x: 0,
+    					y: 0,
+    					w: 320,
+    					h: 480
+    				},
+    				pageParam: passObj,
+    				bounces: true,
+    				bgColor: 'rgba(0,0,0,0)',
+    				vScrollBarEnabled: true,
+    				hScrollBarEnabled: true
+    			});
+
+          // console.log(baseImg);
+          // let photoBrowser = api.require('photoBrowser');
+          // photoBrowser.open({
+          //      images: baseImg,
+          //      placeholderImg: 'widget://res/img/apicloud.png',
+          //      bgColor: '#000',
+          //      activeIndex:index
+          //  }, function(ret, err) {
+          //      if (ret&&ret.eventType.includes('click')) {
+          //          photoBrowser.close();
+          //      }
+          //  });
+        }
+      }
+    });
+  }
+
+</script>
+</html>

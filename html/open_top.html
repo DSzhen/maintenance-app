@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+		<title>主页展示</title>
+		<link rel="stylesheet" type="text/css" href="../css/api.css" />
+		<link rel="stylesheet" type="text/css" href="../css/aui.css" />
+		<link rel="stylesheet" type="text/css" href="../css/wbicon/style.css" />
+		<link rel="stylesheet" type="text/css" href="../css/messageIcon/style.css" />
+
+		<style>
+			html,
+			body {
+				background-color: transparent !important;
+				margin-right: 0;
+			}
+			.mes_top{
+				-webkit-transform: translate3d(0, -130%, 0);
+				transform: translate3d(0, -130%, 0);
+				-webkit-transition: all cubic-bezier(0.36, 0.66, 0.04, 1) 500ms;
+				transition: all cubic-bezier(0.36, 0.66, 0.04, 1) 500ms;
+				position: absolute;
+				top: 0;
+				left: 0;
+				right: 0;
+				width: 90%;
+				margin: auto;
+				opacity: 0;
+				background-color: #fff;
+				border-radius:5px;
+				box-shadow:1px 1px 9px #ccc;
+				padding:13px 10px;
+				font-size: .7rem;
+				color: #666;
+				z-index: 999999999;
+			}
+			.mes_top .p1{
+				font-size: .8rem;
+			}
+			.mes_top .p2{
+				font-size: .7rem;
+				color: #999;
+				width: 90%;
+			}
+			.mes_top_up {
+				-webkit-transform: translate3d(0, 1%, 0);
+				transform: translate3d(0, 1%, 0);
+				opacity: 1;
+			}
+			.wbicon-horn{
+				font-size: 1.2rem;
+				position: relative;
+				top:2px;
+			}
+			.div-flex{
+				display: flex;
+			}
+			.m-r10px{
+				margin-right: 10px;
+			}
+			.wb100{
+				width: 100%;
+			}
+			.ju_center{
+				display: flex;
+				justify-content: center;
+				align-items: center;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="mes_top" id="content_top">
+			<!-- <div class="div-flex wb100"  onclick="showMessage()"> -->
+				<!-- <div class="m-r10px ju_center"><i class="wbicon-horn" style="color: #0a85ff" ></i></div>
+				<div class="wb100">
+					<div class="p1">任务提醒</div>
+					<div class="p2 aui-ellipsis-1">清华大约研究元华大约研究元华大约研究元华大约研究元-新建</div>
+				</div> -->
+			<!-- </div> -->
+		</div>
+		<script type="text/javascript" src="../script/api.js"></script>
+		<script type="text/javascript" src="../script/zepto.js"></script>
+		<script type="text/javascript" src="../config/config.js"></script>
+		<script>
+			apiready = function() {
+				dialog_message(api.pageParam);
+				setTimeout(function(){
+					closes()
+				},5000)
+				// 监听
+				inits()
+			}
+			var startx, starty;
+			//获得角度
+			function getAngle(angx, angy) {
+				return Math.atan2(angy, angx) * 180 / Math.PI;
+			};
+
+
+			function dialog_message(obj) {
+				$('#content_top').html('');
+					 var tpl = '<div class="div-flex wb100"  onclick="showMessage()"><div class="m-r10px ju_center"><i class="wbicon-horn" style="color: #0a85ff" ></i></div>' +
+						'<div class="wb100">'+
+							'<div class="p1">'+obj.title+'</div>'+
+							'<div class="p2 aui-ellipsis-1">'+obj.content+'</div>'+
+						'</div></div>';
+					 $('#content_top').html(tpl);
+					 $(".mes_top").addClass("mes_top_up");
+
+			}
+			// 修改消息推送状态
+			function changeState(id,stateID){
+				var datas={
+					id:id,
+					state:stateID
+				}
+				api.ajax({
+		        url: webapp_global.url + "/maintenance/message/updateMsgState",
+						method: 'post',
+						dataType: "json",
+						data:{
+							values:datas
+						}
+				}, function(ret, err) {
+			
+				})
+			}
+			//查看新消息详情
+			function showMessage() {
+				$('#showMessageId').html();
+				$(".mes_top").removeClass("mes_top_up");
+			// obj.type =="221", "新例行维保订单"
+			// obj.type =="222", "维保计划改派"
+			// obj.type =="223", "已下发计划删除"
+			// obj.type =="31", "服务关系绑定提醒"
+			// obj.type =="32", "服务关系解除提醒"
+				var obj=api.pageParam;
+				changeState(obj.id,'2');
+				if(obj.type == '221') {
+					var aobj=JSON.parse(obj.extend)
+					api.ajax({
+						url: webapp_global.url + "/maintenancePlanProcess/getPlanExistById",
+						method: 'get',
+						dataType: "json",
+						data: {
+							values: {
+								planId: aobj.id
+							}
+						}
+					}, function(ret, err) {
+						if(ret && ret["code"]) {
+							var data = ret["data"];
+							if(data.status == "1" || data.status == 1) {
+								aobj.planId = aobj.id
+								openPage("./newRoutine/_routineMaintenanceDetails.html",'_routineMaintenanceDetails',aobj);
+							} else {
+								api.toast({
+									msg: '此条维保计划不在本月计划当中，不能查看详情！',
+									duration: 4000,
+									location: 'middle'
+								});
+							}
+						}
+					})
+				}else if(obj.type == '222') {
+					var aobj=JSON.parse(obj.extend)
+					api.ajax({
+						url: webapp_global.url + "/maintenancePlanProcess/getPlanExistById",
+						method: 'get',
+						dataType: "json",
+						data: {
+							values: {
+								planId: aobj.id
+							}
+						}
+					}, function(ret, err) {
+						if(ret && ret["code"]) {
+							var data = ret["data"];
+							if(data.status == "1" || data.status == 1) {
+								aobj.planId = aobj.id
+								openPage("./newRoutine/_routineMaintenanceDetails.html",'_routineMaintenanceDetails',aobj);
+							} else {
+								api.toast({
+									msg: '此条维保计划不在本月计划当中，不能查看详情！',
+									duration: 4000,
+									location: 'middle'
+								});
+							}
+						}
+					})
+				}else if(obj.type == '31') {
+					openPage("./mymessage/proprietorUnitAll.html",'proprietorUnitAll','');
+				}else if(obj.type == '32') {
+					openPage("./mymessage/proprietorUnitAll.html",'proprietorUnitAll',''); 
+				}else if(obj.type == '8'){
+					
+				}
+				setTimeout(function() {
+					api.closeFrame({
+						name: 'open_top.html'
+					});
+				}, 200)
+			}
+			function closes(){
+				$('#showMessageId').html();
+				$(".mes_top").removeClass("mes_top_up");
+				setTimeout(function() {
+					api.closeFrame({
+						name: 'open_top.html'
+					});
+				}, 200)
+			}
+			function openPage(file, name, pageParam) {
+				api.openWin({
+					name: name,
+					url: file,
+					rect: {
+						x: 0,
+						y: 0,
+						w: 320,
+						h: 480
+					},
+					pageParam: pageParam,
+					bounces: false,
+					bgColor: 'rgba(0,0,0,0)',
+					vScrollBarEnabled: true,
+					hScrollBarEnabled: true
+				});
+			}
+			function inits(){
+				//手指接触屏幕
+				document.addEventListener("touchstart", function(e) {
+					startx = e.touches[0].pageX;
+					starty = e.touches[0].pageY;
+				}, false);
+				//手指离开屏幕
+				document.addEventListener("touchend", function(e) {
+					var endx, endy;
+					endx = e.changedTouches[0].pageX;
+					endy = e.changedTouches[0].pageY;
+					var direction = getDirection(startx, starty, endx, endy);
+					switch(direction) {
+						case 0:
+							break;
+						case 1:
+						closes()
+							break;
+						case 2:
+							break;
+						case 3:
+						closes()
+							break;
+						case 4:
+						closes()
+							break;
+						default:
+					}
+				}, false);
+			}
+			//根据起点终点返回方向 1向上 2向下 3向左 4向右 0未滑动
+			function getDirection(startx, starty, endx, endy) {
+				var angx = endx - startx;
+				var angy = endy - starty;
+				var result = 0;
+
+				//如果滑动距离太短
+				if(Math.abs(angx) < 30 && Math.abs(angy) < 30) {
+					return result;
+				}
+
+				var angle = getAngle(angx, angy);
+				if(angle >= -135 && angle <= -45) {
+					result = 1;
+				} else if(angle > 45 && angle < 135) {
+					result = 2;
+				} else if((angle >= 135 && angle <= 180) || (angle >= -180 && angle < -135)) {
+					result = 3;
+				} else if(angle >= -45 && angle <= 45) {
+					result = 4;
+				}
+				return result;
+			}
+		</script>
+	</body>
+
+</html>

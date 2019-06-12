@@ -1,0 +1,291 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+		<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+		<link rel="stylesheet" type="text/css" href="../../css/aui.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/wbicon/style.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/xficon/style.css" />
+		<style type="text/css">
+			html {
+				font-family: "Microsoft YaHei";
+				height: 100%;
+			}
+
+			body {
+				color: #333;
+				background-color: #eeeef5;
+				height: 100%;
+			}
+
+			.aui-tab-item.aui-active {
+				color: #fd9905;
+				border-bottom: 2px solid #fd9905;
+			}
+
+			.aui-list-item-inner.aui-swipe-handle {
+				overflow-x: hidden;
+				position: relative;
+				z-index: 1;
+				background-color: #ffffff;
+			}
+
+			.aui-swipe-btn {
+				position: absolute;
+				right: 0;
+				z-index: 0;
+				height: 100%;
+				-webkit-box-sizing: border-box;
+				box-sizing: border-box;
+				display: -webkit-box;
+				display: -webkit-flex;
+				display: flex;
+				-webkit-box-flex: 1;
+				-webkit-box-pack: justify;
+				-webkit-justify-content: space-between;
+				justify-content: space-between;
+				-webkit-box-align: center;
+				-webkit-align-items: center;
+				align-items: center;
+			}
+
+			.aui-swipe-btn .aui-btn {
+				border-radius: 0;
+				height: 100%;
+				-webkit-box-sizing: border-box;
+				box-sizing: border-box;
+				display: -webkit-box;
+				display: -webkit-flex;
+				display: flex;
+				-webkit-box-align: center;
+				-webkit-align-items: center;
+				align-items: center;
+			}
+
+			.donghua {
+				-webkit-transition-duration: 300ms;
+				transition-duration: 300ms;
+			}
+
+			.aui-img-object {
+				height: 1.36rem;
+				width: 1.36rem;
+			}
+
+			.wb-list-item {
+				border-bottom: 1px solid #ddd!important;
+			}
+
+			.aui-list-item-inner {
+				justify-content: flex-start!important;
+			}
+
+			.wb-telephone {
+				position: absolute;
+				font-size: .6rem;
+				right: .4rem;
+				top: 50%;
+				margin-top: -.3rem;
+				color: #ccc;
+			}
+
+			.linkman {
+				color: #333;
+				font-size: .67rem;
+			}
+
+			.aui-searchbar {
+				height: 2.8rem;
+			}
+
+			.wb-adress {
+				color: #ccc;
+				font-size: .6rem;
+			}
+
+			.wb-minus {
+				position: absolute;
+				left: 0;
+				color: red;
+				font-size: .48rem;
+				top: 2px;
+			}
+
+			.aui-list .aui-list-item {
+				min-height: 2.9rem!important;
+			}
+
+			.header {
+				height: 2rem;
+				width: 100%;
+				/*display: none;*/
+				line-height: 2rem;
+			}
+
+			.header {
+				/*background: -moz-linear-gradient(top, #febd00 0%, #ff951b 100%);
+				background: -webkit-gradient(linear, left top, right bottom, color-stop(0%, #febd00), color-stop(100%, #ff951b));
+				background: -webkit-linear-gradient(top, #febd00 0%, #ff951b 100%);
+				background: -o-linear-gradient(top, #febd00 0%, #ff951b 100%);
+				background: -ms-linear-gradient(top, #febd00 0%, #ff951b 100%);
+				background: linear-gradient(to top, #febd00 0%, #ff951b 100%);*/
+				background-color: #ff961b;
+			}
+
+			.aui-bar-nav .aui-btn .aui-iconfont {
+				font-size: .7rem;
+			}
+
+			.aui-searchbar {
+				background-color: #f5f5f9;
+			}
+
+			.aui-swipe-btn .aui-btn {
+				height: 98%;
+			}
+			[v-cloak] {
+			  display: none;
+			}
+			.wb-dele{
+				position: absolute;
+			    z-index: 10;
+			    top: 0;
+			    left: 104px;
+			    width: 100%;
+			    text-align: center;
+			    justify-content: center;
+
+			}
+			.aui-list .aui-list-item {
+				background:none;
+			}
+			.wb-noContact{
+				position:fixed;
+				top:0;
+				left:0;
+				right:0;
+				bottom:0;
+				margin:auto;
+				display: flex;
+				justify-content: center;
+				align-items: center;
+			}
+			.linkman{
+				width: 200px;
+				overflow: hidden;
+				white-space: nowrap;
+				text-overflow: ellipsis;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div class="wb-content">
+			<section class="aui-content" id="wb-content" v-cloak>
+				<ul class="aui-list">
+					<li class="aui-list-item wb-list-item" v-for="maintenanceUser in maintenanceUserList">
+						<div class="aui-list-item-inner aui-img-body" @click="callPhone(maintenanceUser.telephone)">
+
+							<img class="aui-img-object aui-pull-left" :src="maintenanceUser.headPortrait ? imgUrl+maintenanceUser.headPortrait : '../../image/weibao.png'" />
+							<div class="aui-img-body aui-margin-l-5">
+								<span class="linkman">{{maintenanceUser.userName}}</span>
+							</div>
+							<p class="wb-telephone">{{maintenanceUser.telephone}}</p>
+						</div>
+
+					</li>
+				</ul>
+				<span class="wb-noContact" v-if="isTrue">没有联系人~</span>
+			</section>
+		</div>
+	</body>
+	<script type="text/javascript" src="../../script/api.js"></script>
+	<script type="text/javascript" src="../../script/aui-tab.js"></script>
+	<script type="text/javascript" src="../../script/aui-list-swipe.js"></script>
+	<script type="text/javascript" src="../../script/zepto.js"></script>
+	<script type="text/javascript" src="../../script/vue.js"></script>
+	<script src="../../config/config.js"></script>
+	<script type="text/javascript">
+		var paramObj
+		apiready = function() {
+			api.parseTapmode();
+			paramObj = JSON.parse(localStorage.getItem('userObj'));
+			getData(enterprise)
+			//ios右滑控制
+      api.addEventListener({
+        name:'swiperight'
+      }, function(ret, err){
+      });
+		}
+
+
+		//获取数据
+		function getData(callback1,callback2){
+			var data;
+			api.ajax({
+					url: webapp_global.url + "/userInfo/getContactsList",
+					method: 'get',
+					dataType: "json",
+					data: {
+						values: {
+							userId: paramObj.userid,
+							orgId:paramObj.orgId
+
+//							proprietorId:'AHHF_QHHFY_20180408'
+						}
+					}
+				}, function(ret, err) {
+					var code = ret["code"];
+					if(code == "success") {
+						data = ret["data"];
+						callback1&&callback1(data);
+						callback2&&callback2(data);
+					}
+				})
+			return data;
+		}
+		//返回，关闭当前页，
+		function back() {
+			api.closeWin();
+		}
+		function isDelete(){
+			$(".wb-dele").css({transition: "400ms", transform: "translateX(-104px)"})
+		}
+		//联系人列表
+		function enterprise(data){
+			proprietorContact = new Vue({
+				el: "#wb-content",
+				data(){
+					return {
+//						proprietorContactList:data.proprietorContactList,
+						maintenanceUserList:data.maintenanceUserList,
+						imgUrl:webapp_global.imageUrl,
+						isTrue:true
+
+					}
+				},
+				methods:{
+					callPhone(nums){
+							api.call({
+						    type: 'tel_prompt',
+						    number: nums
+							});
+					},
+				},
+				created(){
+					if(this.maintenanceUserList.length>0)this.isTrue = false;
+				},
+				mounted(){
+					if(this.maintenanceUserList.length>0)this.isTrue = false;
+					//侧滑
+					var swipe = new auiListSwipe(function(ret) {
+					});
+				}
+
+			})
+		}
+	</script>
+
+</html>

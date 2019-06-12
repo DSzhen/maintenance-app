@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+		<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+		<title>例行维保</title>
+		<link rel="stylesheet" type="text/css" href="../../css/aui.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/xficon/style.css" />
+		<style>
+			html,
+			body {
+				width: 100%;
+				height: 100%
+			}
+			
+			img {
+				width: 100%;
+				height: 100%
+			}
+			
+			.guidances {
+				height: 100%;
+				width: 100%;
+				position: relative;
+			}
+			
+			.none {
+				display: none;
+			}
+			
+			.guidance_1 .top1 {
+				position: absolute;
+				bottom: 30%;
+				width: 47%;
+				height: 7%;
+				right: 40%;
+				margin-right: -15%;
+				opacity: 0;
+				border-radius: 100px;
+				text-align: center;
+			}
+			
+			.guidance_1 .top2 {
+				position: absolute;
+				bottom: 15%;
+				width: 20%;
+				height: 5%;
+				right: 50%;
+				margin-right: -15%;
+				opacity: 0;
+				border-radius: 100px;
+				text-align: center;
+			}
+			
+			.guidance_2 .top1 {
+				position: absolute;
+				bottom: 40%;
+				width: 90%;
+				height: 23%;
+				right: 20%;
+				margin-right: -15%;
+				opacity: 0;
+				border-radius: 100px;
+				text-align: center;
+			}
+			
+			.guidance_2 .top2 {
+				position: absolute;
+				top: 2%;
+				width: 30%;
+				height: 5%;
+				right: 2%;
+				opacity: 0;
+				border-radius: 100px;
+				text-align: center;
+			}
+			
+			.guidance_3 .top1 {
+				position: absolute;
+				bottom: 12%;
+				width: 30%;
+				height: 5%;
+				right: 36%;
+				opacity: 0;
+				border-radius: 100px;
+				text-align: center;
+			}
+			
+			.guidance_3 .top2 {
+				position: absolute;
+				top: 2%;
+				width: 15%;
+				height: 5%;
+				right: 4%;
+				opacity: 0;
+				border-radius: 100px;
+				text-align: center;
+			}
+			
+			.guidance_4 .top1 {
+				position: absolute;
+				bottom: 12%;
+				width: 30%;
+				height: 5%;
+				right: 36%;
+				opacity: 0;
+				border-radius: 100px;
+				text-align: center;
+			}
+			
+			.guidance_4 .top2 {
+				position: absolute;
+				top: 2%;
+				width: 15%;
+				height: 5%;
+				right: 4%;
+				opacity: 0;
+				border-radius: 100px;
+				text-align: center;
+			}
+			
+			.guidance_5 .top1 {
+				position: absolute;
+				bottom: 12%;
+				width: 30%;
+				height: 5%;
+				right: 36%;
+				opacity: 0;
+				border-radius: 100px;
+				text-align: center;
+			}
+			
+			.guidance_5 .top2 {
+				position: absolute;
+				top: 2%;
+				width: 15%;
+				height: 5%;
+				right: 4%;
+				opacity: 0;
+				border-radius: 100px;
+				text-align: center;
+			}
+			
+			.guidance_6 .top1 {
+				position: absolute;
+				bottom: 12%;
+				width: 30%;
+				height: 5%;
+				right: 36%;
+				opacity: 0;
+				border-radius: 100px;
+				text-align: center;
+			}
+			
+			.guidance_6 .top2 {
+				position: absolute;
+				top: 2%;
+				width: 15%;
+				height: 5%;
+				right: 4%;
+				opacity: 0;
+				border-radius: 100px;
+				text-align: center;
+			}
+		</style>
+	</head>
+
+	<body class="xf-bg ">
+		<div class="guidances guidance_1 ">
+			<img src="../../image/guidance/routine/0.png" alt="">
+			<div class="top1" onclick="next(1)">下一步</div>
+			<div class="top2" onclick="close_this()">关闭</div>
+		</div>
+		<div class="guidances guidance_2 none">
+			<img src="../../image/guidance/routine/1.png" alt="">
+			<div class="top1" onclick="next(2)">下一步</div>
+			<div class="top2" onclick="close_this()">关闭</div>
+		</div>
+		<div class="guidances guidance_3 none">
+			<img src="../../image/guidance/routine/2.png" alt="">
+			<div class="top1" onclick="next(3)">下一步</div>
+			<div class="top2" onclick="close_this()">关闭</div>
+		</div>
+
+		<div class="guidances guidance_4 none">
+			<img src="../../image/guidance/routine/3.png" alt="">
+			<div class="top1" onclick="next(4)">下一步</div>
+			<div class="top2" onclick="close_this()">关闭</div>
+		</div>
+		<div class="guidances guidance_5 none">
+			<img src="../../image/guidance/routine/4.png" alt="">
+			<div class="top1" onclick="next(5)">下一步</div>
+			<div class="top2" onclick="close_this()">关闭</div>
+		</div>
+		<div class="guidances guidance_6 none">
+			<img src="../../image/guidance/routine/5.png" alt="">
+			<div class="top1" onclick="next(6)">下一步</div>
+			<div class="top2" onclick="close_this()">关闭</div>
+		</div>
+	</body>
+	<script src="../../script/zepto.js"></script>
+	<script src="../../script/api.js"></script>
+	<script src="../../config/config.js"></script>
+	<script>
+		var paramObj = JSON.parse(localStorage.getItem('userObj'));
+		apiready = function() {
+			api.addEventListener({
+				name: 'keyback'
+			}, function(ret, err) {})
+		}
+
+		function next(num) {
+			var index = num + 1
+			if(index == 7) {
+				close_this();
+			} else {
+				$(".guidances").hide();
+				$(".guidance_" + index).show();
+			}
+		}
+		//关闭引导页
+		function close_this() {
+			api.ajax({
+				url: webapp_global.url + "/login/addNewFunctionClick",
+				method: 'post',
+				dataType: "json",
+				timeout:10,
+				data: {
+					values: {
+						userId: paramObj.userid,
+						versionNo: api.systemVersion,
+						menuId: 'runtine_guidance',
+						terminal: 'app'
+					}
+				}
+			}, function(ret, err) {
+				api.closeFrame({
+					name: "runtine_guidance"
+				});
+			})
+		}
+	</script>
+
+</html>

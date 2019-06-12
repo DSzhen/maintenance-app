@@ -1,0 +1,419 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+		<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+		<link rel="stylesheet" type="text/css" href="../../css/api.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/aui.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/wbicon/style.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/xficon/style.css" />
+		<style type="text/css">
+			html {
+				font-family: "Microsoft YaHei";
+				height: 100%;
+			}
+
+			body {
+				color: #333;
+				background-color: #eeeef5;
+				height: 100%;
+			}
+
+			.aui-tab-item.aui-active {
+				color: #fd9905;
+				border-bottom: 2px solid #fd9905;
+			}
+
+			.aui-list-item-inner.aui-swipe-handle {
+				overflow-x: hidden;
+				position: relative;
+				z-index: 1;
+				background-color: #ffffff;
+			}
+
+			.aui-swipe-btn {
+				position: absolute;
+				right: 0;
+				z-index: 0;
+				height: 100%;
+				-webkit-box-sizing: border-box;
+				box-sizing: border-box;
+				display: -webkit-box;
+				display: -webkit-flex;
+				display: flex;
+				-webkit-box-flex: 1;
+				-webkit-box-pack: justify;
+				-webkit-justify-content: space-between;
+				justify-content: space-between;
+				-webkit-box-align: center;
+				-webkit-align-items: center;
+				align-items: center;
+			}
+
+			.aui-swipe-btn .aui-btn {
+				border-radius: 0;
+				height: 100%;
+				-webkit-box-sizing: border-box;
+				box-sizing: border-box;
+				display: -webkit-box;
+				display: -webkit-flex;
+				display: flex;
+				-webkit-box-align: center;
+				-webkit-align-items: center;
+				align-items: center;
+			}
+
+			.donghua {
+				-webkit-transition-duration: 300ms;
+				transition-duration: 300ms;
+			}
+
+			.aui-img-object {
+				height: 1.36rem;
+				width: 1.36rem;
+			}
+
+			.wb-list-item {
+				border-bottom: 1px solid #ddd!important;
+			}
+
+			.aui-list-item-inner {
+				justify-content: flex-start!important;
+			}
+
+			.wb-telephone {
+				position: absolute;
+				font-size: .6rem;
+				right: .4rem;
+				top: 50%;
+				margin-top: -.3rem;
+				color: #ccc;
+			}
+
+			.linkman {
+				color: #333;
+				font-size: .67rem;
+			}
+
+			.aui-searchbar {
+				height: 2.8rem;
+			}
+
+			.wb-adress {
+				color: #ccc;
+				font-size: .6rem;
+			}
+
+			.wb-minus {
+				position: absolute;
+				left: 0;
+				color: red;
+				font-size: .48rem;
+				top: 2px;
+			}
+
+			.aui-list .aui-list-item {
+				min-height: 2.9rem!important;
+			}
+
+			.header {
+				height: 57px;
+				width: 100%;
+				display: block;
+				line-height: 57px;
+				padding-top: 11px;
+				font-size: .8rem;
+				background-color: #ff961b;
+			}
+			
+			.aui-bar-nav .aui-btn .aui-iconfont {
+				font-size: .7rem;
+			}
+
+			.aui-searchbar {
+				background-color: #f5f5f9;
+			}
+
+			.aui-swipe-btn .aui-btn {
+				height: 98%;
+			}
+
+			.wb-dele {
+				position: absolute;
+				z-index: 10;
+				top: 0;
+				left: 104px;
+				width: 100%;
+				text-align: center;
+				justify-content: center;
+			}
+
+			.slide-fade-enter-active {
+				transition: all .1s ease;
+			}
+
+			.slide-fade-leave-active {
+				transition: all .1s cubic-bezier(1.0, 0.5, 0.8, 1.0);
+			}
+
+			.slide-fade-enter,
+			.slide-fade-leave-to
+			/* .slide-fade-leave-active for below version 2.1.8 */
+
+			{
+				transform: translateX(10px);
+				opacity: 0;
+			}
+
+			.aui-tab {
+				justify-content: space-around;
+			}
+			[v-cloak] {
+			  display: none;
+			}
+			* { touch-action: none; }
+			.aui-icon-left{
+				font-weight: bold !important;
+				margin-top: .5rem !important;
+			}
+			.aui-pull-right{
+				margin-top: .3rem !important;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div class="wb-content">
+			<header class="aui-bar aui-bar-nav header">
+				<a class="aui-pull-left aui-btn aui-btn-header">
+					<span class="aui-iconfont aui-icon-left" onclick="back()"></span>
+				</a>
+				<div class="aui-title">通讯录 </div>
+				<a class="aui-pull-right aui-btn aui-btn-header" onclick="openPage('addLinkman',{})">
+					<span class="wbicon-add"></span>
+				</a>
+			</header>
+			<!--搜索-->
+			<!--<div class="aui-searchbar" id="search">
+				<div class="aui-searchbar-input aui-border-radius">
+					<i class="aui-iconfont aui-icon-search"></i>
+					<input type="search" placeholder="请输入搜索内容" id="search-input">
+					<div class="aui-searchbar-clear-btn">
+						<i class="aui-iconfont aui-icon-close"></i>
+					</div>
+				</div>
+				<div class="aui-searchbar-btn" tapmode>取消</div>
+			</div>-->
+			<div class="aui-searchbar" id="search">
+				<div class="aui-searchbar-input aui-border-radius">
+					<i class="aui-iconfont aui-icon-search"></i>
+					<input type="search" readonly placeholder="请输入搜索内容" onclick="to_jump_search()">
+					<div class="aui-searchbar-clear-btn">
+						<i class="aui-iconfont aui-icon-close"></i>
+					</div>
+				</div>
+			</div>
+			<!--头部导航-->
+			<div class="aui-tab" id="tab">
+				<div class="aui-tab-item aui-active">业主单位联系人（{{proprietorContactListNum}}）</div>
+				<div class="aui-tab-item">企业通讯录（{{maintenanceUserListNum}}）</div>
+			</div>
+		</div>
+	</body>
+	<script src="../../config/config.js"></script>
+	<script type="text/javascript" src="../../script/api.js"></script>
+	<script type="text/javascript" src="../../script/aui-tab.js"></script>
+	<script type="text/javascript" src="../../script/aui-list-swipe.js"></script>
+	<script type="text/javascript" src="../../script/zepto.js"></script>
+	<script type="text/javascript" src="../../script/vue.js"></script>
+	<script type="text/javascript" src="../../script/iphoneX.js"></script>
+	<script type="text/javascript">
+		function to_jump_search(){
+			api.openWin({
+			    name: 'search_content',
+			    url: 'search_content.html',
+				reload:true,
+			    rect: {
+			        x: 0,
+			        y: 0,
+			        w: 'auto',
+			        h: 'auto'
+			    }
+			});
+		}
+		var paramObj, proprietorContactList, maintenanceUserList, proprietorContact, tabCheck, menu_index = 0;
+		apiready = function() {
+			iphoneXfit();
+			if(isIphoneX()){
+				$(".aui-btn-header").css("top",".65rem")
+			}
+			api.parseTapmode();
+			paramObj = JSON.parse(localStorage.getItem('userObj'));
+			getDataList(tabList);
+			openTab();
+			apiEvents();
+		}
+
+
+		//侧滑
+		var swipe = new auiListSwipe(function(ret) {
+		});
+
+		function isDelete() {
+			$(".wb-dele").css({
+				transition: "400ms",
+				transform: "translateX(-104px)"
+			})
+		}
+
+		//返回，关闭当前页，
+		function back() {
+			api.closeWin();
+		}
+
+		function tabList(data) {
+			if(tabCheck) {
+				tabCheck.setDataList(data);
+			} else {
+				tabCheck = new Vue({
+					el: "#tab",
+					data() {
+						return {
+							proprietorContactListNum: data.proprietorContactList.length,
+							maintenanceUserListNum: data.maintenanceUserList.length
+						}
+					},
+					methods: {
+						initData() {
+							this.$nextTick(function() {
+								//tab切换
+								var tab = new auiTab({
+									element: document.getElementById("tab"),
+								}, function(ret) {
+									menu_index = ret.index - 1;
+									api.setFrameGroupIndex({
+										name: 'contackt',
+										index: menu_index,
+//										reload: true,
+										scroll: true,
+										scrollEnabled:false
+									});
+									if(ret.index=='1'){
+										$('.aui-pull-right').show()
+									}else{
+										$('.aui-pull-right').hide()
+									}
+								});
+							})
+						},
+						setDataList(dataList){
+							this.proprietorContactListNum = dataList.proprietorContactList.length,
+							this.maintenanceUserListNum = dataList.maintenanceUserList.length
+						}
+					},
+					mounted() {
+						this.initData();
+
+					},
+					created(){
+						this.setDataList(data)
+					},
+				})
+			}
+
+		}
+		//获取数据
+		function getDataList(callback1, callback2) {
+			var data;
+			api.ajax({
+				url: webapp_global.url + "/userInfo/getContactsList",
+				method: 'get',
+				dataType: "json",
+				data: {
+					values: {
+						userId: paramObj.userid,
+						orgId: paramObj.orgId
+					}
+				}
+			}, function(ret, err) {
+				var code = ret["code"];
+				if(code == "success") {
+					data = ret["data"];
+					callback1 && callback1(data);
+					callback2 && callback2(data);
+				}
+			})
+			return data;
+		}
+		//打开tab，预缓存页面
+		function openTab(_index) {
+			var mainHeight, mainTop;
+			//api.winHeight
+			mainTop = $('.wb-content').height();
+			//此入再减出下方按钮的高度
+			mainHeight = api.winHeight - mainTop;
+			var framesArr = [{
+				name: 'proprietorContacts',
+				url: 'proprietorContacts.html',
+				bounces: false
+			}, {
+				name: 'enterpriseContacts',
+				url: 'enterpriseContacts.html',
+				bounces: false
+			}];
+			api.openFrameGroup({
+				name: 'contackt',
+				scrollEnabled: false,
+				rect: {
+					x: 0,
+					y: mainTop,
+					w: 'auto',
+					h: mainHeight
+				},
+				index: _index,
+				preload: 1, //是否预加载，0：不，1：是
+				frames: framesArr
+			}, function(ret, err) {
+
+				//var $discoverNav = $('#subNav .discover .nav span');
+				var index = ret.index;
+				//activeDiscNav(index);
+			});
+
+		}
+		//打开页面
+		function openPage(name, pageParam) {
+			api.openWin({
+				name: name,
+				url: name + '.html',
+				rect: {
+					x: 0,
+					y: 0,
+					w: 320,
+					h: 480
+				},
+				pageParam: pageParam,
+				bounces: false,
+				bgColor: 'rgba(0,0,0,0)',
+				vScrollBarEnabled: false,
+				hScrollBarEnabled: false
+			});
+		}
+		function apiEvents(){
+			api.addEventListener({
+				name: 'updateContactsList'
+			}, function(ret, err) {
+//				getData(queryContactsListCallback);
+				getDataList(tabList)
+			});
+			//ios右滑控制
+      api.addEventListener({
+        name:'swiperight'
+      }, function(ret, err){
+      });
+		}
+	</script>
+
+</html>

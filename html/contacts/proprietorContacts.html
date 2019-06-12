@@ -1,0 +1,372 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+		<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+		<link rel="stylesheet" type="text/css" href="../../css/aui.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/wbicon/style.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/xficon/style.css" />
+		<style type="text/css">
+			html {
+				font-family: "Microsoft YaHei";
+				height: 100%;
+			}
+			* { touch-action: none; }
+			body {
+				color: #333;
+				background-color: #eeeef5;
+				height: 100%;
+			}
+
+			.aui-tab-item.aui-active {
+				color: #fd9905;
+				border-bottom: 2px solid #fd9905;
+			}
+
+			.aui-list-item-inner.aui-swipe-handle {
+				overflow-x: hidden;
+				position: relative;
+				z-index: 1;
+				background-color: #ffffff;
+			}
+
+			.aui-swipe-btn {
+				position: absolute;
+				right: 0;
+				z-index: 0;
+				height: 100%;
+				-webkit-box-sizing: border-box;
+				box-sizing: border-box;
+				display: -webkit-box;
+				display: -webkit-flex;
+				display: flex;
+				-webkit-box-flex: 1;
+				-webkit-box-pack: justify;
+				-webkit-justify-content: space-between;
+				justify-content: space-between;
+				-webkit-box-align: center;
+				-webkit-align-items: center;
+				align-items: center;
+			}
+
+			.aui-swipe-btn .aui-btn {
+				border-radius: 0;
+				height: 100%;
+				-webkit-box-sizing: border-box;
+				box-sizing: border-box;
+				display: -webkit-box;
+				display: -webkit-flex;
+				display: flex;
+				-webkit-box-align: center;
+				-webkit-align-items: center;
+				align-items: center;
+			}
+
+			.donghua {
+				-webkit-transition-duration: 300ms;
+				transition-duration: 300ms;
+			}
+
+			.aui-img-object {
+				height: 1.36rem;
+				width: 1.36rem;
+			}
+
+			.wb-list-item {
+				border-bottom: 1px solid #ddd!important;
+			}
+
+			.aui-list-item-inner {
+				justify-content: flex-start!important;
+			}
+
+			.wb-telephone {
+				position: absolute;
+				font-size: .6rem;
+				right: .4rem;
+				top: 50%;
+				margin-top: -.3rem;
+				color: #ccc;
+			}
+
+			.linkman {
+				color: #333;
+				font-size: .67rem;
+			}
+
+			.aui-searchbar {
+				height: 2.8rem;
+			}
+
+			.wb-adress {
+				color: #ccc;
+				font-size: .6rem;
+			}
+
+			.wb-minus {
+				position: absolute;
+				left: 0;
+				color: red;
+				font-size: .48rem;
+				top: 2px;
+			}
+
+			.aui-list .aui-list-item {
+				min-height: 2.9rem!important;
+			}
+
+			.header {
+				height: 2rem;
+				width: 100%;
+				/*display: none;*/
+				line-height: 2rem;
+				justify-content: space-between;
+				align-items: center;
+			}
+
+			.header {
+				/*background: -moz-linear-gradient(top, #febd00 0%, #ff951b 100%);
+				background: -webkit-gradient(linear, left top, right bottom, color-stop(0%, #febd00), color-stop(100%, #ff951b));
+				background: -webkit-linear-gradient(top, #febd00 0%, #ff951b 100%);
+				background: -o-linear-gradient(top, #febd00 0%, #ff951b 100%);
+				background: -ms-linear-gradient(top, #febd00 0%, #ff951b 100%);
+				background: linear-gradient(to top, #febd00 0%, #ff951b 100%);*/
+				background-color: #ff961b;
+			}
+
+			.aui-bar-nav .aui-btn .aui-iconfont {
+				font-size: .7rem;
+			}
+
+			.aui-searchbar {
+				background-color: #f5f5f9;
+			}
+			.aui-swipe-btn{width:80px}
+			.aui-swipe-btn .aui-btn{
+				height:99%;
+				width:100%;
+				justify-content: center;
+			}
+			.wb-dele{
+				position: absolute;
+			    z-index: 10;
+			    top: 0;
+			    left: 104px;
+			    width: 100%;
+			    text-align: center;
+			    justify-content: center;
+
+			}
+			.slide-fade-enter-active {
+			  transition: all .1s ease;
+			}
+			.slide-fade-leave-active {
+			  transition: all .1s cubic-bezier(1.0, 0.5, 0.8, 1.0);
+			}
+			.slide-fade-enter, .slide-fade-leave-to
+			/* .slide-fade-leave-active for below version 2.1.8 */ {
+			  transform: translateX(10px);
+			  opacity: 0;
+			}
+			.aui-tab{
+				justify-content: space-around;
+			}
+			[v-cloak] {
+			  display: none;
+			}
+			.aui-list .aui-list-item {
+				background:none;
+			}
+			.wb-noContact{
+				position:fixed;
+				top:0;
+				left:0;
+				right:0;
+				bottom:0;
+				margin:auto;
+				display: flex;
+				justify-content: center;
+				align-items: center;
+			}
+
+			.wb-adress{
+				width: 200px;
+				overflow: hidden;
+				white-space: nowrap;
+				text-overflow: ellipsis;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div class="wb-content">
+
+
+			<section class="aui-content" id="wb-contents" v-cloak>
+				<ul class="aui-list">
+					<li class="aui-list-item wb-list-item" v-for="(proprietor,index) in proprietorContactList" :id="proprietor.contactId">
+						<div  @click="callPhone(proprietor.conactPhone)" class="aui-list-item-inner aui-img-body" :class="proprietor.persionType ? 'aui-swipe-handle':''" style="transform: translate3d(0px, 0px, 0px);">
+							<span class="xficon-forbindden wb-minus" v-show="proprietor.persionType"></span>
+							<img class="aui-img-object aui-pull-left" :src="proprietor.proprietorUnitType =='01' ? '../../image/unitaryType.png' : '../../image/groupType.png'" />
+							<div class="aui-img-body aui-margin-l-5">
+								<span class="linkman">{{proprietor.conactName}}</span> <span class="linkman">{{proprietor.position}}</span>
+								<p class="aui-ellipsis-1 wb-adress">{{proprietor.proprietorName}}</p>
+							</div>
+							<p class="wb-telephone">{{proprietor.conactPhone}}</p>
+						</div>
+						<div class="aui-swipe-btn" v-if="proprietor.persionType">
+							<!--<div class="aui-btn aui-btn-info">置顶</div>-->
+							<div class="aui-btn aui-btn-danger" onclick="isDelete()">移除</div>
+							<div class="aui-btn aui-btn-danger wb-dele" @click='deleList(proprietor.contactId,index)'>确认删除</div>
+						</div>
+					</li>
+
+				</ul>
+				<span class="wb-noContact" v-if="isTrue">没有联系人~</span>
+
+			</section>
+
+		</div>
+
+	</body>
+	<script type="text/javascript" src="../../script/api.js"></script>
+	<script type="text/javascript" src="../../script/aui-tab.js"></script>
+	<script type="text/javascript" src="../../script/aui-list-swipe.js"></script>
+	<script type="text/javascript" src="../../script/zepto.js"></script>
+	<script type="text/javascript" src="../../script/vue.js"></script>
+	<script src="../../config/config.js"></script>
+	<script type="text/javascript">
+		var paramObj,proprietorContactList,maintenanceUserList,proprietorContact,tabCheck,swipeMoudle;
+		apiready = function() {
+
+			api.parseTapmode();
+			paramObj = JSON.parse(localStorage.getItem('userObj'));
+			getData(queryContactsListCallback)
+			apiEvents();
+		}
+
+		function isDelete(){
+			$(".wb-dele").css({transition: "400ms", transform: "translateX(-104px)"})
+		}
+
+		//返回，关闭当前页，
+		function back() {
+			api.closeWin();
+		}
+		//联系人列表
+		function queryContactsListCallback(data){
+			if(proprietorContact){
+				proprietorContact.setDataList(data);
+			}else{
+				proprietorContact = new Vue({
+					el: "#wb-contents",
+					data() {
+						return {
+							proprietorContactList:[],
+//							maintenanceUserList:[],
+							isTrue:true
+						}
+					},
+					methods:{
+						setDataList(dataList){
+							this.proprietorContactList = dataList.proprietorContactList
+//							this.maintenanceUserList = dataList.maintenanceUserList
+							if(this.proprietorContactList.length>0)this.isTrue = false;
+						},
+						deleList(id,index){
+
+							api.ajax({
+								url: webapp_global.url + "/userInfo/delContacts",
+								method: 'post',
+								dataType: "json",
+								data: {
+									values: {
+										id: id
+									}
+								}
+							}, function(ret, err) {
+								var code = ret["code"];
+								if(code == "success") {
+									data = ret["data"];
+									//删除打开的侧滑效果
+									swipeMoudle.deleteReset()
+									setTimeout(function(){
+										$("#"+id).remove();
+										api.toast({
+											msg: '联系人删除成功',
+											duration: 1500,
+											location: 'bottom',
+											global: true
+										});
+									})
+									api.execScript({
+									    name: 'contacts',
+									    script:"getDataList(tabList)"
+									});
+								}
+							})
+						},
+						callPhone(nums){
+								api.call({
+							    type: 'tel_prompt',
+							    number: nums
+								});
+						}
+					},
+					created(){
+
+					},
+					mounted(){
+						this.setDataList(data)
+						//侧滑
+						swipeMoudle = new auiListSwipe(function(ret) {
+						});
+					}
+				})
+			}
+		}
+
+
+		//获取数据
+		function getData(callback1){
+			var data;
+			api.ajax({
+					url: webapp_global.url + "/userInfo/getContactsList",
+					method: 'get',
+					dataType: "json",
+					data: {
+						values: {
+							userId: paramObj.userid,
+							orgId:paramObj.orgId
+//							proprietorId:'AHHF_QHHFY_20180408'
+						}
+					}
+				}, function(ret, err) {
+					var code = ret["code"];
+					if(code == "success") {
+						data = ret["data"];
+						proprietorContactList=data.proprietorContactList;
+						callback1&&callback1(data);
+
+					}
+				})
+			return data;
+		}
+
+		function apiEvents(){
+			api.addEventListener({
+				name: 'updateContactsList'
+			}, function(ret, err) {
+				getData(queryContactsListCallback);
+			});
+			//ios右滑控制
+      api.addEventListener({
+        name:'swiperight'
+      }, function(ret, err){
+      });
+		}
+	</script>
+
+</html>

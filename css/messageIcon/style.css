@@ -1,0 +1,64 @@
+@font-face {
+  font-family: 'mes';
+  src:  url('fonts/mes.eot?uog7gp');
+  src:  url('fonts/mes.eot?uog7gp#iefix') format('embedded-opentype'),
+    url('fonts/mes.ttf?uog7gp') format('truetype'),
+    url('fonts/mes.woff?uog7gp') format('woff'),
+    url('fonts/mes.svg?uog7gp#mes') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+
+[class^="mes-"], [class*=" mes-"] {
+  /* use !important to prevent issues with browser extensions that change fonts */
+  font-family: 'mes' !important;
+  speak: none;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+
+  /* Better Font Rendering =========== */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.mes-emergency_four:before {
+  content: "\e900";
+  color: #209fd7;
+}
+.mes-emergency_two .path1:before {
+  content: "\e901";
+  color: rgb(231, 160, 20);
+}
+.mes-emergency_two .path2:before {
+  content: "\e902";
+  margin-left: -1em;
+  color: rgb(255, 255, 255);
+}
+.mes-emergency_there:before {
+  content: "\e903";
+  color: #ea5e5e;
+}
+.mes-emergency_one .path1:before {
+  content: "\e904";
+  color: rgb(241, 140, 25);
+}
+.mes-emergency_one .path2:before {
+  content: "\e905";
+  margin-left: -1em;
+  color: rgb(255, 255, 255);
+}
+.mes-emergency_five:before {
+  content: "\e906";
+  color: #f18c19;
+}
+.mes-emergency_six:before {
+  content: "\e907";
+  color: #48ae35;
+}
+.mes-police_one:before {
+  content: "\e908";
+  color: #e8403d;
+}

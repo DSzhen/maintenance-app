@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>语音录入</title>
+		<meta name="viewport" content="maximum-scale=1.0, minimum-scale=1.0, user-scalable=0, initial-scale=1.0, width=device-width" />
+		<meta name="format-detection" content="telephone=no, email=no, date=no, address=no">
+		<link rel="stylesheet" type="text/css" href="../../css/api.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/aui.css" />
+		<link rel="stylesheet" href="../../css/wbicon/style.css" />
+		<style>
+			body,html{
+				height: 100%;
+				width: 100%;
+				background: #fff;
+			}
+			address,
+			article,
+			aside,
+			b,
+			caption,
+			cite,
+			code,
+			dd,
+			del,
+			details,
+			div,
+			dl,
+			dt,
+			em,
+			fieldset,
+			figcaption,
+			figure,
+			footer,
+			form,
+			h1,
+			h2,
+			h3,
+			h4,
+			h5,
+			h6,
+			header,
+			i,
+			input,
+			legend,
+			li,
+			nav,
+			ol,
+			p,
+			pre,
+			section,
+			select,
+			strong,
+			summary,
+			table,
+			tbody,
+			td,
+			textarea,
+			tfoot,
+			th,
+			thead,
+			ul {
+				font-size: 100%;
+				font-style: normal;
+				font-weight: 400;
+				margin: 0;
+				outline: 0 none;
+				padding: 0;
+				word-wrap: break-word;
+			}
+			
+			.lh_content {
+				width: 100%;
+				height: 20%;
+				background: #fff;
+				/*border-radius: 30px;*/
+				display: flex;
+				flex-direction: column;
+				align-items: center;
+				justify-content: center;
+				padding: 0px 10px;
+			}
+			
+			.mirophoneChTips {
+				display: flex;
+				border-radius: 30px;
+				justify-content: center;
+				align-items: center;
+				justify-content: space-around;
+				width: 100%;
+				height: 100%;
+				transition: .3s;
+			}
+			
+			#stop {
+				flex: 1;
+				color: #ffffff;
+				font-size: 38px;
+				background: #f8b411;
+				width: 100%;
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				border-radius: 0 0 30px 30px;
+			}
+			
+			.mirophone {
+				width: 100%;
+				height: 100%;
+				display: flex;
+				border-radius: 30px;
+				justify-content: center;
+				align-items: center;
+				background: #fff;
+			}
+			
+			#timetext {
+				color: #ffffff;
+				font-size: 30px;
+				height: 70px;
+				line-height: 110px;
+			}
+			
+			#recording {
+				height: 80px;
+				width: 80px;
+				border-radius: 50%;
+				background: #fdc202;
+				display: flex;
+				justify-content: center;
+				align-items: center;
+			}
+			
+			#recording>div {
+				height: 50px;
+				width: 50px;
+			}
+			
+			#recording>div>img {
+				width: 100%;
+			}
+			/* 声音频率 */
+			
+			.record-volume-bar {
+				height: 4px;
+				width: 4px;
+				border-radius: 3px;
+				transition: .3s;
+				background: #2F79FF;
+			}
+			
+			.btn1 {
+				position: absolute;
+				bottom: 2%;
+				width: 80%;
+				height: 7%;
+				color: #FF961B;
+				background: #fff;
+				margin-left: 10%;
+				border:1px solid rgba(255,150,27,1);
+				border-radius:60px;
+			}
+			.aui-chat{
+				height: 65%;
+				width: 100%;
+				border-bottom: 1px solid rgba(223,223,229,1);;
+			}
+			.btn1 input {
+				width: 100%;
+				height: 100%;
+			}
+			.header {
+				height: 57px;
+				width: 100%;
+				display: block;
+				line-height: 57px;
+				padding-top: 11px;
+				font-size: .8rem;
+			}
+			
+			.header.active {
+				display: block;
+			}
+			
+			.top-menu {
+				text-align: center;
+				color: #fff;
+				font-weight: bold;
+			}
+			/*按钮*/
+			
+			.backBtn {
+				height: 40px;
+				width: 35px;
+				position: absolute;
+				right: left;
+				bottom: 0;
+			}
+			
+			.backBtn::before {
+				position: absolute;
+				top: .65rem;
+				left: .75rem;
+				display: block;
+				content: '';
+				width: 10px;
+				height: 10px;
+				border-left: 1px solid;
+				border-top: 1px solid;
+				color: #fff;
+				transform: rotate(-45deg);
+			}
+			/*字体颜色*/
+			
+			.header.home>div.active {
+				opacity: 1;
+			}
+			
+			.header.home {
+				background-color: #FF961B;
+			}
+			.header.home .top-menu>div {
+				color: #fff;
+				opacity: .8;
+			}
+
+			.header.home .top-menu>div.active {
+				opacity: 1;
+			}
+			.btn {
+				height: 40px;
+				width: 35px;
+				position: absolute;
+				right: 0;
+				bottom: 0;
+			}
+			.add_btn {
+				-webkit-background-size: 38px 43px;
+				background-size: 38px 43px;
+				color: white;
+				line-height: 38px;
+			}
+			.wbicon-delete{
+				font-size: 1rem;
+				position: absolute;
+			    float: right;
+			    right: 1px;
+			    bottom: 5px;
+    			margin-right: 5px;
+			    color: #A0A0A0;
+			}
+		</style>
+		<script type="text/javascript" src="../../script/voiceInput/jquery-1.10.2.js"></script>
+		<script type="text/javascript" src="../../script/voiceInput/LHRecorder.js"></script>
+	</head>
+
+	<body>
+		<header id="header">
+		    <div class="header home active">
+		        <div class="backBtn" tapmode onclick="back()"></div>
+		        <div id="title" class="top-menu">语音输入</div>
+		        <div class="add_btn btn wbicon-sure" tapmode onclick="complete()"></div>
+		    </div>
+		</header>
+		<section id="cont" class="aui-chat">
+			<div style="height: 100%;width: 100%;">
+				<textarea readonly="readonly" style="height: 100%;width: 100%;" id="voiceStr" placeholder="请语音输入文字..."></textarea>
+				<b class="wbicon-delete" onclick="deleteVoiceStr()"></b>
+			</div>
+		</section>
+		<!-- recording ui -->
+		<div class="lh_content">
+			<div class="mirophone">
+				<div class="mirophoneChTips">
+					<div class="record-volume-bar"></div>
+					<div class="record-volume-bar"></div>
+					<div class="record-volume-bar"></div>
+					<div class="record-volume-bar"></div>
+					<div class="record-volume-bar"></div>
+					<div class="record-volume-bar"></div>
+					<div class="record-volume-bar"></div>
+					<div class="record-volume-bar"></div>
+					<div class="record-volume-bar"></div>
+					<div class="record-volume-bar"></div>
+					<div class="record-volume-bar"></div>
+					<div class="record-volume-bar"></div>
+					<div class="record-volume-bar"></div>
+					<div class="record-volume-bar"></div>
+					<div class="record-volume-bar"></div>
+					<div class="record-volume-bar"></div>
+					<div class="record-volume-bar"></div>
+					<div class="record-volume-bar"></div>
+					<div class="record-volume-bar"></div>
+					<div class="record-volume-bar"></div>
+					<div class="record-volume-bar"></div>
+					<div class="record-volume-bar"></div>
+					<div class="record-volume-bar"></div>
+					<div class="record-volume-bar"></div>
+					<div class="record-volume-bar"></div>
+					<div class="record-volume-bar"></div>
+					<div class="record-volume-bar"></div>
+					<div class="record-volume-bar"></div>
+					<div class="record-volume-bar"></div>
+					<div class="record-volume-bar"></div>
+					<div class="record-volume-bar"></div>
+					<div class="record-volume-bar"></div>
+					<div class="record-volume-bar"></div>
+					<div class="record-volume-bar"></div>
+					<div class="record-volume-bar"></div>
+					<div class="record-volume-bar"></div>
+				</div>
+			</div>
+		</div>
+		<div class="btn1">
+			<input type="button" name="" id="pressBtn" value="按住 说话">
+		</div>
+	</body>
+	<script type="text/javascript" src="../../script/api.js"></script>
+	<script type="text/javascript" src="../../config/config.js"></script>
+	<script type="text/javascript" src="../../script/dotmin.js"></script>
+	<script type="text/javascript">
+		var btnEle = document.getElementById("pressBtn");
+		var tStart = 0;
+		var tEnd = 0;
+		var tMove = 0;
+		var voiceStr = "";
+		var iflyRecognition=undefined;
+		apiready = function() {
+			iflyRecognition = api.require('iflyRecognition');
+			iflyRecognition.createUtility({
+				ios_appid:iflyRecognitionIdIos,
+				android_appid: iflyRecognitionId // 填写讯飞平台上获得的appid
+			}, function(ret, err) {
+				if(ret.status) {
+					iflyRecognition.addRecordHUD({
+						radius: 80,
+						bg: '#0188FB',
+						fixedOn: api.frameName,
+						fixed: false
+					}, function(ret, err) {
+						var volume = ret.volume;
+						recording(volume);
+					});
+				} else {}
+			});
+			fninitEventListener();
+		};
+		//语音录入
+		function fnrecord() {
+			var flag = true;
+			iflyRecognition = api.require('iflyRecognition');
+			iflyRecognition.record({
+				vadbos: 1000,
+				vadeos: 1000,
+				rate: 16000,
+				asrptt: 1,
+				audioPath: 'fs://speechRecogniser/speech.pcm'
+			}, function(ret, err) {
+				if(ret.status) {
+					if(flag) {
+						flag = false;
+						voiceStr = ret.wordStr;
+						$("#voiceStr").text(voiceStr);
+						setTimeout(function(){
+							$(".record-volume-bar").css("height","4px").css("width","4px");
+						},1000);
+					}
+				} else {}
+			});
+		}
+		//初始化监听
+		function fninitEventListener() {
+			btnEle.addEventListener("touchstart", function(event) {
+				event.preventDefault();
+				tStart = 0;
+				tStart = event.touches[0].pageY;
+				btnEle.value = '松开 结束';
+				fnrecord();
+			});
+			btnEle.addEventListener("touchmove", function(event) {
+				event.preventDefault();
+				tMove = 0;
+				tMove = event.targetTouches[0].pageY;
+				if(tStart - tMove < 100) {
+					btnEle.value = '松开结束';
+				} else {
+					//btnEle.value = '松开手指，取消发送';
+				}
+			});
+			btnEle.addEventListener("touchend", function(event) {
+				event.preventDefault();
+				tMove = 0;
+				tMove = event.changedTouches[0].pageY;
+				btnEle.value = '按住 说话';
+				$(".record-volume-bar").css("height","4px").css("width","4px");
+//				if(tStart - tMove < 100) {}else{
+//					iflyRecognition.cancelRecord();
+//					$(".record-volume-bar").css("height","4px").css("width","4px");
+//				}
+			});
+		};
+		//语音输入完成点击成功
+		function complete(){
+			//发送事件出去
+			var pageName = api.pageParam.pageName;
+			api.sendEvent({
+			    name: 'voiceInputModelValue',
+			    extra: {
+			        pageName: api.pageParam.pageName,
+			        inputFrame:api.pageParam.inputFrame,
+			        value:$("#voiceStr").text()
+			    }
+			});
+			api.closeWin();
+		}
+		//返回，关闭当前详情页，
+		function back() {
+			setTimeout(function() {
+				api.closeWin()
+			}, 500)
+		}
+		//清除数据
+		function deleteVoiceStr(){
+			$("#voiceStr").text("");
+		}
+	</script>
+</html>

@@ -1,0 +1,411 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+		<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+		<link rel="stylesheet" type="text/css" href="../../css/aui.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/wbicon/style.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/xficon/style.css" />
+		<style type="text/css">
+			html {
+				font-family: "Microsoft YaHei";
+				height: 100%;
+			}
+
+			body {
+				color: #333;
+				background-color: #eeeef5;
+				height: 100%;
+			}
+
+			.header {
+				height: 57px;
+				width: 100%;
+				display: block;
+				line-height: 57px;
+				padding-top: 11px;
+				font-size: .8rem;
+			}
+
+			.header {
+				/*background: -moz-linear-gradient(top, #febd00 0%, #ff951b 100%);
+				background: -webkit-gradient(linear, left top, right bottom, color-stop(0%, #febd00), color-stop(100%, #ff951b));
+				background: -webkit-linear-gradient(top, #febd00 0%, #ff951b 100%);
+				background: -o-linear-gradient(top, #febd00 0%, #ff951b 100%);
+				background: -ms-linear-gradient(top, #febd00 0%, #ff951b 100%);
+				background: linear-gradient(to top, #febd00 0%, #ff951b 100%);*/
+				background-color: #ff961b;
+			}
+
+			.aui-bar-nav .aui-btn .aui-iconfont {
+				font-size: .7rem;
+			}
+
+			.aui-bar-nav .aui-pull-left {
+				font-size: .7rem;
+			}
+
+			.wb-bar.aui-bar {
+				text-align: left;
+				color: #333;
+				font-size: 0.67rem;
+				border-bottom: 1px solid #ddd;
+			}
+
+			.wb-bar.aui-bar-light .aui-iconfont {
+				color: #848484;
+			}
+
+			.wb-add-list {
+				border-bottom: 1px solid #ddd;
+			}
+
+			.aui-radio,
+			.aui-checkbox {
+				width: .85rem;
+				height: .8rem;
+			}
+			.aui-radio:checked,
+			.aui-radio.aui-checked {
+				background-color: #ff9f15;
+				border: solid 1px #ff9f15;
+				text-align: center;
+				background-clip: padding-box;
+			}
+
+			.aui-searchbar {
+				height: 2.8rem;
+			}
+
+			.wbicon-sureOutline {
+				font-size: 1rem;
+				margin-top: .4rem;
+			}
+
+			.aui-searchbar {
+				background-color: #f5f5f9;
+			}
+			.highlight {
+				color: #fa8802;
+			}
+			/*按钮*/
+			
+			.backBtn {
+				height: 40px;
+				width: 35px;
+				position: absolute;
+				right: left;
+			}
+			
+			.backBtn::before {
+				position: absolute;
+				left: .75rem;
+				top: 1.2rem;
+				display: block;
+				content: '';
+				width: 10px;
+				height: 10px;
+				border-left: 1px solid;
+				border-top: 1px solid;
+				color: #fff;
+				transform: rotate(-45deg);
+			}
+			.wb-radio :checked{
+				background-color: #ff9f15;
+				border: solid 1px #ff9f15;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div class="wb-content" >
+			<header class="aui-bar aui-bar-nav header">
+				<a class="aui-pull-left aui-btn aui-btn-header" onclick="back()">
+					<span class="backBtn"></span>
+				</a>
+				<div class="aui-title">选择业主单位 </div>
+				<a class="aui-pull-right aui-btn aui-btn-header" onclick="openPage()">
+					<span class="wbicon-sureOutline"></span>
+				</a>
+			</header>
+			<!--搜索-->
+			<div class="aui-searchbar" id="search">
+				<div class="aui-searchbar-input aui-border-radius">
+					<i class="aui-iconfont aui-icon-search"></i>
+					<input type="search" placeholder="请输入搜索内容" id="search-input">
+					<div class="aui-searchbar-clear-btn">
+						<i class="aui-iconfont aui-icon-close"></i>
+					</div>
+				</div>
+				<div class="aui-searchbar-btn" tapmode>取消</div>
+			</div>
+
+			<section class="aui-content " id='unitList'>
+				<ul class="aui-list aui-form-list wb-add-list" id="searchproprietorUnitList">
+					<!--<li class="aui-list-item" v-for="data in unitList">
+						<div class="aui-list-item-inner">
+							<div class="aui-list-item-label-icon">
+								<input class="aui-pull-right aui-radio" v-on:click="getPageParam(data)" :data-proprietorName="data.proprietorName" :data-proprietorId="data.proprietorId" type="radio" name="demo" />
+							</div>
+							<div class="aui-list-item-input">
+								<span>{{data.proprietorName}}</span>
+							</div>
+						</div>
+					</li>-->
+				</ul>
+			</section>
+		</div>
+	</body>
+	<script src="../../config/config.js"></script>
+	<script type="text/javascript" src="../../script/api.js"></script>
+	<script type="text/javascript" src="../../script/aui-tab.js"></script>
+	<script type="text/javascript" src="../../script/aui-list-swipe.js"></script>
+	<script type="text/javascript" src="../../script/zepto.js"></script>
+	<script type="text/javascript" src="../../script/vue.js"></script>
+	<script type="text/javascript" src="../../script/iphoneX.js"></script>
+	<script type="text/javascript">
+		var paramObj,unit,pageParam={};
+		//去空格
+		String.prototype.trim = function() {
+			return this.replace(/(^\s*)|(\s*$)/g, '');
+		};
+		apiready = function() {
+			iphoneXfit();
+			if(isIphoneX()) {
+				$(".aui-btn-header").css("top", ".65rem");
+			}
+			api.parseTapmode();
+			paramObj = JSON.parse(localStorage.getItem('userObj'));
+			//获取数据
+//			getData()
+			search_to_name()
+			//ios右滑控制
+      api.addEventListener({
+        name:'swiperight'
+      }, function(ret, err){
+      });
+		}
+		//返回，关闭当前页，
+		function back() {
+			api.closeWin();
+		}
+		var searchBar = document.querySelector(".aui-searchbar");
+		var searchBarInput = document.querySelector(".aui-searchbar input");
+		var searchBarBtn = document.querySelector(".aui-searchbar .aui-searchbar-btn");
+		var searchBarClearBtn = document.querySelector(".aui-searchbar .aui-searchbar-clear-btn");
+		if(searchBar) {
+			searchBarInput.onclick = function() {
+				searchBarBtn.style.marginRight = 0;
+			}
+			searchBarInput.oninput = function() {
+				if(this.value.length) {
+					searchBarClearBtn.style.display = 'block';
+					searchBarBtn.classList.add("aui-text-info");
+					searchBarBtn.textContent = "搜索";
+						
+				} else {
+					searchBarClearBtn.style.display = 'none';
+					searchBarBtn.classList.remove("aui-text-info");
+					searchBarBtn.textContent = "取消";
+				}
+				search_to_name()
+			}
+		}
+		searchBarClearBtn.onclick = function() {
+			this.style.display =  'none';
+			searchBarInput.value = '';
+			searchBarBtn.classList.remove("aui-text-info");
+			searchBarBtn.textContent = "取消";
+			search_to_name()
+		}
+		searchBarBtn.onclick = function() {
+			var keywords = searchBarInput.value;
+			if(keywords.length) {
+				searchBarInput.blur();
+		 		search_to_name()
+				// document.getElementById("search-keywords").textContent = keywords;
+			} else {
+				this.style.marginRight = "-" + this.offsetWidth + "px";
+				searchBarInput.value = '';
+				searchBarInput.blur();
+				api.closeWin();
+			}
+		}
+		/*function unitList(datas) {
+			if(!unit) {
+				unit = new Vue({
+					el: "#unitList",
+					data() {
+						return {
+							unitList: datas
+						}
+					},
+					methods: {
+						initData(datas) {
+							var that = this;
+							that.unitList = datas
+							
+						},
+						getPageParam(pageParams){
+							pageParam.proprietorId = pageParams.proprietorId;
+							pageParam.proprietorName = pageParams.proprietorName;
+						}
+					}
+				})
+
+			} else {
+				unit.initData(datas)
+			}
+
+		}*/
+		//获取数据
+		/*function getData() {
+			var name=$("#search-input").val();
+			var data;
+			api.ajax({
+				url: webapp_global.url + "/maintenance/getProprietorList",
+				method: 'get',
+				dataType: "json",
+				data: {
+					values: {
+						userId: paramObj.userid,
+						name:name
+					}
+				}
+			}, function(ret, err) {
+				var code = ret["code"];
+				if(code == "success") {
+					data = ret["data"];
+					
+					unitList(data)
+					
+				}
+			})
+			return data;
+		}*/
+		
+		function search_to_name() {
+			var name = $("#search-input").val().trim();
+			api.ajax({
+				url: webapp_global.url + "/userInfo/getProprietorList",
+				method: 'get',
+				dataType: "json",
+				data: {
+					values: {
+						userId: paramObj.userid,
+						name: name
+					}
+				}
+			}, function(ret, err) {
+				var code = ret["code"];
+				if(code == "success") {
+					data = ret["data"];
+					var proprietorUnitList = '';
+						unitList = data;
+						unitList.forEach(function(item,index){
+							proprietorUnitList += `<li class="aui-list-item">
+						<div class="aui-list-item-inner">
+							<div class="aui-list-item-label-icon wb-label-icon">
+								<input class="aui-pull-right aui-radio wb-radio" id="${item.proprietorId}" proprietorName="${item.proprietorName}" proprietorId="${item.proprietorId}" type="radio" name="demo" />
+							</div>
+							<div class="aui-list-item-input wb-label" onclick="">
+								<label for="${item.proprietorId}" style="display:inline-block;width:100%;">${item.proprietorName}</label>
+							</div>
+						</div>
+					</li>`
+						})
+						$("#searchproprietorUnitList").html(proprietorUnitList);
+						highlight();
+						selectUnit()
+				}
+			})
+		}
+		function selectUnit(){
+			$(".wb-radio").click(function(){
+				pageParam.proprietorId = $(this).attr('proprietorId');
+				pageParam.proprietorName =  $(this).attr('proprietorName');
+			})
+
+		}
+		function getPageParam(pageParams){
+			pageParam.proprietorId = pageParams.proprietorId;
+			pageParam.proprietorName = pageParams.proprietorName;
+		}
+		//打开页面
+		function openPage() {
+			if(pageParam.proprietorName){
+
+				api.sendEvent({
+				    name: 'contactsSelectProprietorUnit',
+				    extra: {
+				        key_data: pageParam
+				    }
+				});
+				setTimeout(function(){
+					api.closeWin();
+				},200)
+
+			}else{
+				api.toast({
+					msg: '请选择业主单位',
+					duration: 2000,
+					location: 'middle',
+					global: true
+				});
+			}
+
+		}
+		function encode(s) {
+			return s.replace(/&/g, "&").replace(/</g, "<").replace(/>/g, ">").replace(/([\\\.\*\[\]\(\)\$\^])/g, "\\$1");
+		}
+
+		function decode(s) {
+			return s.replace(/\\([\\\.\*\[\]\(\)\$\^])/g, "$1").replace(/>/g, ">").replace(/</g, "<").replace(/&/g, "&");
+		}
+
+		function highlight(s) {
+			var s = document.getElementById("search-input").value.trim();
+			if(s.length == 0) {
+				//document.getElementById("search_result_content").innerHTML = '';
+			}
+			s = encode(s);
+			var obj = document.getElementById("searchproprietorUnitList");
+			var t = obj.innerHTML.replace(/<span\s+class=.?highlight.?>([^<>]*)<\/span>/gi, "$1");
+			obj.innerHTML = t;
+			var cnt = loopSearch(s, obj);
+			t = obj.innerHTML
+			var r = /{searchHL}(({(?!\/searchHL})|[^{])*){\/searchHL}/g
+			t = t.replace(r, "<span class='highlight'>$1</span>");
+			obj.innerHTML = t;
+		}
+
+		function loopSearch(s, obj) {
+			var cnt = 0;
+			if(obj.nodeType == 3) {
+				cnt = replace(s, obj);
+				return cnt;
+			}
+			for(var i = 0, c; c = obj.childNodes[i]; i++) {
+				if(!c.className || c.className != "highlight")
+					cnt += loopSearch(s, c);
+			}
+			return cnt;
+		}
+
+		function replace(s, dest) {
+			var r = new RegExp(s, "g");
+			var tm = null;
+			var t = dest.nodeValue;
+			var cnt = 0;
+			if(tm = t.match(r)) {
+				cnt = tm.length;
+				t = t.replace(r, "{searchHL}" + decode(s) + "{/searchHL}")
+				dest.nodeValue = t;
+			}
+			return cnt;
+		}
+	</script>
+
+</html>

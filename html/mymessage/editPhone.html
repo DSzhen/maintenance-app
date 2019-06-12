@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+		<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+		<title>编辑电话</title>
+		<link rel="stylesheet" type="text/css" href="../../css/api.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/aui.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/MintUistyle.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/wbicon/style.css" />
+		<style>
+			html,
+			body {
+				height: 100%;
+				display: flex;
+				display: -webkit-flex;
+				display: -webkit-box;
+				flex-flow: column;
+				-webkit-flex-flow: column;
+				-webkit-box-orient: vertical;
+				background-color: #eae6e6;
+			}
+			
+			.header {
+				height: 57px;
+				width: 100%;
+				display: block;
+				line-height: 57px;
+				padding-top: 11px;
+				font-size: .8rem;
+			}
+			
+			.header.active {
+				display: block;
+			}
+			
+			.top-menu {
+				/*padding: 0 43px 0 8px;*/
+				text-align: center;
+				color: #fff;
+				font-weight: bold;
+			}
+			/*按钮*/
+			
+			.backBtn {
+				height: 40px;
+				width: 35px;
+				position: absolute;
+				right: left;
+				bottom: 0;
+			}
+			
+			.backBtn::before {
+				position: absolute;
+				top: .65rem;
+				left: .75rem;
+				display: block;
+				content: '';
+				width: 10px;
+				height: 10px;
+				/*border-left: 2px solid;
+           border-top: 2px solid;*/
+				border-left: 1px solid;
+				border-top: 1px solid;
+				color: #fff;
+				transform: rotate(-45deg);
+			}
+			
+			.btn {
+				height: 40px;
+				width: 35px;
+				position: absolute;
+				right: .5rem;
+				bottom: 0;
+				color: white;
+			}
+			/*首页头部导航*/
+			/*字体颜色*/
+			
+			.header.home>div.active {
+				opacity: 1;
+			}
+			
+			.header.home {
+				/*background: -moz-linear-gradient(top, #febd00 0%, #ff951b 100%);
+				background: -webkit-gradient(linear, left top, right bottom, color-stop(0%, #febd00), color-stop(100%, #ff951b));
+				background: -webkit-linear-gradient(top, #febd00 0%, #ff951b 100%);
+				background: -o-linear-gradient(top, #febd00 0%, #ff951b 100%);
+				background: -ms-linear-gradient(top, #febd00 0%, #ff951b 100%);
+				background: linear-gradient(to top, #febd00 0%, #ff951b 100%);*/
+				background-color: #ff961b;
+			}
+			
+			.header.home .top-menu>div {
+				color: #fff;
+				opacity: .8;
+			}
+			
+			.header.home .top-menu>div.active {
+				opacity: 1;
+			}
+			
+			.add_btn {
+				/*background: #d43d3d url('../image/head/add.png') center center no-repeat;*/
+				-webkit-background-size: 38px 43px;
+				background-size: 38px 43px;
+			}
+			
+			.aui-content-padded {
+				margin: 0;
+			}
+			
+			.aui-personal-info {
+				background-color: #fff;
+			}
+			
+			.aui-info-item img {
+				width: 2.6rem;
+				height: 2.6rem;
+				border-radius: .3rem;
+			}
+			
+			.aui-info {
+				padding: 0;
+				border-bottom: 1px solid #ddd;
+			}
+			
+			.aui-personal-info .aui-info:last-child {
+				border-bottom: 0;
+			}
+			
+			.aui-info .aui-info-item:first-child {
+				color: #040404;
+				font-size: .75rem;
+			}
+			
+			.aui-info .aui-info-item:last-child {
+				color: #999;
+				font-size: .7rem;
+			}
+			
+			.aui-info .aui-info-item .aui-info-item_icon {
+				font-size: .8rem;
+				color: #cfcccc;
+			}
+			input::-webkit-input-placeholder {
+				/* placeholder颜色  */
+				color: #aab2bd;
+				/* placeholder字体大小  */
+				font-size: .7rem;
+			}
+			
+		</style>
+	</head>
+
+	<body>
+		<header id="header">
+			<div class="header home active">
+				<div class="backBtn" tapmode onclick="back()"></div>
+				<div id="title" class="top-menu"></div>
+				<div class="add_btn btn" tapmode onclick="complete()">完成</div>
+			</div>
+		</header>
+		<section id="myPhone"></section>
+	</body>
+	<script type="text/javascript" src="../../script/api.js"></script>
+	<script type="text/javascript" src="../../script/vue.js"></script>
+	<script>
+		apiready = function() {
+			$api.byId('title').innerHTML = "设置电话";
+			initEvents();
+			//编辑电话
+			editPhone();
+		}
+		/**
+		 * 电话编辑
+		 * */
+		function editPhone() {
+			var telephone = api.pageParam.telephone;
+			new Vue({
+				el: "#myPhone",
+				template: `<section class="aui-content">
+						        <div class="aui-content-padded">
+						            <div class="aui-personal-info aui-padded-l-10 aui-margin-t-10">
+						                <div class="aui-info aui-padded-r-10">
+						                    <div class="aui-info-item"><input placeholder="请输入电话号码" id="telephone" type="text" :value="telephone"/></div>
+						                    <div class="aui-info-item" @click="deletePhone()"><a class="aui-info-item_icon aui-margin-l-10">
+						                        <b class="wbicon-removeSolid"></b></a>
+						                    </div>
+						                </div>
+						            </div>
+						        </div>
+						    </section>`,
+				data() {
+					return {
+						telephone: telephone
+					}
+				},
+				methods: {
+					deletePhone: function() {
+						document.getElementById("telephone").value = "";
+					}
+				}
+			})
+		}
+		/**
+		 * 完成按钮
+		 * */
+		function complete() {
+			var value = document.getElementById("telephone").value;
+			if(!value) {
+				value = "#";
+			} else {
+				var phoneReg = /(^1[3|4|5|7|8]\d{9}$)|(^09\d{8}$)/;
+				if(!phoneReg.test(value)) {
+					api.toast({
+						msg: '请输入正确的手机号码！',
+						duration: 1000,
+						location: 'middle'
+					});
+					return false;
+				}
+			}
+			api.execScript({
+				name: 'editMyMessage',
+				script: "updateData('telephone','" + value + "')"
+			});
+			back();
+		}
+		//监听事件
+		function initEvents() {
+			api.addEventListener({
+				name: 'keyback'
+			}, function(ret, err) {
+				back();
+			});
+		}
+		//返回，关闭当前详情页，
+		function back() {
+			api.closeWin({
+				name: 'editPhone'
+			});
+		}
+	</script>
+
+</html>

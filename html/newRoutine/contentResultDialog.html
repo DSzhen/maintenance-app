@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+		<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+		<link rel="stylesheet" type="text/css" href="../../css/api.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/aui.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/wbicon/style.css" />
+		<title>获取计划检查结果</title>
+		<style>
+			html {
+				background-color: rgba(0, 0, 0, 0.1);
+				font-family: "微软雅黑";
+			}
+			
+			body {
+				background-color: rgba(0, 0, 0, 0);
+			}
+			
+			.maintenance-content-result {
+				margin-top: 6rem;
+				height: 22rem;
+				width: 80%;
+				margin-left: 10%;
+				border-radius: 8px;
+				background-color: white;
+				position: relative;
+			}
+			
+			.maintenance-content-result-span {
+				position: absolute;
+				width: 8.5rem;
+				top: 1.2rem;
+				right: 1.4rem;
+			}
+			
+			.maintenance-content-result img {
+				border-top-left-radius: 8px;
+				border-top-right-radius: 8px;
+			}
+			
+			.maintenance-content-result .replace-close {
+				width: 1.5rem;
+				height: 1.5rem;
+				position: absolute;
+				top: 0rem;
+				right: 0rem;
+				opacity: 0;
+			}
+			
+			.maintenance-content-result .title {
+				font-size: 0.9rem;
+				color: white;
+				font-weight: bold;
+			}
+			
+			.wbicon-circle2 {
+				font-size: .4rem;
+				color: #ff961b;
+			}
+			
+			#app {
+				height: 14.5rem;
+				width: 100%;
+				overflow: auto;
+			}
+			
+			.result-content {
+				padding: .5rem;
+			}
+			
+			.result-content li {
+				height: 1.5rem;
+				line-height: 1.5rem;
+				font-size: 0.64rem;
+			}
+			
+			.right {
+				right: .8rem;
+				float: right;
+			}
+			
+			.normal {
+				color: #2dc171;
+			}
+			
+			.fault {
+				color: #fda803;
+			}
+			
+			.footer-btn {
+				text-align: center;
+				height: 2rem;
+				width: 100%;
+				line-height: 2rem;
+			}
+			
+			.footer-btn span {
+				display: inline-block;
+				;
+				height: 1.7rem;
+				line-height: 1.7rem;
+				width: 5.7rem;
+				border-radius: 7px;
+				font-size: .7rem;
+				text-align: center;
+			}
+			
+			.footer-btn .suspend {
+				color: #828285;
+				border: 1px solid #b3b3b3;
+				margin-right: .5rem;
+			}
+			
+			.footer-btn .complete {
+				margin-left: .5rem;
+				color: white;
+				background-color: #ff961b;
+			}
+			
+			.dividingLine {
+				border-bottom: 1px solid #b3b3b3;
+				display: block;
+			}
+			
+			.dividingLineWords {
+				color: #b3b3b3;
+				font-size: .4rem;
+				display: block;
+				margin-left: 40%;
+			}
+			
+			[v-cloak] {
+				display: none;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div class="maintenance-content-result">
+			<img src="../../image/routine/resultTop.jpg" />
+			<div class="replace-close" onclick="closeDialog()"></div>
+			<div class="maintenance-content-result-span">
+				<span class="title">请仔细核对维保概况提交后不可更改</span>
+			</div>
+			<div id="app" v-cloak>
+				<ul class="result-content">
+					<li>
+						<b class="wbicon-circle2"></b>
+						<span>是否有设备未检</span>
+						<span class="right">{{undetected}}</span>
+					</li>
+					<li v-for="item in dataList">
+						<b class="wbicon-circle2"></b>
+						<span>{{item.name}}</span>
+						<span class="right normal" v-if="item.faultNum == 0">正常</span>
+						<span class="right fault" v-if="item.faultNum > 0">{{item.faultNum}}个故障</span>
+					</li>
+					<span class="dividingLine"></span>
+					<span class="dividingLineWords">没有更多了</span>
+				</ul>
+			</div>
+			<div class="footer-btn">
+				<span class="suspend" onclick="suspendBtn()">暂停维保</span>
+				<span class="complete" onclick="completeBtn()">完成维保</span>
+			</div>
+		</div>
+
+		<script type="text/javascript" src="../../config/config.js"></script>
+		<script type="text/javascript" src="../../script/api.js"></script>
+		<script type="text/javascript" src="../../script/vue.js"></script>
+		<script>
+			apiready = function() {
+				var pageParam = api.pageParam;
+				initPageVue(pageParam)
+				//ios右滑控制
+      api.addEventListener({
+        name:'swiperight'
+      }, function(ret, err){
+      });
+			}
+
+			function initPageVue(pageParam) {
+				var pageVue = new Vue({
+					el: "#app",
+					data() {
+						return {
+							dataList: pageParam.data,
+							undetected: ""
+						}
+					},
+					created() {
+						this.init();
+					},
+					methods: {
+						init() {
+							var that = this;
+							api.ajax({
+								url: webapp_global.url + "/maintenancePlanProcess/getUncheckList",
+								data: {
+									values: {
+										maintenanceTaskId: pageParam.planId,
+										pageNo: 1,
+										pageSize: 10
+									}
+								},
+								methods: "get",
+								dataType: "json"
+							}, function(ret) {
+								if(ret) {
+									var code = ret["code"];
+									if(code == "success") {
+										var data = ret["data"];
+										if(data.list && data.list.length > 0) {
+											that.undetected = "是";
+										} else {
+											that.undetected = "否";
+										}
+									}
+								}
+							})
+						}
+					}
+				})
+			}
+
+			function closeDialog() {
+				api.closeFrame({
+					name: "contentResultDialog"
+				})
+			}
+
+			function suspendBtn() {
+				api.execScript({
+					frameName: 'routineMaintenanceDetails',
+					script: "suspendOrComplete('21','2')"
+				});
+				closeDialog();
+			}
+
+			function completeBtn() {
+				api.execScript({
+					frameName: 'routineMaintenanceDetails',
+					script: "suspendOrComplete('3','2')"
+				});
+				closeDialog();
+			}
+		</script>
+	</body>
+
+</html>

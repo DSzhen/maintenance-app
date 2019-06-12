@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="en">
+
+	<head>
+		<meta charset="UTF-8">
+		<title>选择楼层</title>
+		<link rel="stylesheet" type="text/css" href="../../css/api.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/aui.css" />
+		<link rel="stylesheet" href="../../script/ts-gis/openlayers/ol.css" />
+		<style>
+			[v-cloak] {
+				display: none;
+			}
+
+			html {
+				font-family: "Microsoft YaHei";
+			}
+
+			body {
+				color: #333;
+				background-color: #eeeef5;
+			}
+
+			body,
+			html {
+				height: 100%;
+			}
+
+			.wb-content,
+			.aui-content-padded {
+				width: 100%;
+				height: 100%;
+				background-color: #fff;
+			}
+
+			.aui-content-padded {
+				margin: 0;
+			}
+
+			.wb-flex {
+				display: -webkit-box;
+				display: -webkit-flex;
+				display: flex;
+				-webkit-box-pack: justify;
+				-webkit-justify-content: flex-start;
+				justify-content: flex-start;
+				-webkit-box-align: start;
+				-webkit-align-items: flex-start;
+				align-items: flex-start;
+			}
+
+			.wb-floor-content {
+				position: relative;
+				height: calc(100% - 7rem);
+			}
+
+			.wb-floor-content img {
+				width: 100%;
+				height: 100%;
+			}
+
+			.wb-des-content {
+				position: absolute;
+				bottom: 0;
+				width: 100%;
+				height: 7rem;
+				font-size: .75rem;
+				background-color: #fff;
+				box-shadow: 0 -2px 5px 2px rgba(51, 51, 51, .05);
+			}
+
+			.wb-des-title,
+			.wb-des-title+span,
+			.wb-floor-info span {
+				color: #333;
+			}
+			.wb-btn-content {
+				margin-top: 1rem;
+			}
+
+			.wb-btn-content .wb-btn-primary {
+				height: 2.2rem;
+				line-height: 2.4rem;
+				color: #fff;
+				font-size: .8rem;
+				background-color: #ff961b !important;
+			}
+
+			.wb-floor-info {
+				width: 100%;
+				margin-top: .15rem;
+			}
+
+			.wb-floor-mark {
+				display: inline-block;
+				width: .8rem;
+			}
+			.wb-floor-input{
+				width: 80%;
+				height: 1.2rem !important;
+			}
+		</style>
+	</head>
+
+	<body background="#000">
+
+		<div class="wb-content">
+			<section class="aui-content-padded">
+				<div id="g2map" class="wb-floor-content"></div>
+
+				<div id="devicePanel" v-show="device" v-cloak class="wb-des-content aui-padded-15">
+					<div class="wb-flex">
+						<span class="wb-des-title" style="width: 100%; height: 1.2rem; line-height: 1.2rem;" >设备：{{ device && device.deviceTypeName }}</span>
+					</div>
+					<div class="wb-floor-info" style="width: 100%; height: 1.2rem; line-height: 1.2rem;">
+						<span class="wb-des-title">楼栋楼层：{{ device && device.buildName }}</span>
+						<span class="aui-margin-l-5">{{ device && device.floorName }}</span>
+					</div>
+					<div v-if="device.clickMap" class="wb-floor-info">
+						<span class="wb-des-title">位置：{{ device && device.deviceAddress}}</span>
+					</div>
+					<div v-else class="wb-floor-info" style="display: flex;">
+						<span class="wb-des-title" style="width: 3rem;height: 1.2rem;line-height: 1.2rem;">位置：</span><input class="wb-floor-input" placeholder="请填写设备具体位置" type="text" v-model="device.deviceAddress" />
+					</div>
+					<div v-if="device.clickMap" class="wb-floor-info">
+						<span class="wb-des-title">回路点位：{{ device && device.loopPoint }}</span>
+					</div>
+					<div v-else class="wb-floor-info" style="display: flex;">
+						<span class="wb-des-title" style="width: 5rem;height: 1.2rem;line-height: 1.2rem;">回路点位：</span><input class="wb-floor-input" placeholder="例：'1-1-3'" type="text" v-model="device.loopPoint" />
+					</div>
+				</div>
+			</section>
+		</div>
+	</body>
+
+	<script type="text/javascript" src="../../script/api.js"></script>
+	<script type="text/javascript" src="../../script/zepto.js"></script>
+	<script type="text/javascript" src="../../script/vue.js"></script>
+	<script type="text/javascript" src="../../script/ts-gis/openlayers/ol.js"></script>
+	<script type="text/javascript" src="../../script/ts-gis/proj4.js"></script>
+	<script type="text/javascript" src="../../script/ts-gis/tsgis.js"></script>
+	<script type="text/javascript" src="../../config/config.js"></script>
+
+	<script>
+		var g2map, pointLayer, result = false,
+			textSumit, pageParme, chooseLayer, deviceVm;
+		apiready = function() {
+			pageParme = api.pageParam;
+			// map height
+			$('#g2map').css('height', api.frameHeight);
+
+			g2map = new g2.maps.Map({
+				defaultExtent: {
+					center: [0, 0],
+					maxZoom: 8,
+					minZoom: 1,
+					// extent: [0, 0, 1800000, 1000000], //图片范围，请按照坐标系的范围给出，此为3857的坐标系范围
+					projection: "EPSG:3857", // 设置地图坐标系
+					level: 1
+				} // 为方便展示设置视野中心点的范围
+			});
+
+			// 初始化地图，传入要初始化的DOM对象的id
+			g2map.init({
+				targetId: 'g2map'
+			});
+
+			//点击标记元素图层
+			chooseLayer = new g2.lys.ElementLayer({
+				id: 'chooseLayer',
+				zIndex: 4
+			});
+			g2map.addLayer(chooseLayer);
+
+			getfloorImage(pageParme.unitId, pageParme.buildId, pageParme.floorId);
+
+			panel_init();
+		};
+		function panel_init() {
+			deviceVm = new Vue({
+				el: '#devicePanel',
+				data: {
+					device: {
+						deviceTypeName: pageParme.deviceTypeName,
+						deviceId: "",
+						buildName: pageParme.buildName,
+						floorName: pageParme.floorNam,
+						deviceAddress: "",
+						loopPoint: "",
+						clickMap: false
+					}
+				},
+				methods: {
+					submit: function() {
+						if(!this.device) {
+							api.toast({
+								msg: '请选择故障点',
+								location: 'bottom'
+							});
+							return false
+						}
+						api.execScript({
+							name: 'win_add',
+							frameName: 'add',
+							script: 'update(' + JSON.stringify(this.device) + ')'
+						});
+						api.closeWin();
+					}
+				}
+			});
+		}
+		//加载展示楼层平面图
+		function getfloorImage(unitId, buildId, floorId) {
+			api.ajax({
+				url: webapp_global.url + '/recordEnterprise/enterpriseFloor',
+				method: 'get',
+				dataType: "json",
+				data: {
+					values: {
+						unitId: unitId,
+						buildId: buildId
+					}
+				}
+			}, function(ret, err) {
+				if(ret) {
+					var imgpath = "";
+					var res = ret.data;
+					for(var i = 0; i < res.length; i++) {
+						if(res[i].floorId == floorId) {
+							if(res[i] && res[i].floorAreaImg) {
+								imgpath = res[i].floorAreaImg;
+								//加载图标
+								var url = webapp_global.imageUrl + "/floorImage/" + imgpath
+								loadImg(url);
+								break;
+							}
+						}
+					}
+				}
+			});
+		}
+		//加载展示楼层平面图
+		function loadImg(imgSrc) {
+			var img = new Image();
+			img.src = imgSrc;
+			img.onload = function() {
+				var w = img.width * 1000;
+				var h = img.height * 1000;
+				//创建一个图像图层
+				var imageLayer = new g2.lys.ImageLayer({
+					imageType: 702,
+					extent: [
+						0,
+						0,
+						w,
+						h
+					], //图片范围，请按照坐标系的范围给出，此为3857的坐标系范围
+					crossOrigin: "anonymous", //跨域
+					url: imgSrc, // 图层服务 url
+					zIndex: 1
+				});
+
+				// 将 图像图层添加到地图
+				g2map.addLayer(imageLayer);
+				var point = new g2.geom.Point({
+					x: w / 2,
+					y: h / 2,
+					spatialReference: g2.geom.SpatialReference.EPSG3857
+				});
+				g2map.pan(new g2.geom.Envelope({
+					minx: 0,
+					miny: 0,
+					maxx: w,
+					maxy: h
+				}));
+				// g2map.setCenter(point);
+				//创建元素图层
+				pointLayer = new g2.lys.ElementLayer({
+					id: 'pointLayer',
+					zIndex: 3
+				});
+				g2map.addLayer(pointLayer);
+				//加载建筑信息
+				// loadBuild();
+				console.log(JSON.stringify(pageParme))
+				api.ajax({
+					url: webapp_global.url + '/maintenancePlanProcess/getDeviceInfoList',
+					dataType: "json",
+					method: 'get',
+					data: {
+						values: {
+							unitId: pageParme.unitId,
+							buildId: pageParme.buildId,
+							floorId: pageParme.floorId,
+							checkItemTypeParentId: pageParme.checkItemTypeParentId,
+							checkItemTypeId: pageParme.checkItemTypeId,
+							deviceTypeId: pageParme.deviceTypeId
+						}
+					}
+				}, function(ret, err) {
+					if(ret) {
+						var res = ret.data;
+						loadImgIcon(res)
+						g2map.on("click", function(button, shift, screenX, screenY, mapX, mapY, handle) {
+							chooseLayer.clear();
+							var ele = pointLayer.hitTest(screenX, screenY);
+							if(ele) {
+								var element = ele.element;
+								var elementTag = ele.element.tag;
+								console.log(JSON.stringify(elementTag))
+								deviceVm.device = {
+									deviceTypeName: pageParme.deviceTypeName,
+									deviceId: elementTag.deviceId,
+									buildName: pageParme.buildName,
+									floorName: pageParme.floorName,
+									deviceAddress: elementTag.deviceAddress,
+									laPoint: elementTag.laPoint,
+									laMake: elementTag.laMake,
+									laLoop: elementTag.laLoop,
+									loopPoint: elementTag.laMake + "-" + elementTag.laLoop + "-" + elementTag.laPoint
+								};
+								deviceVm.device.unitId = pageParme.unitId
+								deviceVm.device.buildId = pageParme.buildId;
+								deviceVm.device.floorId = pageParme.floorId;
+								deviceVm.device.clickMap = true;
+								// 选择设备效果
+								var p = new g2.geom.Point({
+									x: element.geometry.x,
+									y: element.geometry.y,
+									spatialReference: g2.geom.SpatialReference.EPSG3857
+								});
+								var picMarker = new g2.syms.Picturemarkersymbol({
+									source: 'iVBORw0KGgoAAAANSUhEUgAAAB4AAAAoCAYAAADpE0oSAAAB80lEQVRYhcXXv2oUURQH4G9HDYKoKSwUi4CImBcQxAQtrITkBSzs1QdQsBErwcLGQgTRN9BKC0VJtLBNoSERDIhEUEgEE0hM9ljsTLJZdnd29s/shVMMy/w+zjB77p1K6GgluIQrOIczGE1/W8UCPuEV3qOamxjtayS4GSwF0WEtpfeMtMtuh54P5guAjTWfZhSCbwSbPaBZbaZZHcG3+wA21q08+GpQHQBcTbObwuPB2gDQrNZSYw9cCWYGiGY1k1o78HQJaFbT9fBsifBsqLV9Cl9RyZ02/VmB0wmmSkSl1lSCiRLRbE0mODsEeLwSrNjdacpafyrBttq2V+aKBOslo7CSYHEI8PcEH4YAf0zwYgjw62yDWChxZP4KDiRqI+xxid0+w79skzgWrJfQ7UZwMuz+f3/jUQndPscPqD+BjKbPf1Dd/g1OZF79xFrF3QF2+wDLO1ext/YHXwbQ7WJwsN5qdrydCLb7DF9udFod6B/2EX3azGgFH4r+DJVvwZEisOBCsNUDuhVcbJWf97V4pwf4XrvsPHhf8KYL9F16b9ew4HiwXAD9GXWDohdYMBm1OZuHbkTt3cjN7BQWXO8AvtZpXhFY8KQNer9IVlF4JHjbBH0ZOS9Tr7DgaDBXh84Fh4vmdAMLxoLPUdtQxrrJ+A8T7ueKw5k8gQAAAABJRU5ErkJggg==',
+									width: 32,
+									height: 42,
+									offsetX: 14,
+									offsetY: 42
+								});
+								var pointEle = new g2.ele.Element({
+									geometry: p,
+									symbol: picMarker
+								});
+								chooseLayer.add(pointEle);
+							} else {
+								deviceVm.device = {
+									deviceTypeName: pageParme.deviceTypeName,
+									deviceId: "",
+									buildName: pageParme.buildName,
+									floorName: pageParme.floorName,
+									deviceAddress: "",
+									laPoint: "",
+									laMake: "",
+									laLoop: "",
+									loopPoint: "",
+									clickMap: false
+								};
+							}
+						});
+					} else {
+						//                    alert(JSON.stringify(err))
+					}
+				});
+			}
+		}
+		//加载设备点位
+		function loadImgIcon(res) {
+			if(!res.length) return
+
+			api.ajax({
+				url: webapp_global.imageUrl + '/deviceIcons.json',
+				method: 'get'
+			}, function(ret) {
+				var pointArr = [];
+				var resquest = ret.deviceIcons.normal;
+				var defaultSymbol = new g2.syms.SimpleMarkersymbol({
+					fillColor: new g2.syms.Color({
+						a: 255,
+						r: 255,
+						g: 255,
+						b: 255
+					}),
+					borderColor: new g2.syms.Color({
+						a: 255,
+						r: 255,
+						g: 0,
+						b: 0
+					}),
+					size: 6
+				});
+				res.forEach(function(item) {
+					var markerSymbol;
+					if(resquest[item.deviceTypeId] && resquest[item.deviceTypeId].icon) {
+						markerSymbol = new g2.syms.Picturemarkersymbol({
+							source: resquest[item.deviceTypeId] && resquest[item.deviceTypeId].icon,
+							width: 16,
+							height: 16,
+							offsetX: 8,
+							offsetY: 8
+						});
+					} else {
+						markerSymbol = defaultSymbol;
+					}
+
+					var point = new g2.geom.Point({
+						y: item.latitude,
+						x: item.longitude,
+						spatialReference: g2.geom.SpatialReference.EPSG3857
+					});
+					var ele = new g2.ele.Element({
+						geometry: point,
+						symbol: markerSymbol,
+						tag: item
+					});
+					pointArr.push(ele);
+				})
+				pointLayer.addElements(pointArr);
+			})
+		}
+
+		function selectDevice() {
+			var param = deviceVm.device;
+			if(!param.clickMap) {
+				if(!param.deviceAddress) {
+					api.toast({
+						msg: '填写设备位置',
+						location: 'middle'
+					});
+					return false
+				}
+			}
+			var arr = [];
+			if(!param.clickMap){
+				if(param.loopPoint) {
+					var loopPoint = param.loopPoint;
+					arr = loopPoint.split("-");
+					param.laMake = arr[0] || "";
+					param.laLoop = arr[1] || "";
+					param.laPoint = arr[2] || "";
+				}
+			}
+			api.sendEvent({
+				name: 'selectDeviceInfo',
+				extra: param
+			});
+			api.closeWin();
+		}
+	</script>
+
+</html>

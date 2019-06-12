@@ -1,0 +1,700 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+		<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+		<link rel="stylesheet" type="text/css" href="../../css/api.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/aui.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/MintUistyle.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/wbicon/style.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/xficon/style.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/mobileSelect.css" />
+		<link rel="stylesheet" href="../../css/mint-ui.css" />
+		<link rel="stylesheet" href="../../css/suspension.css" />
+
+	<style type="text/css">
+			html,body {
+				background-color: #f6f6f6;
+				height: 100%;
+			}
+			.wb-flex {
+				display: -webkit-box;
+				display: -webkit-flex;
+				display: flex;
+				-webkit-box-pack: justify;
+				-webkit-justify-content: center;
+				justify-content: center;
+				-webkit-box-align: center;
+				-webkit-align-items: center;
+				align-items: center;
+			}
+
+			.wb-space-between {
+				-webkit-justify-content: space-between;
+				justify-content: space-between;
+			}
+
+			.aui-btn-warning.wb-time-btn {
+				width: 6rem;
+				background-color: rgba(255, 150, 27, .8) !important;
+				border-radius: .7rem;
+			}
+
+			.wb-time-btn input {
+				width: 100%;
+				height: 1.5rem;
+				padding-left: 0.2rem;
+				line-height: 1.55rem;
+				color: #fff;
+				font-size: .9rem;
+			}
+
+			.wb-margin-t-10 {
+				margin-top: 1rem;
+			}
+
+			.aui-content-padded {
+				margin: .5rem;
+			}
+
+			.aui-card-list {
+				margin-bottom: .5rem;
+				box-shadow: 0 4px 8px 0 rgba(229, 229, 229, .65);
+				border-radius: .2rem;
+				width: 100%;
+			}
+
+			.wb-title-h5 {
+				color: #303030;
+				font-size: .75rem;
+				border-bottom: 1px solid #e6e4e3;
+			}
+
+			.wb-telphone {
+				display: inline-block;
+				line-height: .8rem;
+				border-bottom: 1px solid #7d7d85;
+				color: #7d7d85;
+				margin-left: -.15rem;
+			}
+
+			.wb-info-des {
+				font-size: .75rem;
+				color: #828285;
+				height: 1rem;
+				width: 100%;
+				/*position:relative;*/
+			}
+
+			.wb-info-des b {
+				margin-right: .3rem;
+			}
+
+			.mint-button.mint-button--default.mint-button--normal {
+				height: 1.5rem;
+				padding: 0 1rem;
+				font-size: .9rem;
+				line-height: 1.6rem;
+				color: #fff !important;
+				background-color: #ff961b !important;
+				border: 0;
+				border-radius: .7rem;
+				box-shadow: none;
+			}
+
+			.wb-margin-t-4 {
+				margin-top: .4rem;
+			}
+
+			.wb-list-inner {
+				/*max-width: 100%;*/
+				width: 100%;
+			}
+
+			.wb-list-inner p {
+				color: #303030;
+				width: 86%;
+			}
+
+			.wb-list-inner h5 {
+				width: 100%;
+			}
+
+			.aui-btn-info.aui-btn-outlined.wb-btn {
+				color: #0769fc !important;
+				background-color: #ecf6ff !important;
+				border: 1px solid rgba(7, 105, 252, .6) !important;
+			}
+
+			.picker-items .picker-slot:nth-child(3) {
+				width: 0 !important;
+				flex: none !important;
+			}
+
+			.picker-item {
+				color: #707070;
+				font-size: .9rem;
+			}
+
+			.picker-center-highlight {
+				background-color: #fff2e2;
+				border: 0;
+				z-index: -1;
+			}
+
+			.selector {
+				background: #FF961B;
+				box-shadow: 1px 2px 20px 2px #000000;
+				width: 544px;
+				height: 122px;
+			}
+
+			.mint-datetime-action {
+				height: 2.4rem;
+				line-height: 2.4rem;
+				font-size: .9rem;
+				color: #333;
+			}
+
+			.picker-toolbar .mint-datetime-action:last-child,
+			.mint-datetime-action:hover,
+			.mint-datetime-action:focus {
+				background-color: #ff961b;
+				color: #fff;
+			}
+
+			.picker.mint-datetime-picker {
+				position: relative;
+			}
+
+			.picker-toolbar {
+				height: 2.4rem;
+				position: absolute;
+				bottom: 0;
+				left: 0;
+				right: 0;
+				width: 100%;
+				background-color: #fff;
+				box-shadow: 0 -2px 15px 1px rgba(0, 0, 0, .05);
+				z-index: 50;
+			}
+
+			.wb-card-mark {
+				position: absolute;
+				top: 0rem;
+				right: 0;
+			}
+
+			[v-cloak] {
+				display: none;
+			}
+
+			.defaultDiv-layout {
+				margin-top: 35%;
+				height: 100%;
+				width: 100%;
+				text-align: center;
+			}
+
+			.defaultDiv-layout label {
+				color: #C4C4C4;
+			}
+
+			.defaultDiv {
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				margin-bottom: 1rem;
+			}
+
+			.defaultDiv img {
+				height: 5.5rem;
+				width: 6rem;
+			}
+
+			.aui-card-list-header {
+				position: relative;
+				border-bottom: 1px solid #e6e4e3;
+				border-top-left-radius: 3px;
+				border-top-right-radius: 3px;
+			}
+
+			.wbicon {
+				color: #828285;
+			}
+
+			.wb-card-list-header {
+				display: flex;
+				justify-content: center;
+				align-items: center;
+			}
+
+			.wbicon-building {
+				padding-right: .2rem;
+			}
+
+			.wb-standard-img {
+				position: absolute;
+				top: 0;
+				right: 0;
+				z-index: 5;
+			}
+
+			.wb-standard-img img {
+				/*width:1.86rem;*/
+				height: .8rem;
+			}
+
+			.wb-planType {
+				display: inline-block;
+				height: .73rem;
+				width: .73rem;
+				margin-bottom: -.1rem;
+			}
+
+			.wbicon-telephone {
+				padding-top: .1rem;
+			}
+
+			.filter {
+				position: fixed;
+				top: -.5rem;
+				right: 3rem;
+				z-index: 10000;
+			}
+
+			.signAndReport {
+				position: absolute;
+				width: 4rem;
+				height: 1.53rem;
+				border: 1px solid #ff961b;
+				border-radius: .76rem;
+				line-height: 1.53rem;
+				text-align: center;
+				color: #ff961b;
+				right: .8rem;
+				top: 2.9rem;
+			}
+			.header{
+	        	background-color:#ff961b;
+	        }
+	       .wb-card-title {
+	            color: #303033;
+	            font-size: .75rem;
+	            padding-right:.15rem;
+	            /*white-space: nowrap;*/
+	        }
+	        .wb-list-inner b{
+	        	 font-size: .75rem;
+        		color:#828285;
+	        }
+	         .wb-info-text {
+	            font-size: .75rem;
+	            color:#828285;
+	        }
+	        .xficon-gear{
+	        	padding-right:.1rem;
+	        	color:#828285;
+	        	/*margin-left:-.2rem;*/
+	        }
+	         .aui-btn-block {
+			  width:16%;
+			    height: 1.2rem;
+			    line-height: 1.3rem;
+			    margin-bottom: 0;
+			    font-size: 0.7rem;
+			    position: absolute;
+			    /*margin-right:.2rem;*/
+			    right:.3rem;
+			    top:2.2rem;
+			}
+			.header {
+				background-color: #ff961b;
+			}
+
+			.wb-card-title {
+				color: #303033;
+				font-size: .75rem;
+				padding-right: .15rem;
+				/*white-space: nowrap;*/
+			}
+
+			.wb-list-inner b {
+				font-size: .75rem;
+				color: #828285;
+			}
+
+			.wb-info-text {
+				font-size: .75rem;
+				color: #828285;
+			}
+
+			.xficon-gear {
+				padding-right: .1rem;
+				/*margin-left:-.2rem;*/
+			}
+
+			.aui-btn-block {
+				width: 16%;
+				height: 1.2rem;
+				line-height: 1.3rem;
+				margin-bottom: 0;
+				font-size: 0.7rem;
+				position: absolute;
+				/*margin-right:.2rem;*/
+				right: .3rem;
+				top: 2.2rem;
+			}
+			.wb-systemSet{
+				width:.73rem!important;
+				height:.73rem!important;
+				display: inline-block!important;
+				margin-right: .2rem;
+			}
+
+		</style>
+	</head>
+
+	<body>
+		<!-- <div id="reportBtn" style="display: none;">
+			<a href="#wheel" class="wheel-button " id="div1"><i class="xficon-add"></i></a>
+			<ul id="wheel" class="wheel">
+				<li class="item">
+					<a href="javascript:;" onclick="goIn('by')">上报</br>保养</a>
+				</li>
+				<li class="item">
+					<a href="javascript:;" onclick="goIn('wj')">上报</br>未检</a>
+				</li>
+				<li class="item">
+					<a href="javascript:;" onclick="goIn('gz')">上报</br>故障</a>
+				</li>
+			</ul>
+		</div> -->
+		<section class="aui-content" id="app" v-cloak>
+			<!--<header class="aui-bar aui-bar-nav header">
+				<a class="aui-pull-left aui-btn">
+					<span class="aui-iconfont aui-icon-left" onclick="back()"></span>
+				</a>
+				<div class="aui-title">故障记录 </div>
+
+			</header>-->
+			<!--<div class="filter"><b class="wbicon-filtrate"></b></div>-->
+			<div class="aui-content-padded" v-if="completedData.length > 0">
+				<div class="aui-card-list" v-for="(item,index) in completedData" @click.stop="clickItem(item)">
+					<div class="aui-card-list-header">
+						<h3 class="aui-ellipsis-1 wb-card-list-header aui-margin-r-5" style="font-size: .75rem;color:#303030;"><img style="width:.73rem!important;height:.73rem;display: inline-block;margin-right: .2rem;" class="wb-systemSet" src="../../image/routine/systemSet.png" alt="" />{{proprietorName}}</h3>
+						<a class="wb-standard-img"><img :src="isSolve[item.solved]" alt="" /></a>
+					</div>
+					<div class="aui-card-list-content-padded aui-padded-b-15 wb-flex wb-space-between">
+						<div class="wb-list-inner">
+							<p class="wb-info-des wb-margin-t-4 aui-ellipsis-1">
+								<span class="wb-card-title">设施类型 </span>
+								<span class="wb-info-text">{{item.deviceTypeName}}</span>
+							</p>
+							<p class="wb-info-des wb-dele wb-margin-t-4 aui-ellipsis-1" style="position: relative;">
+								<span class="wb-card-title">故障类型 </span>
+								<span class="wb-info-text">{{item.deviceFaultName}}</span>
+								<div v-if="planStatus == '2'" class="aui-btn aui-btn-danger aui-btn-block" @click.stop="deleAjaxFun(item.id,index)">删除</div>
+							</p>
+							<p class="wb-info-des wb-margin-t-4 aui-ellipsis-1">
+								<span class="wb-card-title">上报时间 </span>
+								<span class="wb-info-text">{{item.handTime}}</span>
+							</p>
+						</div>
+
+					</div>
+				</div>
+				<div class='noshuju' style="text-align:center;color:#999999; display:none">没有数据啦</div>
+				<div class='to_load' style="text-align:center;color:#999999;display:none">加载更多...</div>
+			</div>
+			<div class="routineDefaultImg" v-if="defaultDiv != ''">
+				<div class='defaultDiv-layout'>
+					<div class='defaultDiv'><img :src='defaultDiv' /></div>
+					<label style="">暂无故障记录</label>
+				</div>
+			</div>
+		</section>
+	</body>
+	<script type="text/javascript" src="../../script/api.js"></script>
+	<script type="text/javascript" src="../../config/config.js"></script>
+	<script type="text/javascript" src="../../script/vue.js"></script>
+	<script type="text/javascript" src="../../script/mint-ui.js"></script>
+	<script type="text/javascript" src="../../script/zepto.js"></script>
+	<script type="text/javascript" src="../../script/mobileSelect.js"></script>
+	<script type="text/javascript" src="../../script/umeng/zhuge.js"></script>
+	<script type="text/javascript" src="../../script/jquery-1.7.2.min.js"></script>
+	<script type="text/javascript" src="../../script/jquery.wheelmenu.js"></script>
+	<!-- <script type="text/javascript" src="../../script/suspension.js"></script> -->
+
+	<script type="text/javascript">
+		//����һ��������ֹ�ظ�����ajax
+		var preventAjaxRepeatSubmit = true;
+		var pageNo = 1;
+		var pageVue;
+		var paramObj = JSON.parse(localStorage.getItem('userObj'));
+		var UIDatePicker, pageParam;
+		apiready = function() {
+			// if(api.pageParam.planStatus == "2"){
+			// 	$("#reportBtn").show()
+			// }
+			//			pageParam = api.pageParam;
+			apiEvents();
+			pageVue = new Vue({
+				el: '#app',
+				data: function() {
+					return {
+						completedData: [],
+						pageSize: 10,
+						pageNo: 1,
+						planStatus: api.pageParam.planStatus,
+						planId: api.pageParam.planId,
+						proprietorName: api.pageParam.proprietorName,
+						defaultDiv: "",
+						isSolve: ["../../image/routine/unsolved.png", "../../image/routine/solve.png"],
+						planTypeImg: ["../../image/routine/day.png", "../../image/routine/weeks.png", "../../image/routine/months.png", "../../image/routine/season.png", "../../image/routine/year.png", "../../image/routine/custom.png"]
+					}
+				},
+				created: function() {
+					this.initData()
+				},
+				methods: {
+					clickItem: function(item) {
+						console.log(item);
+						// 点击例行维保进详情
+						api.openWin({
+							name: '_viewReportFault.html',
+							url: './_viewReportFault.html',
+							rect: {
+								x: 0,
+								y: 0,
+								w: 320,
+								h: 480
+							},
+							pageParam: item,
+							bounces: false,
+							bgColor: 'rgba(0,0,0,0)',
+							vScrollBarEnabled: true,
+							hScrollBarEnabled: true
+						});
+					},
+					initData: function() {
+						if(preventAjaxRepeatSubmit) {
+							preventAjaxRepeatSubmit = false;
+							this.ajaxFun("first")
+						}
+						//请求后台方法
+
+					},
+					ajaxFun: function(str) {
+						Vue.$indicator.open("加载中...");
+						var that = this,
+							pageNo = this.pageNo,
+							planId = this.planId;
+						//请求后台
+						var obj = JSON.parse(localStorage.getItem("userObj"));
+						api.ajax({
+							url: webapp_global.url + "/maintenancePlanProcess/queryFaultList",
+							method: 'get',
+							dataType: "json",
+							data: {
+								values: {
+									maintenanceTaskId: planId, //"201812201746299693",
+									pageNo: pageNo,
+									pageSize: 10
+								}
+							}
+						}, function(ret, err) {
+							Vue.$indicator.close();
+							api.refreshHeaderLoadDone();
+							api.parseTapmode();
+							preventAjaxRepeatSubmit = true;
+							if(ret && ret.data) {
+								if(str != "first") {
+									if(ret.data.list.length == 0) {
+										$(".to_load").hide();
+										$(".noshuju").show();
+									} else {
+										that.completedData = that.completedData.concat(ret.data.list);
+										$(".to_load").show();
+										$(".noshuju").hide();
+									}
+								} else {
+									that.completedData = ret.data.list;
+									if(!that.completedData) {
+										return
+									}
+									if(that.completedData.length == 0) {
+										that.defaultDiv = "../../image/defaultPage/trouble-free.png";
+									} else {
+										that.defaultDiv = "";
+									}
+									if(ret.data.list.length > 9) {
+										setTimeout(function() {
+											$(".to_load").show();
+										}, 500)
+									} else {
+										$(".to_load").hide();
+									}
+								}
+
+							} else {
+								var connectionType = api.connectionType;
+								if(connectionType == "none") {
+									that.defaultDiv = "../../image/defaultPage/detectionNetwork.png"
+								}
+							}
+						})
+					},
+					deleAjaxFun(id, _index) {
+						var that = this;
+						api.confirm({
+							title: '删除故障',
+							msg: '确定删除本条故障吗？'
+						}, function(ret, err) {
+							var index = ret.buttonIndex;
+							if(index == "2") {
+								api.ajax({
+									url: webapp_global.url + "/maintenancePlanProcess/deleteFaultDetailById",
+									method: 'get',
+									dataType: "json",
+									data: {
+										values: {
+											id: id
+										}
+									}
+								}, function(ret, err) {
+									that.completedData.splice(_index, 1)
+								})
+							}
+
+						});
+
+					}
+				}
+
+			})
+		};
+
+		// 跳转
+		function goIn(type) {
+			if($("#wheel").css("display") == 'block') {
+				$("#div1").click()
+			}
+			var urls = '';
+			if(type == 'gz') {
+				//例行维保 点击进入上报故障
+
+				urls = '_reportFault'
+			} else if(type == 'wj') {
+				//例行维保 点击进入上报未检
+
+				urls = '_reportNotcheck'
+			} else if(type == 'by') {
+				//例行维保 点击进入上报保养
+
+				urls = '_maintainInsert'
+			}
+			//跳转页面吧系统大类带过去
+			var idArr = [];
+			api.openWin({
+				name: urls,
+				url: './' + urls + '.html',
+				pageParam: {
+					planId: api.pageParam.planId,
+					proprietorId: api.pageParam.proprietorId,
+					checkItemTypeId: "",
+					checkItemTypeParentId: "",
+					checkItemTypeParentIdArr: api.pageParam.checkItemTypeParentIdArr
+				},
+				bounces: true
+			});
+		}
+
+		function apiEvents() {
+			// 下拉刷新。调用请求后台接口
+			api.setRefreshHeaderInfo({
+				visible: true,
+				bgColor: '#ccc',
+				textColor: '#fff',
+				textDown: '下拉刷新...',
+				textUp: '松开刷新...',
+				showTime: true
+			}, function(ret, err) {
+				pageVue.pageNo = 1;
+				$(".to_load").hide()
+				$(".noshuju").hide();
+				if(preventAjaxRepeatSubmit) {
+					preventAjaxRepeatSubmit = false;
+					pageVue.ajaxFun('first');
+				}
+
+			});
+
+			api.addEventListener({
+				name: 'scrolltobottom',
+				extra: {
+					threshold: 0
+				}
+			}, function(ret, err) {
+				pageVue.pageNo += 1;
+				setTimeout(function() {
+					pageVue.ajaxFun()
+				}, 500)
+			});
+
+			var connectionType = api.connectionType;
+			if(connectionType == "none") {
+				api.toast({
+					msg: '网络走丢了，请找回网络',
+					duration: 2000,
+					location: 'middle',
+					global: true
+				});
+			}
+			//�����豸�Ͽ�������¼����ַ�����
+			api.addEventListener({
+				name: 'offline'
+			}, function(ret, err) {
+				api.toast({
+					msg: '网络走丢了，请找回网络',
+					duration: 2000,
+					location: 'middle',
+					global: true
+				});
+			});
+			//监听设备断开网络的事件，字符串类型
+			api.addEventListener({
+				name: 'online'
+			}, function(ret, err) {
+				api.toast({
+					msg: '网络已经找回，请刷新页面',
+					duration: 2000,
+					location: 'middle',
+					global: true
+				});
+			});
+			//������ͼ
+			api.addEventListener({
+				name: 'updateRoutineList'
+			}, function(ret, err) {
+				pageVue.initData();
+			});
+			//ios右滑控制
+      api.addEventListener({
+        name:'swiperight'
+      }, function(ret, err){
+      });
+		}
+
+		function closeWin() {
+			api.closeWin({});
+		}
+		//返回，关闭当前页，
+		function back() {
+			api.closeWin();
+		}
+	</script>
+
+</html>

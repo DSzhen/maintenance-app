@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+		<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+		<title>添加资历</title>
+		<link rel="stylesheet" type="text/css" href="../../css/api.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/aui.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/gg.css" />
+		<link rel="stylesheet" href="../../css/mint-ui.css" />
+
+		<style>
+			.flex1 {
+				flex: 1
+			}
+			
+			html,
+			body {
+				height: 100%;
+				display: flex;
+				display: -webkit-flex;
+				display: -webkit-box;
+				flex-flow: column;
+				-webkit-flex-flow: column;
+				-webkit-box-orient: vertical;
+				background-color: #eae6e6;
+			}
+			
+			.header {
+				height: 57px;
+				width: 100%;
+				display: block;
+				line-height: 57px;
+				padding-top: 11px;
+				font-size: .8rem;
+			}
+			
+			.header.active {
+				display: block;
+			}
+			
+			.top-menu {
+				/*padding: 0 43px 0 8px;*/
+				text-align: center;
+				color: #fff;
+				font-weight: bold;
+			}
+			/*按钮*/
+			
+			.backBtn {
+				height: 40px;
+				width: 35px;
+				position: absolute;
+				right: left;
+				bottom: 0;
+			}
+			
+			.backBtn::before {
+				position: absolute;
+				top: .65rem;
+				left: .75rem;
+				display: block;
+				content: '';
+				width: 10px;
+				height: 10px;
+				/*border-left: 2px solid;
+           border-top: 2px solid;*/
+				border-left: 1px solid;
+				border-top: 1px solid;
+				color: #fff;
+				transform: rotate(-45deg);
+			}
+			
+			.btn {
+				height: 40px;
+				width: 35px;
+				position: absolute;
+				right: .5rem;
+				bottom: 0;
+				color: white;
+			}
+			/*首页头部导航*/
+			/*字体颜色*/
+			
+			.header.home>div.active {
+				opacity: 1;
+			}
+			
+			.header.home {
+				/*background: -moz-linear-gradient(top, #febd00 0%, #ff951b 100%);
+				background: -webkit-gradient(linear, left top, right bottom, color-stop(0%, #febd00), color-stop(100%, #ff951b));
+				background: -webkit-linear-gradient(top, #febd00 0%, #ff951b 100%);
+				background: -o-linear-gradient(top, #febd00 0%, #ff951b 100%);
+				background: -ms-linear-gradient(top, #febd00 0%, #ff951b 100%);
+				background: linear-gradient(to top, #febd00 0%, #ff951b 100%);*/
+				background-color: #ff961b;
+			}
+			
+			.header.home .top-menu>div {
+				color: #fff;
+				opacity: .8;
+			}
+			
+			.header.home .top-menu>div.active {
+				opacity: 1;
+			}
+			
+			.z_div {
+				position: absolute;
+				top: 20px;
+				left: 0;
+				right: 0;
+				bottom: 0;
+				z-index: 999999999;
+				background-color: #000;
+				text-align: center;
+			}
+		</style>
+	</head>
+
+	<body style="background-color:#fff;">
+		<header id="header">
+			<div class="header home active">
+				<div class="backBtn" tapmode onclick="back()"></div>
+				<div id="title" class="top-menu"></div>
+			</div>
+		</header>
+
+		<div id="content" style="margin-top:1rem;">
+			<div class="item-div">
+				<div>
+					<div class="bg-white p-l15 downn-arrow">
+						<div class="div-flex ">
+							<p class="fs16 m-r10 white-space div-flex ju-center  color999 ">资质类型:</p>
+							<select class="flex1" v-model='qualifications'>
+								<option v-for='item in dataList' :value="item.id">{{item.name}}</option>
+							</select>
+						</div>
+						<div class="down_line"></div>
+					</div>
+					<div class="bg-white p-l15 downn-arrow ">
+						<div class="div-flex">
+							<p class="fs16 m-r10 white-space div-flex ju-center  color999 ">发证时间:</p>
+							<div class="flex1">
+								<input id="startTime" :value="data_time" type="text" readonly onclick="selectDate()" />
+							</div>
+						</div>
+						<div class="down_line"></div>
+					</div>
+					<!-- 内容填充 start-->
+					<div class="item-line m-b15 ">
+						<div class="pd15 bg-white text-center">
+							<div class="nodata pd20" @click="add_photo()">
+								<img src="../../image/public/1_06.jpg" alt="">
+								<p class="color999">暂无资质证书，快点击添加吧~</p>
+							</div>
+							<div class="have_data pd20" style="display:none" @click="add_photo()">
+								<img class="this_img" src="../../image/public/1_06.jpg" style="width:100%;height:auto" alt="">
+							</div>
+						</div>
+					</div>
+					<!-- 内容填充end -->
+				</div>
+			</div>
+			<!--  -->
+			<div style="height:6rem"></div>
+
+			<div class="position_bottom m-t0" id="is_show_all">
+				<div class="aui-content-padded wb-btn-content">
+					<div class="aui-btn aui-btn-block aui-btn-warning  wb-btn-primary">
+						<div class="div-flex ju-center" @click="submit_add()">
+							<span style="margin-left:5px;">保存</span>
+						</div>
+					</div>
+					<div class="aui-btn aui-btn-block m-t10">
+						<div class="div-flex ju-center" onclick="back()">
+							<span style="margin-left:5px;">返回</span>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div id="is_btn" style="display:none">
+				<div class="position_bottom" style="display:flex;z-index:9999999; padding-top:20px;  height:70px; line-height:50px; background-color:#000;color:#fff;">
+					<span @click="closes()" class="flex1 text-center">关闭</span>
+					<span @click="reset()" class="flex1 text-center">重置</span>
+					<span @click="save()" class="flex1 text-center">裁剪</span>
+					<span @click="save_all()" class="flex1 text-center">原图</span>
+					<div class="z_div" style="display:none">正在裁剪...</div>
+				</div>
+			</div>
+		</div>
+	</body>
+	<script type="text/javascript" src="../../script/api.js"></script>
+	<script type="text/javascript" src="../../script/vue.js"></script>
+	<script type="text/javascript" src="../../script/zepto.js"></script>
+	<script type="text/javascript" src="../../config/config.js"></script>
+	<script type="text/javascript" src="../../script/mint-ui.js"></script>
+	<script type="text/javascript" src="../../script/umeng/zhuge.js"></script>
+	<script type="text/javascript" src="../../script/iphoneX.js"></script>
+	<script>
+		//定义一个变量防止重复请求ajax
+		var preventAjaxRepeatSubmit = true;
+		var UIDatePicker;
+		var obj = localStorage.getItem("userObj");
+		var pageParam = JSON.parse(obj);
+		var FNImageClip;
+		apiready = function() {
+			iphoneXfit();
+			if(isIphoneX()) {
+				$(".backBtn").css("top", "1.9rem");
+			}
+			FNImageClip = api.require('FNImageClip');
+			UIDatePicker = api.require('UIDatePicker');
+			$api.byId('title').innerHTML = "添加资质";
+			initEvents();
+			getzizi();
+		}
+		//选择时间
+		function selectDate() {
+			var options = {
+				type: 'date',
+				rowHeight: 40,
+				title: '选择时间',
+				styles: {
+					bg: 'rgba(0,0,0,0)',
+					headerViewBackgroundColor: 'rgba(0,0,0,0)',
+					lineBackgroundColor: 'rgba(0,0,0,0)',
+					item: {
+						normal: '#ccc',
+						normalFont: 14,
+						selected: '#fdab3c',
+						selectedFont: 17,
+						cancelBtn: {
+							cancelButtonTextColor: '#1E1E1E',
+							cancelButtonText: '取消',
+							cancelButtonFont: 17
+						},
+						confirmBtn: {
+							confirmButtonTextColor: '#fdab3c',
+							confirmButtonText: '确认',
+							confirmButtonFont: 17
+						},
+					}
+				},
+				fixedOn: "filter"
+			}
+			UIDatePicker.open(options, function(ret, err) {
+				if(ret) {
+					if(ret.year) {
+						var dateStr = ret.year + "-" + ret.month + "-" + ret.day;
+						$("#startTime").val(dateStr);
+					}
+				} else {}
+				UIDatePicker.close();
+			});
+		}
+		//查询资质数据
+		function getzizi() {
+			api.ajax({
+				url: webapp_global.url + "/userInfo/getCredentialsGradeList",
+				method: 'get',
+				dataType: "json",
+			}, function(ret, err) {
+				getzizi_line(ret.data)
+			})
+		}
+
+		function getzizi_line(dataList) {
+			new Vue({
+				el: "#content",
+				data() {
+					return {
+						choose_type: 1,
+						qualifications: 1,
+						dataList: dataList,
+						//附件名称
+						picName: '',
+						//附件路径
+						picUrl: '',
+						data_time: '',
+						obj_photo: {} //图片
+					}
+				},
+				created: function() {
+					var date = new Date();
+					var year = date.getFullYear()
+					var month = date.getMonth() + 1
+					var day = date.getDate()
+					var data_this_time = year + '-' + month + '-' + day;
+					this.data_time = data_this_time;
+				},
+				methods: {
+					// 保存添加
+					submit_add() {
+						if(this.picName == '') {
+							api.toast({
+								msg: '请上传照片',
+								location: 'bottom'
+							});
+							return false
+						}
+						var issueTime = $("#startTime").val();
+						if(preventAjaxRepeatSubmit) {
+							preventAjaxRepeatSubmit = false;
+							Vue.$indicator.open("正在上传...");
+							api.ajax({
+								url: webapp_global.url + "/userInfo/addUserCredentialsPhoto",
+								method: 'post',
+								dataType: "json",
+								timeout: 20,
+								data: {
+									values: {
+										userId: pageParam.userid,
+										orgId: pageParam.orgId,
+										gradeId: this.qualifications,
+										issueTime: issueTime,
+										attachName: this.picName
+									},
+									files: {
+										file: this.picUrl
+									}
+								}
+							}, function(ret, err) {
+								growingIoAddEvent('bjzz');
+								setTimeout(function() {
+									Vue.$indicator.close();
+									preventAjaxRepeatSubmit = true;
+									if(ret && ret.code == 'success') {
+										api.toast({
+											msg: '添加成功！',
+											location: 'bottom'
+										});
+										setTimeout(function() {
+											api.closeWin();
+											api.sendEvent({
+												name: 'reloadList'
+											});
+										}, 1500)
+									} else {
+										api.toast({
+											msg: '提交失败！',
+											location: 'bottom'
+										});
+									}
+								}, 1000)
+
+							})
+						}
+					},
+					// 添加图片
+					add_photo() {
+						var that = this;
+						api.actionSheet({
+							cancelTitle: '取消',
+							buttons: ['拍照', '从相册选择']
+						}, function(ret, err) {
+							var index = ret.buttonIndex;
+							$(".z_div").hide();
+							$("#is_btn").hide();
+							$("#is_show_all").show();
+							if(index == 1) {
+								that.choose_type = 1;
+								that.photograph();
+							} else if(index == 2) {
+								that.choose_type = 2;
+								that.gallery();
+							}
+						});
+					},
+					// 拍照
+					photograph() {
+						var that = this;
+						api.getPicture({
+							sourceType: 'camera',
+							encodingType: 'jpg',
+							mediaValue: 'pic',
+							destinationType: 'url',
+							allowEdit: true,
+							preview: true,
+							quality: 50,
+							rotation: true,
+							showPreview: true,
+							saveToPhotoAlbum: false
+						}, function(ret, err) {
+							if(ret) {
+								var tempData = ret.data;
+								if(tempData == "") return
+								// 带剪切
+								$("#is_btn").show();
+								that.cro(ret.data);
+
+								//  不带剪切的
+								var tempData = ret.data;
+								if(tempData == "") return
+								that.obj_photo = {};
+								//提交图片
+								that.obj_photo["credentialsphoto"] = tempData;
+
+							} else {
+//								api.toast({
+//									msg: '网络异常，请设置网络连接！',
+//									location: 'bottom'
+//								});
+							}
+						});
+					},
+					cro(datas) {
+
+						// 剪辑图片
+						FNImageClip.open({
+							rect: {
+								x: 0,
+								y: 0,
+								w: api.winWidth,
+								h: api.winHeight - 70
+							},
+							srcPath: datas,
+							highDefinition: false,
+							style: {
+								mask: 'rgba(0,0,0,0.75)',
+								clip: {
+									w: api.frameWidth - 50,
+									h: api.frameHeight - 200,
+									x: 25,
+									y: 75,
+									borderColor: '#0f0',
+									borderWidth: 3,
+									appearance: 'rectangle'
+								}
+							},
+							mode: 'all',
+							fixedOn: api.frameName
+						}, function(ret, err) {
+							setTimeout(function() {
+								api.toast({
+									msg: '拖动边框可调整裁剪区域',
+									duration: 5000,
+									location: 'middle'
+								});
+							}, 1000)
+							if(ret) {
+								//  alert(JSON.stringify(ret));
+							} else {}
+						});
+					},
+					// 不裁剪，保存原图
+					save_all() {
+						$("#is_btn").hide();
+						$(".z_div").hide();
+						$("#is_show_all").show();
+						FNImageClip.close();
+						this.add_pic(this.obj_photo)
+					},
+					save() {
+						var that = this;
+						$(".z_div").show();
+						$("#is_show_all").hide();
+						setTimeout(function() {
+							FNImageClip.save({
+								destPath: 'fs://imageClip/result' + new Date().getTime() + '.png',
+								copyToAlbum: false,
+								quality: 1
+							}, function(ret, err) {
+								if(ret) {
+									FNImageClip.close();
+									var tempData = ret.destPath;
+									if(tempData == "") return
+									var obj = {};
+									//提交图片
+									obj["credentialsphoto"] = tempData;
+									that.add_pic(obj)
+								} else {}
+							});
+						}, 200)
+					},
+					reset() {
+						FNImageClip.reset();
+					},
+					closes() {
+						FNImageClip.close();
+						$(".z_div").hide();
+						$("#is_btn").hide();
+						$("#is_show_all").show();
+						if(this.choose_type == 1) {
+							this.photograph();
+						} else if(this.choose_type == 2) {
+							this.gallery();
+						}
+					},
+					// 图库获取
+					gallery() {
+						var that = this;
+						api.getPicture({
+							sourceType: 'album',
+							encodingType: 'jpg',
+							mediaValue: 'pic',
+							destinationType: 'url',
+							allowEdit: true,
+							quality: 50,
+							saveToPhotoAlbum: false
+						}, function(ret, err) {
+							if(ret) {
+								var tempData = ret.data;
+								if(tempData == "") return
+								// 带剪切
+								$("#is_btn").show();
+								that.cro(ret.data);
+								//  不带剪切的
+								var tempData = ret.data;
+								if(tempData == "") return
+								that.obj_photo = {};
+								//提交图片
+								that.obj_photo["credentialsphoto"] = tempData;
+							} else {
+//								api.toast({
+//									msg: '网络异常，请设置网络连接！',
+//									location: 'bottom'
+//								});
+							}
+						});
+					},
+					add_pic(obj) {
+						var res = obj.credentialsphoto.lastIndexOf('/') + 1;
+						var that = this;
+						var sres = obj.credentialsphoto.substring(res, obj.credentialsphoto.length)
+						that.picName = sres;
+						that.picUrl = obj.credentialsphoto;
+						$(".have_data").show();
+						$(".nodata").hide();
+						$(".this_img").attr("src", obj.credentialsphoto);
+						$("#is_btn").hide();
+						$(".z_div").hide();
+						setTimeout(function() {
+							$("#is_show_all").show();
+						}, 200)
+					}
+				}
+			})
+		}
+
+		//监听事件
+		function initEvents() {
+			api.addEventListener({
+				name: 'keyback'
+			}, function(ret, err) {
+				back();
+			});
+		}
+		//返回，关闭当前详情页，
+		function back() {
+			api.closeWin({
+				name: 'qualification_add'
+			});
+		}
+	</script>
+
+</html>

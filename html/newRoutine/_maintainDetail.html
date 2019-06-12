@@ -1,0 +1,232 @@
+<!DOCTYPE HTML>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+		<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+		<title>新增隐患头</title>
+		<link rel="stylesheet" type="text/css" href="../../css/api.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/aui.css" />
+		<style>
+			html,
+			body {
+				height: 100%;
+				display: flex;
+				display: -webkit-flex;
+				display: -webkit-box;
+				flex-flow: column;
+				-webkit-flex-flow: column;
+				-webkit-box-orient: vertical;
+			}
+			
+			.header {
+				height: 57px;
+				width: 100%;
+				display: block;
+				line-height: 57px;
+				padding-top: 11px;
+				font-size: .8rem;
+			}
+			
+			.header.active {
+				display: block;
+			}
+			
+			.top-menu {
+				text-align: center;
+				color: #fff;
+				font-weight: bold;
+			}
+			/*按钮*/
+			
+			.backBtn {
+				height: 40px;
+				width: 35px;
+				position: absolute;
+				right: left;
+				margin-top: 1rem !important;
+				font-size: .7rem !important;
+				font-weight: bold !important;
+			}
+			
+			.backBtn::before {
+				position: absolute;
+				top: 1rem;
+				left: .75rem;
+				display: block;
+				content: '';
+				width: 10px;
+				height: 10px;
+				border-left: 1px solid;
+				border-top: 1px solid;
+				color: #fff;
+				transform: rotate(-45deg);
+			}
+			
+			.btn {
+				height: 40px;
+				width: 35px;
+				top: .5rem;
+				position: absolute;
+				right: 0;
+				bottom: 0;
+			}
+			/*首页头部导航*/
+			/*字体颜色*/
+			
+			.header.home>div.active {
+				opacity: 1;
+			}
+			
+			.header.home {
+				/*background: -moz-linear-gradient(top, #febd00 0%, #ff951b 100%);
+            background: -webkit-gradient(linear, left top, right bottom, color-stop(0%, #febd00), color-stop(100%, #ff951b));
+            background: -webkit-linear-gradient(top, #febd00 0%, #ff951b 100%);
+            background: -o-linear-gradient(top, #febd00 0%, #ff951b 100%);
+            background: -ms-linear-gradient(top, #febd00 0%, #ff951b 100%);
+            background: linear-gradient(to top, #febd00 0%, #ff951b 100%);*/
+				background-color: #ff961b;
+			}
+			
+			.header.home .top-menu>div {
+				color: #fff;
+				opacity: .8;
+			}
+			
+			.header.home .top-menu>div.active {
+				opacity: 1;
+			}
+			
+			.add_btn {
+				/*background: #d43d3d url('../image/head/add.png') center center no-repeat;*/
+				-webkit-background-size: 38px 43px;
+				background-size: 38px 43px;
+			}
+			/*视频头部导航*/
+			
+			.header.my {
+				height: 0;
+			}
+			
+			.content {
+				-webkit-flex: 1px;
+				flex: 1px;
+				-webkit-box-flex: 1;
+				background-color: #f4f5f6;
+			}
+			
+			.footer {
+				height: 44px;
+				display: flex;
+				display: -webkit-flex;
+				display: -webkit-box;
+				flex-flow: row;
+				-webkit-flex-flow: row;
+				-webkit-box-orient: horizontal;
+				background-color: #red;
+			}
+			
+			.menu {
+				flex: 1;
+				-webkit-flex: 1;
+				-webkit-box-flex: 1;
+				height: 44px;
+				box-sizing: border-box;
+				padding-bottom: 5px;
+				padding-top: 27px;
+				color: #585858;
+				font-size: 10px;
+				text-align: center;
+				background-size: 22px 22px;
+				background-position: center 5px;
+				background-repeat: no-repeat;
+			}
+			
+			.footer .home {
+				background-image: url(../../image/footer/home.png);
+			}
+			
+			.footer .video {
+				background-image: url(../../image/footer/video.png);
+			}
+			
+			.footer .gambit {
+				background-image: url(../../image/footer/gambit.png);
+			}
+			
+			.footer .my {
+				background-image: url(../../image/footer/my.png);
+			}
+			
+			.footer .home.active {
+				background-image: url(../../image/footer/home_act.png);
+			}
+			
+			.footer .video.active {
+				background-image: url(../../image/footer/video_act.png);
+			}
+			
+			.footer .gambit.active {
+				background-image: url(../../image/footer/gambit_act.png);
+			}
+			
+			.footer .my.active {
+				background-image: url(../../image/footer/my_act.png);
+			}
+		</style>
+	</head>
+
+	<body>
+		<header id="header">
+			<div class="header home active">
+				<div class="backBtn" tapmode @click="back"></div>
+				<div id="title" class="top-menu"></div>
+			</div>
+		</header>
+	</body>
+	<script type="text/javascript" src="../../script/api.js"></script>
+	<script type="text/javascript" src="../../script/zepto.js"></script>
+	<script type="text/javascript" src="../../config/config.js"></script>
+	<script type="text/javascript" src="../../script/vue.js"></script>
+	<script type="text/javascript" src="../../script/iphoneX.js"></script>
+	<script type="text/javascript">
+		apiready = function() {
+			iphoneXfit()
+			if(!isIphoneX()) { 
+				$(".backBtn").css("top", "-.3rem");
+			}
+			$api.byId('title').innerHTML = "保养记录";
+			new Vue({
+				el: '#header',
+				data: {
+
+				},
+				methods: {
+					back: function() {
+						api.closeWin();
+					}
+				},
+				created: function() {
+
+					api.openFrame({
+						name: 'maintainDetail',
+						url: './maintainDetail.html',
+						rect: {
+							x: 0,
+							y: isIphoneX() ? 70 : 57,
+							w: 'auto',
+							h: isIphoneX() ? api.winHeight - 90 : api.winHeight - 57
+						},
+						bounces: false,
+						pageParam: api.pageParam,
+						vScrollBarEnabled: false,
+						hScrollBarEnabled: true
+					});
+				}
+			})
+
+		};
+	</script>
+
+</html>

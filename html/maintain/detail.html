@@ -1,0 +1,458 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <link rel="stylesheet" type="text/css" href="../../css/aui.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/MintUistyle.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/wbicon/style.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/mobileSelect.css" />
+		<link rel="stylesheet" href="../../css/mint-ui.css" />
+    <style type="text/css">
+        html {
+            font-family: "Microsoft YaHei";
+        }
+        body {
+           background-color: #f6f6f6;
+        }
+        .aui-content-padded {
+            margin: .5rem 0;
+        }
+        .aui-list {
+            padding-top: .2rem;
+            padding-bottom: .5rem;
+        }
+        .aui-list .aui-list-item {
+            padding-left: .5rem;
+            border: 0;
+            background: #fff;
+        }
+        .wb-flex {
+            display: -webkit-box;
+            display: -webkit-flex;
+            display: flex;
+            -webkit-box-pack: justify;
+            -webkit-justify-content: center;
+            justify-content: center;
+            -webkit-box-align: center;
+            -webkit-align-items: center;
+            align-items: center;
+        }
+        .wb-flex-start{
+            -webkit-justify-content: flex-start;
+            justify-content: flex-start;
+            display: flex;
+            width:100%;
+        }
+        .wb-item-flexStart {
+            -webkit-align-items: flex-start;
+            align-items: flex-start;
+            display: flex;
+        }
+        .aui-list textarea {
+            height: 4rem;
+            margin: 0;
+            padding: .5rem;
+            background-color: #fafafa;
+            border: 1px solid #e8e8e8;
+        }
+        .wb-card-list-header b {
+            color: #fd9905;
+            margin-left: -.2rem;
+            font-size: .9rem;
+            vertical-align: -2px;
+        }
+        .wb-card-list-header {
+            max-width: 80%;
+            font-size: .75rem;
+            color:#ff961b;
+        }
+        .aui-card-list-header {
+            padding: .3rem .5rem;
+            font-size: .75rem;
+        }
+        .wb-list-item-inner {
+            width: 100%;
+            padding-right: .5rem;
+        }
+        .aui-list .aui-list-item-label {
+            width: 100%;
+            padding-right: 0;
+            font-size: .75rem;
+        }
+        .wb-application-time > span {
+            display: block;
+        }
+        .wb-application-time > span:last-child {
+            font-size: .6rem;
+        }
+        .wb-application-text >span:first-child {
+            display: block;
+        }
+        .wb-card-title{
+            color: #333;
+        }
+        .wb-aui-bg {
+            /*background-color: #fff;*/
+        }
+        .wb-card-title {
+            padding-left: .5rem;
+            font-size: .75rem;
+            width:3.8rem;
+            padding-right:0;
+            margin-right:0;
+        }
+        .wb-update-img img {
+            /*display: inline-block;*/
+            width: 3rem;
+            height: 3rem;
+            margin-right: .4rem;
+            margin-bottom:.3rem;
+            background-color: #e0e0e0;
+        }
+        .wb-update-image {
+        	width:100%;
+            margin-top: .4rem;
+            padding-bottom: .5rem;
+        }
+        .wb-update-img {
+        	flex:1;
+            margin-left: .2rem;
+            display: flex;
+            justify-content: flex-start;
+            flex-wrap: wrap;
+        }
+        .wb-list-item-title {
+            color: #333;
+            font-size: .75rem;
+        }
+        .wb-list-info {
+            margin-top: -.3rem;
+            color: #999;
+            font-size: .72rem;
+        }
+        [v-cloak]{
+        	display: none;
+        }
+        .defaultDiv-layout {
+				margin-top: 35%;
+				height: 100%;
+				width: 100%;
+				text-align: center;
+			}
+
+			.defaultDiv-layout label {
+				color: #C4C4C4;
+			}
+
+			.defaultDiv {
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				margin-bottom: 1rem;
+			}
+
+			.defaultDiv img {
+				height: 5.5rem;
+				width: 6rem;
+			}
+			.aui-btn-block {
+			  width:16%;
+			    height: 1.2rem;
+			    line-height: 1.3rem;
+			    margin-bottom: 0;
+			    font-size: 0.7rem;
+			    float:right;
+			    margin-right:.2rem;
+			}
+
+    </style>
+</head>
+<body>
+<div id="detailApp" class="wb-content" v-cloak>
+
+    <section class="aui-content-padded wb-aui-bg"  v-if="completedData.length > 0">
+    	<div class="aui-card-list" v-for="(item,index) in completedData">
+    		 <div class="aui-card-list-header">
+                <h3 class="aui-ellipsis-1 wb-card-list-header">保养明细{{index+1}}</h3>
+               <div v-if="planStatus == '2'" class="aui-btn aui-btn-danger aui-btn-block" @click="deleAjaxFun(item.id,index)">删除</div>
+            </div>
+	        <ul class="aui-list aui-form-list">
+	            <li class="aui-list-item aui-padded-t-10" style="min-height: 0;">
+	                <div class="wb-list-item-inner">
+	                    <a class="wb-list-item-title">设施类型：<span class="aui-margin-l-10">{{ item.checkItemTypeParentName }}</span></a>
+	                </div>
+	            </li>
+	            <li class="aui-list-item">
+	                <div class="wb-list-item-inner">
+	                    <div class="aui-list-item-label">保养情况：</div>
+	                    <div class="wb-list-info">{{ item.maintenanceDescription }}</div>
+	                </div>
+	            </li>
+	        </ul>
+	        <!--照片-->
+	        <div class="wb-update-image">
+	            <div class="wb-flex wb-flex-start wb-item-flexStart">
+	                <h5 class="wb-card-title">照片：</h5>
+	                <div id="imgUpdate" class="wb-update-img">
+						<img v-for="(imgObj,index1) in item.attachment" id="img+index" :src="imageUrl+imgObj.attachPath" @click="openPicture(index,index1)"  >
+	                </div>
+	            </div>
+	        </div>
+	        <div class="aui-padded-l-10 aui-padded-b-15">
+	            <div class="wb-list-item-inner">
+	                <a class="wb-list-item-title">保养人：<span class="aui-margin-l-10">{{ item.maintenance_person }}</span><span class="aui-margin-l-10">{{ item.maintenance_time }}</span></a>
+	            </div>
+	        </div>
+        </div>
+        <div class='noshuju' style="text-align:center;color:#999999;display:none;">没有数据啦</div>
+		<div class='to_load' style="text-align:center;color:#999999;display:none;">加载更多...</div>
+    </section>
+    <div class="routineDefaultImg" v-if="defaultDiv != ''">
+		<div class='defaultDiv-layout'>
+			<div class='defaultDiv'><img :src='defaultDiv' /></div>
+			<label style="">暂无保养记录</label>
+		</div>
+	</div>
+</div>
+</body>
+	<script type="text/javascript" src="../../script/api.js"></script>
+	<script type="text/javascript" src="../../config/config.js"></script>
+	<script type="text/javascript" src="../../script/vue.js"></script>
+	<script type="text/javascript" src="../../script/mint-ui.js"></script>
+	<script type="text/javascript" src="../../script/zepto.js"></script>
+	<script type="text/javascript" src="../../script/mobileSelect.js"></script>
+	<script type="text/javascript" src="../../script/umeng/zhuge.js"></script>
+<script type="text/javascript">
+
+  //����һ��������ֹ�ظ�����ajax
+		var preventAjaxRepeatSubmit = true;
+		var pageNo = 1,pageParam;;
+		var pageVue;
+		var paramObj = JSON.parse(localStorage.getItem('userObj'));
+		var UIDatePicker;
+		apiready = function() {
+			UIDatePicker = api.require('UIDatePicker');
+
+			apiEvents();
+			pageVue = new Vue({
+				el: '#detailApp',
+				data: function() {
+					return {
+						pageSize: 10,
+						pageNo: 1,
+						defaultDiv: "",
+						planStatus:api.pageParam.planStatus,
+						planId:api.pageParam.planId,
+						completedData:[],
+		               imageUrl:webapp_global.imageUrl,
+		               fileatt:[]
+					}
+				},
+				created: function() {
+					this.initData()
+				},
+				methods: {
+
+					openPicture(index,index1) {
+	                	var fileatt = this.completedData[index].attachment
+				        var passObj = {
+				            "index": index1,
+				            "attaches": fileatt,
+				            "flag":0
+				        }
+				        api.openWin({
+				            name: 'picture',
+				            url: './picture.html',
+				            rect: {
+				                x: 0,
+				                y: 0,
+				                w: 320,
+				                h: 480
+				            },
+				            pageParam: passObj,
+				            bounces: true,
+				            bgColor: 'rgba(0,0,0,0)',
+				            vScrollBarEnabled: true,
+				            hScrollBarEnabled: true
+				        });
+				    },
+
+					initData: function() {
+						if(preventAjaxRepeatSubmit) {
+							preventAjaxRepeatSubmit = false;
+							this.ajaxFun("first")
+						}
+						//�����̨����
+
+					},
+					ajaxFun: function(str) {
+						Vue.$indicator.open("加载中...");
+						var that = this,planId = this.planId,
+							pageNo = this.pageNo;
+
+						//�����̨
+						api.ajax({
+							url: webapp_global.url + "/maintenancePlanProcess/getMaintainList",
+							method: 'get',
+							dataType: "json",
+							data: {
+								values: {
+									maintenanceTaskId:planId,//"201812061817177239",
+									pageNo: pageNo,
+									pageSize: 10
+								}
+							}
+						}, function(ret, err) {
+							Vue.$indicator.close();
+							api.refreshHeaderLoadDone();
+							api.parseTapmode();
+							preventAjaxRepeatSubmit = true;
+							if(ret && ret.data) {
+								if(str != "first") {
+									if(ret.data.list.length == 0) {
+										$(".to_load").hide();
+										$(".noshuju").show();
+									} else {
+										that.completedData = that.completedData.concat(ret.data.list);
+										$(".to_load").show();
+										$(".noshuju").hide();
+									}
+								} else {
+									 that.completedData = ret.data.list;
+									if(!that.completedData) {
+										return
+									}
+									if(that.completedData.length == 0) {
+										that.defaultDiv = "../../image/defaultPage/noMaintenance.png";
+									} else {
+										that.defaultDiv = "";
+									}
+									if(ret.data.list.length > 9) {
+										setTimeout(function() {
+											$(".to_load").show();
+										}, 500)
+									} else {
+										$(".to_load").hide();
+									}
+								}
+
+							} else {
+								var connectionType = api.connectionType;
+								if(connectionType == "none") {
+									that.defaultDiv = "../../image/defaultPage/detectionNetwork.png"
+								}
+							}
+						})
+					},
+					deleAjaxFun(id,_index){
+						var that = this;
+						api.confirm({
+						    title: '删除保养记录',
+						    msg: '确定删除保养记录吗？'
+						}, function(ret, err) {
+						    var index = ret.buttonIndex;
+						    if(index=="2"){
+						    	api.ajax({
+									url: webapp_global.url + "/maintenancePlanProcess/deleteMaintainDetailById",
+									method: 'get',
+									dataType: "json",
+									data: {
+										values: {
+											id:id
+										}
+									}
+								}, function(ret, err) {
+									that.completedData.splice(_index, 1)
+								})
+						    }
+
+						});
+
+					}
+				}
+			})
+		};
+		function apiEvents() {
+			// ����ˢ�¡����������̨�ӿ�
+			api.setRefreshHeaderInfo({
+				visible: true,
+				bgColor: '#ccc',
+				textColor: '#fff',
+				textDown: '下拉刷新...',
+				textUp: '松开刷新...',
+				showTime: true
+			}, function(ret, err) {
+				pageVue.pageNo = 1;
+				$(".to_load").hide()
+				$(".noshuju").hide();
+				if(preventAjaxRepeatSubmit) {
+					preventAjaxRepeatSubmit = false;
+					pageVue.ajaxFun('first');
+				}
+
+			});
+
+			api.addEventListener({
+				name: 'scrolltobottom',
+				extra: {
+					threshold: 0
+				}
+			}, function(ret, err) {
+				pageVue.pageNo += 1;
+				setTimeout(function() {
+					pageVue.ajaxFun()
+				}, 500)
+			});
+
+			var connectionType = api.connectionType;
+			if(connectionType == "none") {
+				api.toast({
+					msg: '网络走丢了，请找回网络',
+					duration: 2000,
+					location: 'middle',
+					global: true
+				});
+			}
+			//�����豸�Ͽ�������¼����ַ�����
+			api.addEventListener({
+				name: 'offline'
+			}, function(ret, err) {
+				api.toast({
+					msg: '网络走丢了，请找回网络',
+					duration: 2000,
+					location: 'middle',
+					global: true
+				});
+			});
+			//�����豸���ӵ�������¼����ַ�����
+			api.addEventListener({
+				name: 'online'
+			}, function(ret, err) {
+				api.toast({
+					msg: '网络已经找回，请刷新页面',
+					duration: 2000,
+					location: 'middle',
+					global: true
+				});
+			});
+			//������ͼ
+			api.addEventListener({
+				name: 'updateRoutineList'
+			}, function(ret, err) {
+				pageVue.initData();
+			});
+			//ios右滑控制
+      api.addEventListener({
+        name:'swiperight'
+      }, function(ret, err){
+      });
+		}
+
+		function closeWin() {
+			api.closeWin({});
+		}
+
+</script>
+</html>

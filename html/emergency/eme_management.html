@@ -1,0 +1,1030 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>维保处置页面</title>
+		<link rel="stylesheet" href="../../css/api.css" />
+		<link rel="stylesheet" href="../../css/aui.css" />
+		<link rel="stylesheet" href="../../css/emergency/danger_management.css" />
+		<link rel="stylesheet" href="../../css/wbicon/style.css" />
+		<link rel="stylesheet" href="../../css/xficon/style.css" />
+		<style type="text/css">
+			body {
+				position: relative;
+				color: #333;
+				background-color: #eeeef5;
+			}
+
+			.aui-content-padded {
+				margin: .5rem 0;
+			}
+
+			.aui-list {
+				padding-top: .2rem;
+				padding-bottom: .5rem;
+			}
+
+			.aui-list .aui-list-item {
+				padding-left: .5rem;
+				margin-top: .5rem;
+				border: 0;
+				background: #fff;
+			}
+
+			.wb-flex {
+				display: -webkit-box;
+				display: -webkit-flex;
+				display: flex;
+				-webkit-box-pack: justify;
+				-webkit-justify-content: center;
+				justify-content: center;
+				-webkit-box-align: center;
+				-webkit-align-items: center;
+				align-items: center;
+			}
+
+			.wb-flex-start {
+				-webkit-justify-content: flex-start;
+				justify-content: flex-start;
+			}
+
+			.wb-item-flexStart {
+				-webkit-align-items: flex-start;
+				align-items: flex-start;
+			}
+
+			.wb-space-between {
+				-webkit-justify-content: space-between;
+				justify-content: space-between;
+			}
+
+			.aui-list textarea {
+				height: 4rem;
+				margin: 0;
+				padding: .5rem;
+				background-color: #fafafa;
+				border: 1px solid #e8e8e8;
+			}
+
+			.wb-card-list-header b {
+				color: #fd9905;
+				margin-left: -.2rem;
+				font-size: .9rem;
+				vertical-align: -2px;
+			}
+
+			.wb-list-item-inner {
+				width: 100%;
+				padding-right: .5rem;
+			}
+
+			.aui-list .aui-list-item-label {
+				width: 100%;
+				padding-right: 0;
+			}
+
+			.aui-list .aui-list-item-input {
+				padding-right: 0;
+			}
+
+			.wb-btn-content {
+				margin-top: 2rem;
+				padding-left: .8rem;
+				padding-right: .8rem;
+			}
+
+			.wb-btn-content .aui-btn-block.aui-btn-sm {
+				height: 2.2rem;
+				line-height: 2.2rem;
+			}
+
+			.wb-application-time>span {
+				display: block;
+			}
+
+			.wb-application-time>span:last-child {
+				font-size: .6rem;
+			}
+
+			.wb-application-text>span:first-child {
+				display: block;
+			}
+
+			.wb-card-title,
+			.wb-trouble-txt {
+				color: #333;
+			}
+
+			.wb-btn-content .wb-btn-primary {
+				color: #fff;
+				background-color: #ff961b !important;
+			}
+
+			.wb-btn-content .wb-btn-primary:hover,
+			.wb-btn-content .wb-btn-primary:focus {
+				color: #fff;
+				background-color: #fb8d0c !important;
+			}
+
+			.wb-aui-bg {
+				background-color: #fff;
+			}
+			/*照片*/
+
+			.wb-card-title {
+				padding-left: .5rem;
+			}
+
+			.wb-update-img img {
+				display: inline-block;
+				width: 3rem;
+				height: 3rem;
+				margin-right: .4rem;
+				border: 0;
+				background-color: #e0e0e0;
+			}
+
+			.wb-update-camrea {
+				display: inline-block;
+				width: 3rem;
+				height: 3rem;
+				text-align: center;
+				line-height: 3rem;
+				font-size: 2rem;
+				color: #999;
+				border: 1px dashed #efefef;
+				vertical-align: top;
+			}
+
+			.wb-update-image {
+				margin-top: .4rem;
+				padding-bottom: .5rem;
+			}
+
+			.wb-update-img {
+				margin-left: .2rem;
+			}
+
+			.wb-trouble-item {
+				display: inline-block;
+				padding: .1rem 1rem;
+				color: #fff;
+				border-radius: 15px;
+				background-color: #fff;
+			}
+
+			.wb-trouble-item.is-active {
+				color: #fff;
+				background-color: #ff961b;
+			}
+
+			.wb-pl {
+				padding: .5rem;
+			}
+			/*删除图片*/
+
+			.xf-carera-content li {
+				position: relative;
+				display: inline-block;
+				width: 3rem;
+				vertical-align: top;
+				margin-left: .3rem;
+			}
+
+			.xf-icon-imgDelete {
+				position: absolute;
+				right: -.2rem;
+				top: -.45rem;
+				color: red;
+			}
+
+			.xf-image-update {
+				display: inline-block;
+				width: 3rem;
+				height: 3rem;
+				text-align: center;
+				border: 1px solid #ddd;
+			}
+
+			.xf-image-icon {
+				font-size: 2rem;
+				line-height: 3rem;
+				color: #999;
+			}
+
+			.xf-iamge-model {
+				display: inline-block;
+				width: 3rem;
+				height: 3rem;
+			}
+			/*弹框*/
+
+			.wb-mask-container {
+				position: absolute;
+				top: 0;
+				left: 0;
+				right: 0;
+				bottom: 0;
+				background-color: rgba(0, 0, 0, .2);
+				display: none;
+				z-index: 999;
+			}
+
+			.wb-popup-content {
+				position: absolute;
+				top: 50%;
+				left: 50%;
+				width: 16rem;
+				height: 15rem;
+				transform: translate(-50%, -50%);
+				border-radius: .3rem;
+			}
+
+			.wb-popup-header {
+				padding: .3rem .5rem;
+				color: #fff;
+				background-color: #ffb865;
+				border-radius: .3rem .3rem 0 0;
+			}
+
+			.wb-popup-header h3 {
+				font-size: .8rem;
+			}
+
+			.wb-popup-body {
+				padding: .8rem 1rem;
+				background-color: #fff;
+				border-radius: 0 0 .3rem .3rem;
+				border: .1rem solid #ffb865;
+				border-top: 0;
+			}
+
+			.wb-notice-text {
+				margin-bottom: .3rem;
+				color: #ff6262;
+				font-size: .8rem;
+			}
+
+			.wb-notice-info {
+				line-height: 1.2rem;
+			}
+
+			.aui-btn {
+				border-radius: .1rem !important;
+			}
+
+			.aui-btn-warning {
+				color: #fff !important;
+				background-color: #ffb865 !important;
+			}
+
+			.aui-btn-warning.aui-active,
+			.aui-btn-warning:active {
+				color: #fff !important;
+				background-color: #ffb300 !important;
+			}
+
+			.aui-btn-default {
+				color: #fff !important;
+				background-color: #d6d6d6 !important;
+			}
+			.wbicon-voice{
+				position: absolute;
+			    float: right;
+			    right: 1px;
+			    margin-top: -24px;
+			    margin-right: 14px;
+			    color: #A0A0A0;
+			}
+		</style>
+	</head>
+
+	<body>
+		<header id="header">
+			<div class="header home active">
+				<div class="backBtn" tapmode onclick="back()"></div>
+				<div id="title" class="top-menu"></div>
+			</div>
+		</header>
+		<div class="wb-content">
+			<section class="aui-content-padded wb-aui-bg">
+				<ul class="aui-list aui-form-list">
+					<li class="aui-list-item">
+						<div class="wb-list-item-inner">
+							<div class="aui-list-item-label">问题定位</div>
+							<div class="aui-list-item-input">
+								<textarea id="danger-problem-location" placeholder="请添加针对故障的问题定位描述"></textarea>
+								<!--<b onclick="voiceInput('danger-problem-location')" class="wbicon-voice"></b>-->
+							</div>
+						</div>
+					</li>
+					<li class="aui-list-item">
+						<div class="wb-list-item-inner">
+							<div class="aui-list-item-label">处置描述</div>
+							<div class="aui-list-item-input">
+								<textarea id="danger-disposal-description" placeholder="请添加描述"></textarea>
+								<!--<b onclick="voiceInput('danger-disposal-description')" class="wbicon-voice"></b>-->
+							</div>
+						</div>
+					</li>
+					<li class="aui-list-item">
+						<div class="wb-list-item-inner">
+							<div class="aui-list-item-label">应急措施</div>
+							<div class="aui-list-item-input">
+								<textarea id="danger-emergency-measure" placeholder="请添加描述"></textarea>
+								<!--<b onclick="voiceInput('danger-emergency-measure')" class="wbicon-voice"></b>-->
+							</div>
+						</div>
+					</li>
+				</ul>
+				<!--照片-->
+				<div class="wb-update-image">
+					<div class="wb-flex wb-flex-start wb-item-flexStart">
+						<h5 class="wb-card-title">照片</h5>
+						<ul class="xf-carera-content" id="imgUpdate">
+							<li class="xf-image-update"><b class="wbicon-camera xf-image-icon" onclick="imageClick()"></b></li>
+						</ul>
+					</div>
+				</div>
+			</section>
+			<section class="aui-content-padded wb-aui-bg">
+				<div class="wb-pl">
+					<div class="wb-flex wb-space-between">
+						<a class="wb-trouble-txt">是否已经解决问题</a>
+						<div class="wb-trouble-type">
+							<a class="wb-trouble-item is-active" id="problem-state-yes" onclick="submitted_yes()">是</a>
+							<a class="wb-trouble-item aui-margin-l-5" id="problem-state-no" onclick="submitted_no()">否</a>
+						</div>
+					</div>
+				</div>
+			</section>
+			<!--按钮-->
+			<div class="aui-content-padded wb-btn-content">
+				<div class="aui-btn aui-btn-block aui-btn-warning aui-btn-sm wb-btn-primary" onclick="submitManagement()">提交</div>
+			</div>
+		</div>
+
+		<div id="emeFrame" class="wb-mask-container">
+			<div class="wb-popup-content">
+				<div class="wb-popup-header">
+					<h3>维保到场蓝牙校验提醒</h3>
+				</div>
+				<div class="wb-popup-body">
+					<h5 class="wb-notice-text"><b class="wbicon-noticeSolid aui-margin-r-10"></b>当前没有完成维保到场校验。</h5>
+					<p class="wb-notice-info">请在手机蓝牙开启状态下完成校验。校验点可在“我的业主单位-维保到场校验点”查看。</p>
+					<div class="aui-text-center aui-margin-t-15 aui-margin-b-5">
+						<div id="goVerification" class="aui-btn aui-btn-warning">去验证</div>
+						<div id="ignoreBtn" class="aui-btn aui-btn-default aui-margin-l-15">忽略，继续提交</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<script type="text/javascript" src="../../script/api.js"></script>
+		<script type="text/javascript" src="../../config/config.js"></script>
+		<script type="text/javascript" src="../../script/zepto.js"></script>
+		<script type="text/javascript" src="../../script/umeng/zhuge.js"></script>
+		<script type="text/javascript" src="../../script/iphoneX.js"></script>
+		<script>
+			//定义一个变量防止重复请求ajax
+			var preventAjaxRepeatSubmit = true;
+			var bleState = false; //蓝牙激活状态
+			var ble, unitBleDataArr; //蓝牙模块
+			var interval; //蓝牙巡回
+			var base64Arr = []; //存放附件照片信息
+			var pageOptions = {}; //所有数据
+			var handleRecordObj = {}; //存放单条处置记录
+			var one = document.getElementById("problem-state-yes");
+			var two = document.getElementById("problem-state-no");
+			var userObj = localStorage.getItem("userObj");
+			var newMark = false;
+			if(typeof userObj == "string") {
+				userObj = JSON.parse(userObj);
+			}
+			apiready = function() {
+				iphoneXfit();
+				if(!userObj) {
+					api.closeFrame({
+						name: 'main'
+					});
+					api.closeFrame({
+						name: 'frm_user'
+					});
+					api.closeWin({
+						name: "index"
+					})
+					api.openWin({
+						name: 'login',
+						url: '../../html/login.html',
+						bounces: false
+					})
+				}
+				pageOptions = api.pageParam;
+				$api.byId('title').innerHTML = pageOptions.orderId;
+				initEvents();
+				//蓝牙流程处理
+				bleOperation();
+				if(pageOptions.accidentId) {
+					newMark = true
+				}
+			}
+			//是否已经解决问题
+			submitted_yes();
+
+			function submitted_yes() {
+				one.style.background = "rgba(255, 150, 27, 1)";
+				two.style.background = "#ccc";
+				handleRecordObj.solved = 1;
+			}
+			////是否已经解决问题-否
+			function submitted_no() {
+				one.style.background = "#ccc";
+				two.style.background = "rgba(255, 150, 27, 1)";
+				handleRecordObj.solved = 0;
+			}
+			//上传照片
+			function imageClick() {
+				api.actionSheet({
+					cancelTitle: '取消',
+					buttons: ['拍照', '从相册选择']
+				}, function(ret, err) {
+					var index = ret.buttonIndex;
+					if(index == 1) {
+						photograph();
+					} else if(index == 2) {
+						gallery();
+					}
+				});
+			};
+			//拍照
+			function photograph() {
+				api.getPicture({
+					sourceType: 'camera',
+					encodingType: 'jpg',
+					mediaValue: 'pic',
+					destinationType: 'url',
+					allowEdit: true,
+					quality: 50,
+					saveToPhotoAlbum: false
+				}, function(ret, err) {
+					if(ret) {
+						var tempData = ret.data;
+						if(tempData == '') {
+							return
+						}
+						var res = tempData.split('/');
+						base64Arr.push(tempData);
+						showImgList(base64Arr)
+					} else {
+					}
+				});
+			}
+
+			//从图库选择
+			function gallery() {
+				api.getPicture({
+					sourceType: 'album',
+					encodingType: 'jpg',
+					mediaValue: 'pic',
+					destinationType: 'url',
+					allowEdit: true,
+					quality: 50,
+					saveToPhotoAlbum: false
+				}, function(ret, err) {
+					if(ret) {
+						var tempData = ret.data;
+						if(tempData == '') {
+							return
+						}
+						var res = tempData.split('/');
+						base64Arr.push(tempData);
+						showImgList(base64Arr)
+					} else {
+//						api.toast({
+//							msg: '网络异常，请设置网络连接！',
+//							location: 'bottom'
+//						});
+					}
+				});
+			}
+			//展示照片数组
+			function showImgList(arr) {
+				var tpl = "";
+				for(var i = 0; i < arr.length; i++) {
+					var temp = "";
+					temp = imgTpl(arr[i], i)
+					tpl += temp
+				}
+				if(arguments[1]) {
+					//  tpl += '<li  class ="display"><img src="../../image/public/1_06.jpg"  class="xf-picture--add_icon" onclick="imageClick()" ><small>上传照片</small></li>' ;
+				} else {
+
+					tpl += '<li class="wb-update-camrea"><b class="wbicon-camera" onclick="imageClick()"></b></li>';
+				}
+				$('#imgUpdate').html(tpl)
+			}
+			//拼接照片数据
+			function imgTpl(src, index, type) {
+				if(!src) return ""
+				var tempId = random();
+				var tpl = '<li id=' + tempId + ' ><a><img class="xf-iamge-model"  src="' + src + '" onclick="openPicture(' + index + ')"  ></a><em onclick="deleteImg(\'' + src + '\',\'' + tempId + '\')" class="xficon-forbindden xf-icon-imgDelete"></em></li>';
+				return tpl
+			}
+
+			function random() {
+				var len = len || 32;
+				var chars = 'ABCDEFGHJKMNPQRSTWXYZabcdefhijkmnprstwxyz2345678';
+				var maxPos = chars.length;
+				var pwd = '';
+				for(var i = 0; i < len; i++) {
+					pwd += chars.charAt(Math.floor(Math.random() * maxPos));
+				}
+				return pwd
+			}
+
+			function deleteImg(src, div) {
+				$("#" + div).remove()
+				if(base64Arr.length > 0) {
+					for(var i = 0; i < base64Arr.length; i++) {
+						if(base64Arr[i] == src) {
+							base64Arr.splice(i, 1);
+						}
+					}
+				}
+			}
+			//提交处置详情
+			function submitManagement() {
+				var paramObj = JSON.parse(localStorage.getItem('userObj'));
+				//获取所有信息，提交最新处置信息，返回隐患详情添加一条记录;
+				//问题定位
+				handleRecordObj.problemFix = document.getElementById("danger-problem-location").value.trim();
+				if(!handleRecordObj.problemFix) {
+					api.toast({
+						msg: '问题定位不能为空',
+						duration: 2000,
+						location: 'bottom'
+					});
+					return
+				}
+				//处置描述
+				handleRecordObj.maintenanceDesc = document.getElementById("danger-disposal-description").value;
+				if(!handleRecordObj.maintenanceDesc) {
+					api.toast({
+						msg: '处置描述不能为空',
+						duration: 2000,
+						location: 'bottom'
+					});
+					return
+				}
+				//应急措施
+				handleRecordObj.emergencyHandle = document.getElementById("danger-emergency-measure").value;
+				handleRecordObj.serviceman = "维保人";
+				//				handleRecordObj.attachment = imageArr;
+				handleRecordObj.time = new Date().toString();
+				if(handleRecordObj.solved == 0) {
+					if(!handleRecordObj.emergencyHandle) {
+						api.toast({
+							msg: '应急措施不能为空',
+							duration: 2000,
+							location: 'bottom'
+						});
+						return
+					}
+				}
+
+				if(base64Arr.length == 0) {
+					api.toast({
+						msg: '图片不能为空',
+						duration: 2000,
+						location: 'bottom'
+					});
+					return
+				}
+				//是否使用蓝牙
+				var bool = pageOptions.isUseBle;
+				if(bool) {
+					if(!bleState) {
+						//弹出询问框
+						$("#emeFrame").css("display", "block");
+						$("#goVerification").unbind("click");
+						$("#ignoreBtn").unbind("click");
+						$("#goVerification").on("click", function() {
+							$("#emeFrame").css("display", "none");
+						})
+						$("#ignoreBtn").on("click", function() {
+							$("#emeFrame").css("display", "block");
+							addHandling();
+						})
+					} else {
+						//激活过直接提交
+						addHandling();
+					}
+				} else {
+					//没有使用蓝牙
+					addHandling();
+				}
+				//点击提交 埋点
+				if(handleRecordObj.solved == 1) {
+					// 提交应急维保处置页
+					var objs={
+						orderId_var:pageOptions.orderId,
+						orderType_var:pageOptions.orderType,
+						orderState_var:'维保已完成'
+					}
+					if(pageOptions.orderType=='2'){
+						objs.orderType_var ="隐患提交"
+					}else{
+						objs.orderType_var ="手动提交"
+					}
+					growingIoAddEvent('submitEmergencyMaintenanceHandlePage',objs);
+
+				} else if(handleRecordObj.solved == 0) {
+					//点击了否
+				}
+				console.log(JSON.stringify(pageOptions))
+
+
+			}
+			//保存处置记录
+			function addHandling() {
+				if(preventAjaxRepeatSubmit){
+					preventAjaxRepeatSubmit = false;
+					api.ajax({
+						url: webapp_global.url + "/maintenance/order/addHandling",
+						method: 'post',
+						dataType: "json",
+						timeout:20,
+						data: {
+							values: {
+								orderId: pageOptions.orderId,
+								dangerId: pageOptions.accidentId,
+								maintenanceUserId: userObj.userid,
+								maintenanceUser: userObj.loginName,
+								problemFix: document.getElementById("danger-problem-location").value,
+								maintenanceDesc: document.getElementById("danger-disposal-description").value,
+								emergencyHandle: document.getElementById("danger-emergency-measure").value,
+								solved: handleRecordObj.solved
+							},
+							files: {
+								files: base64Arr
+							}
+						}
+					}, function(ret, err) {
+						preventAjaxRepeatSubmit = true;
+						back();
+						if(ret) {
+							if(!newMark) { //没隐患
+								api.sendEvent({
+									name: 'noDangerSolve',
+									extra: {
+										obj: pageOptions.orderId,
+									}
+								});
+							} else {
+
+
+								//解决
+								if(handleRecordObj.solved == 1) {
+									// 提交处置，已解决完成应急维保
+
+									api.sendEvent({
+										name: 'dangerSolve',
+										extra: {
+											obj: pageOptions.orderId,
+										}
+									});
+								}
+								//未解决
+								if(handleRecordObj.solved == 0) {
+									api.sendEvent({
+										name: 'dangerNoSolve',
+										extra: {
+											obj: pageOptions
+										}
+									});
+								}
+							}
+						} else {
+						}
+					})
+				}
+			}
+
+			function openPicture(index) {
+				var res;
+				res = base64Arr;
+
+				var passObj = {
+					"index": index,
+					"attaches": res,
+					"flag": 1
+				}
+				api.openWin({
+					name: 'picture',
+					url: './picture.html',
+					rect: {
+						x: 0,
+						y: 0,
+						w: 320,
+						h: 480
+					},
+					pageParam: passObj,
+					bounces: true,
+					bgColor: 'rgba(0,0,0,0)',
+					vScrollBarEnabled: true,
+					hScrollBarEnabled: true
+				});
+			}
+			//蓝牙相关操作
+			function bleOperation() {
+				//需不需要蓝牙处理流程
+				var bool = pageOptions.isUseBle;
+				if(bool) { //蓝牙处理
+					api.ajax({
+						url: webapp_global.url + "/maintenance/checkBluetoothIsConnected",
+						method: 'get',
+						data: {
+							values: {
+								taskId: pageOptions.orderId,
+								maintenanceUserId: userObj.userid
+							}
+						}
+					}, function(ret, err) {
+						if(ret) {
+							var code = ret["code"];
+							if(code == "success") {
+								var data = ret["data"];
+								if(data.isConnected) {
+									//isConnected 0:没连接 1:连接过
+									if(data.isConnected == 1) {
+										bleState = true;
+									} else {
+										bleState = false;
+										//初始化蓝牙匹配业主单位
+										queryUnitBle();
+									}
+								} else {
+									bleState = false;
+									//初始化蓝牙匹配业主单位
+									queryUnitBle();
+								}
+							} else {
+								//请求失败
+								bleState = false;
+								//初始化蓝牙匹配业主单位
+								queryUnitBle();
+							}
+						}
+					})
+
+					//					$.ajax({
+					//						type: "get",
+					//						url: webapp_global.url + "/maintenance/checkBluetoothIsConnected",
+					//						data: {
+					//							taskId: pageOptions.orderId,
+					//							maintenanceUserId: userObj.userid
+					//						},
+					//						success(ret) {
+					//							if(ret) {
+					//								var code = ret["code"];
+					//								if(code == "success") {
+					//									var data = ret["data"];
+					//									if(data.isConnected) {
+					//										//isConnected 0:没连接 1:连接过
+					//										if(data.isConnected == 1) {
+					//											bleState = true;
+					//										} else {
+					//											bleState = false;
+					//											//初始化蓝牙匹配业主单位
+					//											queryUnitBle();
+					//										}
+					//									} else {
+					//										bleState = false;
+					//										//初始化蓝牙匹配业主单位
+					//										queryUnitBle();
+					//									}
+					//								} else {
+					//									//请求失败
+					//									bleState = false;
+					//									//初始化蓝牙匹配业主单位
+					//									queryUnitBle();
+					//								}
+					//							}
+					//						},
+					//						error(msg) {}
+					//					});
+				}
+			}
+			//查询业主单位蓝牙数据
+			function queryUnitBle() {
+				api.ajax({
+					url: webapp_global.url + "/maintenance/getEnterpriseBluetoothList",
+					method: 'get',
+					data: {
+						values: {
+							unitId: pageOptions.proprietorId
+						}
+					}
+				}, function(ret, err) {
+					if(ret) {
+						var code = ret["code"];
+						if(code == "success") {
+							var data = ret["data"];
+							unitBleDataArr = data;
+							var serviceUUIDs = [];
+							if(data && data.length > 0) {
+								for(var i = 0; i < data.length; i++) {
+									serviceUUIDs.push(data[i].bluetoothId);
+								}
+							}
+							initBle(serviceUUIDs);
+						}
+					}
+				})
+
+				//				$.ajax({
+				//					url: webapp_global.url + "/maintenance/getEnterpriseBluetoothList",
+				//					method: 'get',
+				//					dataType: "json",
+				//					timeout: 3000,
+				//					data: {
+				//						unitId: pageOptions.proprietorId
+				//					},
+				//					success(ret) {
+				//						if(ret) {
+				//							var code = ret["code"];
+				//							if(code == "success") {
+				//								var data = ret["data"];
+				//								unitBleDataArr = data;
+				//								var serviceUUIDs = [];
+				//								if(data && data.length > 0) {
+				//									for(var i = 0; i < data.length; i++) {
+				//										serviceUUIDs.push(data[i].bluetoothId);
+				//									}
+				//								}
+				//								initBle(serviceUUIDs);
+				//							}
+				//						}
+				//					},
+				//					error(msg) {}
+				//				})
+			}
+			//初始化蓝牙进行扫描
+			function initBle(serviceUUIDs) {
+				ble = api.require('ble');
+				ble.initManager(function(ret) {
+					if(ret.state == "poweredOn") {
+						interval = setInterval(function() {
+							ble.scan({
+								serviceUUIDs: []
+							}, function(ret1) {
+								if(ret1.status) {
+									ble.getPeripheral(function(ret3) {
+										if(ret3) {
+											if(ret3.peripherals.length > 0) {
+												var arr = ret3.peripherals;
+												//和业主单位蓝牙进行匹配
+												if(arr.length > 0) {
+													bleDataFn(arr);
+												}
+											}
+										}
+									});
+								}
+							});
+						}, 5000)
+					}
+				});
+			}
+			//匹配数据
+			function bleDataFn(bleArr) {
+				if(bleArr.length > 0 && unitBleDataArr.length > 0) {
+					for(var i = 0; i < bleArr.length; i++) {
+						for(var j = 0; j < unitBleDataArr.length; j++) {
+							if(bleArr[i].uuid == unitBleDataArr[j].bluetoothId) {
+								//存储数据
+								saveBleData(unitBleDataArr[j]);
+							}
+						}
+					}
+				}
+			}
+			//存储蓝牙数据
+			function saveBleData(unitBleData) {
+				if(bleState) {
+					if(ble) {
+						//停止搜索附近的蓝牙设备
+						ble.stopScan();
+						//清空模块当前缓存的所监听蓝牙设备的所有数据
+						ble.clearAllSimpleNotifyData();
+					}
+					return;
+				}
+				api.ajax({
+					url: webapp_global.url + "/maintenance/addBluetoothConnect",
+					method: 'post',
+					async: false,
+					data: {
+						values: {
+							maintenanceOrgId: userObj.orgId,
+							maintenanceUserId: userObj.userid,
+							taskId: pageOptions.orderId,
+							taskType: "1", //1:是应急维保，2:例行维保
+							proprietorId: unitBleData.unitId,
+							proprietorName: unitBleData.unitName,
+							buildId: unitBleData.buildId,
+							buildName: unitBleData.buildName,
+							floorId: unitBleData.floorId,
+							floorName: unitBleData.floorName,
+							bluetoothId: unitBleData.bluetoothId,
+							deviceName: "蓝牙",
+							deviceAddress: unitBleData.deviceAddress,
+						}
+					}
+				}, function(ret, err) {
+					if(ret) {
+						var code = ret["code"];
+						if(code == "success") {
+							//修改本条数据蓝牙的状态
+							bleState = true;
+							if(ble) {
+								//停止搜索附近的蓝牙设备
+								ble.stopScan();
+								//清空模块当前缓存的所监听蓝牙设备的所有数据
+								ble.clearAllSimpleNotifyData();
+							}
+							api.toast({
+								msg: '蓝牙激活成功',
+								location: 'bottom'
+							});
+						}
+					}
+				})
+
+//				$.ajax({
+//					type: "post",
+//					url: webapp_global.url + "/maintenance/addBluetoothConnect",
+//					async: false,
+//					data: {
+//						maintenanceOrgId: userObj.orgId,
+//						maintenanceUserId: userObj.userid,
+//						taskId: pageOptions.orderId,
+//						taskType: "1", //1:是应急维保，2:例行维保
+//						proprietorId: unitBleData.unitId,
+//						proprietorName: unitBleData.unitName,
+//						buildId: unitBleData.buildId,
+//						buildName: unitBleData.buildName,
+//						floorId: unitBleData.floorId,
+//						floorName: unitBleData.floorName,
+//						bluetoothId: unitBleData.bluetoothId,
+//						deviceName: "蓝牙",
+//						deviceAddress: unitBleData.deviceAddress,
+//					},
+//					success(ret) {
+//						if(ret) {
+//							var code = ret["code"];
+//							if(code == "success") {
+//								//修改本条数据蓝牙的状态
+//								bleState = true;
+//								if(ble) {
+//									//停止搜索附近的蓝牙设备
+//									ble.stopScan();
+//									//清空模块当前缓存的所监听蓝牙设备的所有数据
+//									ble.clearAllSimpleNotifyData();
+//								}
+//								api.toast({
+//									msg: '蓝牙激活成功',
+//									location: 'bottom'
+//								});
+//							}
+//						}
+//					},
+//					error(err) {}
+//				});
+			}
+			//初始化监听事件
+			function initEvents() {
+				api.addEventListener({
+					name: 'keyback'
+				}, function(ret, err) {
+					back();
+				});
+			}
+			//返回
+			function back() {
+				if(ble) {
+					ble.stopScan();
+					//清空模块当前缓存的所监听蓝牙设备的所有数据
+					ble.clearAllSimpleNotifyData();
+				}
+				if(interval) {
+					window.clearInterval(interval);
+					interval = undefined;
+				}
+				api.closeWin();
+			}
+		</script>
+	</body>
+
+</html>

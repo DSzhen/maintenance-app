@@ -1,0 +1,410 @@
+<!DOCTYPE HTML>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+		<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+		<title>搜索</title>
+		<link rel="stylesheet" type="text/css" href="../css/api.css" />
+		<style type="text/css">
+			html {
+				height: 100%;
+				background-color: #FFFFFF;
+			}
+
+			body {
+				background-color: #FFFFFF;
+				padding: 0;
+				margin: 0;
+				display: -webkit-box;
+				height: 100%;
+				-webkit-box-orient: vertical;
+			}
+
+			body {
+				height: 100%;
+				display: flex;
+				display: -webkit-flex;
+				display: -webkit-box;
+				flex-flow: column;
+				-webkit-flex-flow: column;
+				-webkit-box-orient: vertical;
+			}
+
+			.header {
+				height: 57px;
+				width: 100%;
+				display: block;
+				line-height: 57px;
+				padding-top: 11px;
+				font-size: .8rem;
+			}
+
+			.header.active {
+				display: block;
+			}
+
+			.top-menu {
+				text-align: center;
+				color: #fff;
+				font-weight: bold;
+			}
+
+			.right-menu {
+				position: absolute;
+				right: 10px;
+				top: 0.5rem;
+			}
+
+			.right-menu img {
+				width: 1.2rem
+			}
+
+			.btn {
+				height: 40px;
+				width: 35px;
+				position: absolute;
+				right: 0;
+				bottom: 0;
+			}
+
+			.header.home>div.active {
+				opacity: 1;
+			}
+
+			.header.home {
+				/*background: -moz-linear-gradient(top, #febd00 0%, #ff951b 100%);
+				background: -webkit-gradient(linear, left top, right bottom, color-stop(0%, #febd00), color-stop(100%, #ff951b));
+				background: -webkit-linear-gradient(top, #febd00 0%, #ff951b 100%);
+				background: -o-linear-gradient(top, #febd00 0%, #ff951b 100%);
+				background: -ms-linear-gradient(top, #febd00 0%, #ff951b 100%);
+				background: linear-gradient(to top, #febd00 0%, #ff951b 100%);*/
+				background-color: #ff961b;
+			}
+
+			.header.home .top-menu>div {
+				color: #fff;
+				opacity: .8;
+			}
+
+			.header.home .top-menu>div.active {
+				opacity: 1;
+			}
+
+			.left_back {
+				position: absolute;
+				left: 10px;
+				top: 5px;
+			}
+
+			.search {
+				width: 96%;
+				margin: 0 auto;
+				margin-top: 10px;
+			}
+
+			.search_div {
+				margin-top: 20px;
+				padding: 5px 15px;
+				display: flex;
+				border: #ddd solid 1px;
+				border-radius: 100px;
+			}
+
+			.search_left {
+				flex: 1;
+			}
+
+			.search_div .search_input {
+				border: #fff solid 1px;
+				padding: 3px 0;
+				width: 100%;
+				background-color: #fff;
+				outline: none;
+			}
+
+			.search_div .search_span {
+				color: #f00;
+				font-size: 16px;
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				margin-left: 20px;
+			}
+
+			.div-flex {
+				display: flex;
+			}
+
+			.flex-wrap {
+				flex-wrap: wrap;
+			}
+
+			.p1 {
+				display: inline-block;
+				font-weight: bold;
+				font-size: 17px;
+				color: #666;
+				flex: 1;
+			}
+
+			.m-t20 {
+				margin-top: 20px;
+			}
+
+			.flex_span {
+				display: inline-block;
+				border: #ddd solid 1px;
+				border-radius: 5px;
+				padding: 5px;
+				float: left;
+				margin: 3px;
+			}
+
+			.ju-center {
+				justify-content: center;
+				align-items: center;
+			}
+
+			.show_record_cor {
+				position: absolute;
+				top: 50px;
+				left: 0;
+				right: 0;
+				bottom: 0;
+				background-color: #fff;
+				z-index: 2;
+			}
+
+			.ovfl {
+				height: 90%;
+				overflow: auto;
+			}
+
+			.cur_this {
+				border-top: #ddd solid 1px;
+				font-size: 14px;
+				color: #666;
+			}
+
+			.show_record ul li span,
+			.cur_this span {
+				display: block;
+				border-bottom: #ddd solid 1px;
+				padding: 10px;
+			}
+
+			.show_record ul li span:active,
+			.cur_this span:active {
+				background-color: #ccc;
+			}
+
+			.pd5_10 {
+				padding: 5px 10px;
+			}
+
+			.nodata {
+				text-align: center;
+				font-size: 14px;
+				color: #666;
+				padding: 20px;
+			}
+
+			i {
+				font-style: normal;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div class="search">
+			<!--  -->
+			<div>
+				<div class="search_div">
+					<div class='search_left'>
+						<input type="text" id="keyworks" onkeyup='set_search($(this))' placeholder='请输入业主单位，维保单号' class='search_input' name="keyworks" value="">
+					</div>
+					<span class="search_span" onclick="back()">取消</span>
+				</div>
+				<div class="show_record m-t20">
+					<p class="pd5_10" id="search_result_text" style="display:none">搜索结果</p>
+					<div class="ovfl">
+						<p class="cur_this" onclick='to_search_i($(this))'></p>
+						<ul id="append_li"></ul>
+					</div>
+				</div>
+			</div>
+			<!--  -->
+			<div class="" id="no_cookie" style="display:none">
+				<div class="div-flex m-t20" style="padding:5px">
+					<p class="flex1 p1">历史搜索</p>
+					<span class="div-flex ju-center" onclick="del()">
+					<img src="../image/del_search.png" style="width:16px" alt=""></span>
+				</div>
+				<div class="div-flex flex-wrap  m-t20" id='record'>
+				</div>
+			</div>
+		</div>
+
+	</body>
+	<script type="text/javascript" src="../script/api-lite.js"></script>
+	<script type="text/javascript" src="../config/config.js"></script>
+	<script type="text/javascript" src="../script/zepto.js"></script>
+	<script type="text/javascript" src="../script/iscroll.js"></script>
+	<script type="text/javascript" src="../script/umeng/zhuge.js"></script>
+	<script type="text/javascript">
+		apiready = function() {
+			apiEvents()
+			// 弹出键盘
+			open_key()
+		}
+		// 删除记录
+		function del() {
+			api.confirm({
+				title: '提示',
+				msg: '要删除历史记录吗?',
+				buttons: ['确定', '取消']
+			}, function(ret, err) {
+				var index = ret.buttonIndex;
+				if(index == 1) {
+					localStorage.setItem('search_arry_arr', '');
+					alert('删除成功')
+					show_cokie()
+				}
+			});
+		}
+		// 输入键盘事件
+		function set_search(that) {
+			//进行应急维保模糊查询
+			console.log('实际进行应急维保模糊查询时触发')
+			growingIoAddEvent('emergencyMaintenanceSearch')
+
+			$(".cur_this").html("<span>当前输入：<i>" + that.val() + "</i></span>")
+			if(that.val()) {
+				$(".show_record").addClass("show_record_cor");
+				$("#search_result_text").show()
+				$(".show_record").show()
+				toGet(that.val())
+			} else {
+				$(".show_record").hide()
+				$("#search_result_text").hide()
+				$(".show_record").removeClass("show_record_cor")
+			}
+		}
+
+		function toGet(val) {
+			var userObj = localStorage.getItem("userObj");
+			if(typeof userObj == "string") {
+				userObj = JSON.parse(userObj);
+			}
+
+			$("#append_li").html('<span style="font-size:14px;color:#666; padding:10px; text-align:center;width:100%;display:inline-block;">搜索中...</span>')
+			url = webapp_global.url + "/maintenance/getOrderIdOrProprietorName?params=" + val + "&userId=" + userObj.userid,
+				api.ajax({
+					url: url,
+					method: 'get',
+					dataType: "json",
+					timeout: 20
+				}, function(ret, err) {
+					if(ret.data.length > 0) {
+						var ht = ''
+						for(var i = 0; i < ret.data.length; i++) {
+							ht += "<li onclick='to_search($(this))'><span>" + ret.data[i] + "</span></li>"
+						}
+						$("#append_li").html(ht)
+					} else {
+						$("#append_li").html('<li><span class="nodata">暂无其他匹配数据</span></li>')
+					}
+				})
+		}
+		// 点击搜索内容得事件
+		function to_search(that) {
+			toHeavy(that.text())
+		}
+
+		function to_search_i(that) {
+			toHeavy(that.find("i").text())
+		}
+		// 存入缓存
+		function toHeavy(data) {
+			var po = 0;
+			var search_arry = localStorage.getItem('search_arry_arr');
+			if(search_arry) {
+				search_arry = search_arry.split(',');
+				for(var i = 0; i < search_arry.length; i++) {
+					if(data == search_arry[i]) {
+						po++
+					}
+				};
+			}
+			// if(po==0){
+			if(search_arry) {
+				search_arry.push(data);
+			} else {
+				search_arry = []
+				search_arry.push(data);
+			}
+			// }
+			localStorage.setItem('search_arry_arr', search_arry);
+			var getSear = localStorage.getItem('search_arry_arr');
+			api.openWin({
+				name: 'search_bar',
+				url: 'emergency/eme_all_search.html',
+				bounces: false,
+				bgColor: 'rgba(0,0,0,0.6)',
+				rect: {
+					x: 0,
+					y: api.winHeight,
+					w: 'auto',
+					h: api.winHeight - 43
+				},
+				vScrollBarEnabled: true,
+				hScrollBarEnabled: true,
+				pageParam: {
+					val: data
+				}
+			});
+		};
+		// 初始化弹出键盘
+		function open_key() {
+			var softInput = api.require('softInputMgr');
+			setTimeout(function() {
+				softInput.toggleKeyboard();
+				document.getElementById("keyworks").focus()
+			}, 500)
+		}
+		// 返回，关闭搜索
+		function back() {
+			api.closeWin();
+		}
+		//从缓存去=取出历史记录
+		function show_cokie() {
+			var getSear = localStorage.getItem('search_arry_arr')
+			if(!getSear) {
+				$("#no_cookie").hide()
+			} else {
+				$("#no_cookie").show()
+				var this_html = '';
+				getSear = getSear.split(',');
+				var temp = []; //一个新的临时数组
+				for(var i = getSear.length; i >= 0; i--) {
+					if(temp.indexOf(getSear[i]) == -1) {
+						temp.push(getSear[i]);
+					}
+				}
+				for(var i = 0; i < temp.length; i++) {
+					if(temp[i]) {
+						this_html += '<span class="flex_span" onclick="to_search($(this))">' + temp[i] + '</span>'
+					}
+				}
+				$("#record").html(this_html);
+			}
+		}
+		// 初始化数据
+		function apiEvents() {
+			show_cokie();
+		};
+	</script>
+
+</html>

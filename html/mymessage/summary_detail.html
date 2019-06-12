@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+		<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+		<title>一周小结</title>
+		<link rel="stylesheet" type="text/css" href="../../css/api.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/aui.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/gg.css" />
+		<link rel="stylesheet" href="../../css/mint-ui.css" />
+		<style>
+			html,
+			body {
+				height: 100%;
+				display: flex;
+				display: -webkit-flex;
+				display: -webkit-box;
+				flex-flow: column;
+				-webkit-flex-flow: column;
+				-webkit-box-orient: vertical;
+				background-color: #f6f6f6;
+			}
+			
+			.summary_head {
+				width: 30px;
+				height: 30px!important;
+			}
+			
+			.summary_time_p {
+				line-height: 1.6;
+				background-color: #d1d1d1;
+				color: #fff;
+				display: inline-block;
+				padding: .1rem .3rem;
+			}
+			
+			.summary_p1 {
+				color: #999999;
+				font-size: .7rem;
+			}
+			
+			.summary_p2 {
+				color: #727272;
+			}
+			
+			.summary_p3 {
+				color: #ff961b;
+				margin-top: 10px;
+				line-height: 1.5!important;
+				font-weight: 600;
+				padding-bottom: 5px;
+				font-size: .8rem;
+			}
+			
+			.share_img {
+				display: inline-block;
+				width: 25px!important;
+				height: 25px!important;
+			}
+			
+			.p-l40px {
+				padding-left: 40px;
+			}
+			
+			[v-cloak] {
+				display: none;
+			}
+			
+			.pdtop10px {
+				padding-top: 30px!important;
+				padding-bottom: 30px!important;
+			}
+			
+			.bg_div {
+				margin-top: 2rem;
+				background-color: #f6f6f6;
+			}
+			
+			.fs14 {
+				font-size: .6rem;
+			}
+			
+			.color000 {
+				color: #000!important;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div id="cro_div" class="bg_div setopacity1">
+			<div class="pd20 setopacity" style="padding-bottom:5px; padding-top:10px;">
+				<img onclick="back()" class="img_width20 " style="width:18px;" src="../../image/arrows_down.png" alt="">
+			</div>
+			<div id="content" v-cloak>
+				<div style="padding: 1rem 2rem; padding-top:.2rem; padding-bottom:.5rem;" id="cro">
+					<div class="bg-white pd20">
+						<div class="div-flex" style="padding-bottom:0rem;">
+							<div class="">
+								<img class="border-radius50 summary_head" :src="headUrl" onerror="javascript:this.src='../../image/weibao.png'" alt="">
+							</div>
+							<p class="flex1 div-flex left-center color_72 m-l10px">一周小结&nbsp;&nbsp;&nbsp;&nbsp;{{datalist.startTime}}—{{datalist.endTime}}</p>
+						</div>
+						<div class=" div-flex ">
+							<div class="summary_p3 text-center" style="width:40px;">
+								<span>"</span>
+							</div>
+							<div class="summary_p3 flex1">{{datalist.more}}</div>
+						</div>
+						<div class="div-flex pd5 p-l40px" style="margin-top:2px;">
+							<div class="flex1">
+								<p class="summary_p1">处理故障</p>
+								<p class="color000">{{datalist.solveFaultCount}}个</p>
+							</div>
+							<div class="flex1">
+								<p class="summary_p1">响应应急维保</p>
+								<p class="color000">{{datalist.orderCount}}次</p>
+							</div>
+						</div>
+						<div class="div-flex m-t10 pd5 p-l40px">
+							<div class="flex1">
+								<p class="summary_p1">完成例行维保</p>
+								<p class="color000">{{datalist.planCount}}次</p>
+							</div>
+							<div class="flex1">
+								<p class="summary_p1">完成应急维保</p>
+								<p class="color000">{{datalist.orderCount}}次</p>
+							</div>
+						</div>
+						<div class="div-flex m-t10 pd5 p-l40px">
+							<div class="flex1">
+								<p class="summary_p1">总共花了</p>
+								<p class="color000">{{datalist.sumTime}}</p>
+							</div>
+						</div>
+						<div class="div-flex m-t10 pd5 p-l40px">
+							<div class="flex1">
+								<p class="summary_p2 color000">打败了全国{{datalist.scale}}的用户</p>
+							</div>
+						</div>
+						<div class=" m-t10 pd5 text-center">
+							<img src="../../image/message_img/wechat.png" style='width:4rem;height:4rem;display:inline-block;' alt="">
+							<p class="summary_p1">云服公众号</p>
+						</div>
+					</div>
+				</div>
+				<div style="padding: 0rem 2rem;" class="setopacity">
+					<div class="div-flex ">
+						<div class="flex1 text-center" onclick="share_friend(1)">
+							<img src="../../image/message_img/wechat-friend.png" class="share_img" alt="">
+							<p class="fs14">分享到朋友圈</p>
+						</div>
+						<div class="flex1 text-center" onclick="share_friend(2)">
+							<img src="../../image/message_img/download.png" class="share_img" alt="">
+							<p class="fs14">保存到相册</p>
+						</div>
+					</div>
+				</div>
+			</div>
+
+		</div>
+	</body>
+	<script type="text/javascript" src="../../script/api.js"></script>
+	<script type="text/javascript" src="../../script/vue.js"></script>
+	<script type="text/javascript" src="../../script/zepto.js"></script>
+	<script type="text/javascript" src="../../config/config.js"></script>
+	<script type="text/javascript" src="../../script/html2canvas.min.js"></script>
+	<script type="text/javascript" src="../../script/mint-ui.js"></script>
+	<script type="text/javascript" src="../../script/umeng/zhuge.js"></script>
+	<script>
+		var summary_id;
+		var mainInfoVue;
+		var wx;
+		apiready = function() {
+			wx = api.require('wx');
+			summary_id = api.pageParam.id;
+			initEvents();
+			getSummary()
+		}
+		//查询数据
+		function getSummary() {
+			Vue.$indicator.open("加载中...");
+			api.ajax({
+				url: webapp_global.url + "/userInfo/getWeekSummaryById?id=" + summary_id,
+				method: 'get',
+				dataType: "json",
+			}, function(ret, err) {
+				Vue.$indicator.close();
+				getzizi_line(ret.data);
+			})
+		}
+
+		function getzizi_line(data_list) {
+			mainInfoVue = new Vue({
+				el: "#content",
+				data() {
+					return {
+						datalist: {},
+						headUrl: ""
+					}
+				},
+				created: function() {
+					this.datalist = data_list;
+					// this.headUrl=webapp_global.imageUrl + this.datalist.headPortrait;
+					this.headUrl = (webapp_global.imageUrl + this.datalist.headPortrait).substring(0, (webapp_global.imageUrl + this.datalist.headPortrait).lastIndexOf('.')) + '_50X50' + (webapp_global.imageUrl + this.datalist.headPortrait).substring((webapp_global.imageUrl + this.datalist.headPortrait).lastIndexOf('.'), (webapp_global.imageUrl + this.datalist.headPortrait).length);
+					this._init();
+				},
+				methods: {
+					_init() {
+						var _this = this;
+						var img = new Image();
+						// img.src = webapp_global.imageUrl + _this.datalist.headPortrait;
+						img.src = (webapp_global.imageUrl + this.datalist.headPortrait).substring(0, (webapp_global.imageUrl + this.datalist.headPortrait).lastIndexOf('.')) + '_50X50' + (webapp_global.imageUrl + this.datalist.headPortrait).substring((webapp_global.imageUrl + this.datalist.headPortrait).lastIndexOf('.'), (webapp_global.imageUrl + this.datalist.headPortrait).length);
+						img.onload = function() {
+							var data = getBase64Image(img);
+							_this.headUrl = data;
+						}
+					}
+				}
+			})
+		}
+
+		function getBase64Image(img) {
+			var canvas = document.createElement("canvas");
+			canvas.width = img.width;
+			canvas.height = img.height;
+			var ctx = canvas.getContext("2d");
+			ctx.drawImage(img, 0, 0, img.width, img.height);
+			var dataURL = canvas.toDataURL("image/png");
+			return dataURL // return dataURL.replace("data:image/png;base64,", "");
+		}
+
+		function share_friend(types) {
+			Vue.$indicator.open("正在生成...");
+			var doc = document.getElementById("cro_div");
+			var width = doc.offsetWidth;
+			var height = doc.offsetHeight;
+			var canvas = document.createElement("canvas");
+			var context = canvas.getContext("2d");
+			var scale = 2;
+			canvas.width = width * scale;
+			canvas.height = height * scale;
+			canvas.getContext("2d").scale(scale, scale);
+			var opts = {
+				scale: scale,
+				canvas: canvas,
+				logging: true,
+				width: width,
+				height: height
+			};
+			wx.isInstalled(function(ret, err) {
+				if(ret.installed) {
+					$(".setopacity").hide();
+					$(".setopacity1").addClass('pdtop10px');
+					html2canvas(document.getElementById("cro_div"), opts).then(canvas => {
+						var image = new Image();
+						image.src = canvas.toDataURL("image/png");
+						$(".setopacity1").removeClass('pdtop10px');
+						$(".setopacity").show();
+						save(image.src, types)
+					});
+					return
+				} else {
+					alert('当前设备未安装微信客户端');
+				}
+			});
+
+		}
+
+		function save(url, types) {
+			var trans = api.require('trans');
+			trans.saveImage({
+				base64Str: url.split(",")[1],
+				album: true,
+				imgPath: "fs://img",
+				imgName: "summary.png"
+			}, function(ret, err) {
+				Vue.$indicator.close();
+				if(ret.status) {
+					if(types == 1) {
+						wx.shareImage({
+							apiKey: '',
+							scene: 'timeline',
+							thumb: '',
+							contentUrl: 'fs://img/summary.png'
+						}, function(ret, err) {
+							growingIoAddEvent('zfyzxjdwx');
+							if(ret.status) {} else {
+								// api.toast({
+								// 	msg: '分享失败，错误代码为：'+err.code,
+								// 	duration: 4000,
+								// 	location: 'bottom'
+								// });
+							}
+						});
+					} else {
+						api.toast({
+							msg: '保存成功',
+							duration: 2500,
+							location: 'middle'
+						});
+					}
+
+				} else {
+					api.toast({
+						msg: JSON.stringify(err),
+						duration: 4000,
+						location: 'bottom'
+					});
+				}
+			});
+		}
+		//监听事件
+		function initEvents() {
+			api.addEventListener({
+				name: 'keyback'
+			}, function(ret, err) {
+				back();
+			});
+		}
+		//返回，关闭当前详情页，
+		function back() {
+			api.closeWin({
+				name: 'summary_detail'
+			});
+		}
+	</script>
+
+</html>

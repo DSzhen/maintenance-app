@@ -1,0 +1,660 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+		<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+		<link rel="stylesheet" type="text/css" href="../../css/aui.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/wbicon/style.css" />
+		<style type="text/css">
+			body {
+				color: #333;
+				background-color: #eeeef5;
+			}
+
+			.aui-content-padded {
+				margin: .5rem 0;
+			}
+
+			.aui-card-list {
+				margin-bottom: .5rem;
+			}
+
+			.wb-flex {
+				display: -webkit-box;
+				display: -webkit-flex;
+				display: flex;
+				-webkit-box-pack: justify;
+				-webkit-justify-content: center;
+				justify-content: center;
+				-webkit-box-align: center;
+				-webkit-align-items: center;
+				align-items: center;
+			}
+
+			.wb-flex-start {
+				-webkit-justify-content: flex-start;
+				justify-content: flex-start;
+			}
+
+			.wb-space-between {
+				-webkit-justify-content: space-between;
+				justify-content: space-between;
+			}
+
+			.wb-item-flexStart {
+				-webkit-align-items: flex-start;
+				align-items: flex-start;
+			}
+
+			.aui-card-list-header,
+			.aui-card-list-content-padded {
+				padding: 0.5rem 0.5rem;
+			}
+
+			.aui-card-list-header {
+				border-bottom: 1px solid #ddd;
+			}
+
+			.wb-card-list-header {
+				max-width: 80%;
+			}
+
+			.wb-card-list-header b {
+				color: #fd9905;
+				margin-left: -.2rem;
+				font-size: .9rem;
+				vertical-align: -2px;
+			}
+
+			.wb-text-info {
+				margin-left: .8rem;
+				color: #0a85ff;
+				vertical-align: -3px;
+			}
+
+			.wb-card-title {
+				color: #999999;
+				white-space: nowrap;
+			}
+
+			.aui-card-list-content-padded .wb-flex+.wb-flex {
+				margin-top: .4rem;
+			}
+
+			.wb-info-text span {
+				margin-left: .5rem;
+			}
+
+			.wb-hidden-trouble-conduct b {
+				color: #bcbcbc;
+				margin-left: .1rem;
+				vertical-align: -1px;
+			}
+
+			.wb-btn-content {
+				margin-top: 2rem;
+				padding-left: .8rem;
+				padding-right: .8rem;
+			}
+
+			.wb-btn-content .aui-btn-block.aui-btn-sm {
+				height: 2.2rem;
+				line-height: 2.2rem;
+			}
+
+			.wb-application-time>span {
+				display: block;
+			}
+
+			.wb-application-time>span:last-child {
+				font-size: .6rem;
+			}
+
+			.wb-application-text>span:first-child {
+				display: block;
+				font-size: .8rem;
+			}
+
+			.wb-btn-content .wb-btn-primary {
+				color: #fff;
+				background-color: #ff961b !important;
+			}
+
+			.wb-btn-content .wb-btn-primary:hover,
+			.wb-btn-content .wb-btn-primary:focus {
+				color: #fff;
+				background-color: #fb8d0c !important;
+			}
+
+			.wb-record-h5 {
+				padding-bottom: .3rem;
+				color: #ff961b;
+			}
+
+			.wb-text-primary {
+				font-size: .6rem;
+			}
+
+			.wb-record-h5>span {
+				margin-left: .2rem;
+			}
+
+			.wb-record-h5>span+span {
+				margin-left: .3rem;
+			}
+
+			.wb-trouble-pos {
+				padding-left: 1rem;
+				color: #999;
+				white-space: nowrap;
+			}
+
+			.wb-trouble-pos~span {
+				margin-left: .5rem;
+				color: #999;
+			}
+
+			.wb-disposition-list .wb-record-h5~div.wb-flex {
+				margin-top: .2rem;
+			}
+
+			.wb-update-img img {
+				display: inline-block;
+				width: 3rem;
+				height: 3rem;
+				margin-right: .4rem;
+				border: 0;
+				background-color: #e0e0e0;
+			}
+
+			.wb-update-camrea {
+				display: inline-block;
+				width: 3rem;
+				height: 3rem;
+				text-align: center;
+				line-height: 3rem;
+				font-size: 2rem;
+				color: #999;
+				border: 1px dashed #efefef;
+				vertical-align: top;
+			}
+
+			.wb-disposition-list .wb-update-img {
+				padding-left: 1rem;
+				margin-top: .3rem;
+			}
+
+			.wb-text-primary {
+				color: #ff961b;
+			}
+
+			.wb-info-text {
+				color: #333;
+			}
+
+			.wb-disposition-ul {
+				margin-top: .3rem;
+			}
+
+			.wb-disposition-ul li {
+				position: relative;
+				padding-bottom: .7rem;
+			}
+
+			.wb-disposition-ul li:before {
+				position: absolute;
+				top: 6px;
+				left: 5px;
+				content: '';
+				width: 1px;
+				height: 100%;
+				border-left: 1px dashed #ff961b;
+			}
+
+			.wb-disposition-ul li:last-child:before {
+				width: 0;
+				height: 0;
+				border-left: 0;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div class="wb-content" id="dangerTpl">
+
+		</div>
+	</body>
+	<script type="text/javascript" src="../../script/api.js"></script>
+	<script type="text/javascript" src="../../script/zepto.js"></script>
+	<script type="text/javascript" src="../../script/vue.js"></script>
+	<script type="text/javascript" src="../../config/config.js"></script>
+	<script type="text/javascript">
+		var obj, ble;
+		apiready = function() {
+			queryEmeInfo();
+			initEvents()
+		};
+
+		function queryEmeInfo(obj1) {
+			if(!obj1) {
+				obj = api.pageParam
+			} else {
+				obj = obj1
+			}
+			$('#dangerTpl').html('')
+			var div = document.createElement('div')
+			var id = "div_" + (new Date()).getTime()
+			div.id = id
+			$('#dangerTpl').html(div)
+			new Vue({
+				el: '#' + id,
+				template: `<div><section class="aui-content-padded">
+            <div class="aui-card-list">
+                <div class="aui-card-list-content-padded">
+                    <div class="wb-card-list">
+                        <div class="wb-flex wb-space-between">
+                            <h5 class="wb-card-title">隐患编号：<span class="wb-info-text">{{accidentNo}}</span></h5>
+                            <a class="wb-text-info wb-text-primary">{{stateWarn}}</a>
+                        </div>
+                        <div class="wb-flex wb-flex-start">
+                            <h5 class="wb-card-title">隐患来源：</h5>
+                            <span class="wb-info-text">{{accidentSource}}</span>
+                        </div>
+                        <div class="wb-flex wb-flex-start">
+                            <h5 class="wb-card-title">位置信息：</h5>
+                            <span class="wb-info-text">{{deviceAddress}}</span>
+                        </div>
+                        <div class="wb-flex wb-flex-start">
+                            <h5 class="wb-card-title">设备类型：</h5>
+                            <span class="wb-info-text">{{deviceType}}</span>
+                            <a class="wb-text-info" v-if="eleLocation"><b class="wbicon-location" @click="loadPosition" ></b></a>
+                        </div>
+                        <div class="wb-flex wb-flex-start">
+                            <h5 class="wb-card-title" style="letter-spacing: 5px">上报人:</h5>
+                            <span class="wb-info-text">{{reportPerson}}<span>{{reportTime}}</span></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="aui-card-list">
+                <div class="aui-card-list-content-padded">
+                    <div class="wb-card-list">
+                        <p class="wb-description-info">{{description}}
+                        </p>
+                        <div class="wb-flex wb-flex-start wb-item-flexStart" style="margin-top: .5rem">
+                            <h5 class="wb-card-title">照片：</h5>
+                            <div class="wb-update-img" style="margin-top: .5rem">
+                             <img v-for="(item,index) in attachment" :src="url+item.attachPath.substring(0,item.attachPath.length-4)+'_48X48'+item.attachPath.substring(item.attachPath.length-4,item.attachPath.length)"  @click="openPicture(0,item,index,attachment)" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="aui-card-list" >
+                <div class="aui-card-list-header">
+                    <h3 class="aui-ellipsis-1 wb-card-list-header"><b class="wbicon-splice"></b>处置记录</h3>
+                </div>
+                <div class="aui-card-list-content-padded">
+                    <div class="wb-card-list wb-disposition-list">
+                        <ul class="wb-disposition-ul">
+                            <li v-if="handleDetails.length !=0" v-for="each in handleDetails ">
+                                <h5 class="wb-record-h5">
+                                    <b class="wbicon-circle2 wb-text-primary"></b>
+                                    <span v-if="each.isSolved==1">完成维保</span>
+                                    <span v-else>维保</span>
+                                    <span>{{each.maintenanceUser}}</span>
+                                    <span>{{each.time}}</span>
+                                </h5>
+                                <div class="wb-flex wb-flex-start wb-item-flexStart">
+                                    <a class="wb-trouble-pos">问题定位</a>
+                                    <span>{{each.problemFix }}</span>
+                                </div>
+                                <div class="wb-flex wb-flex-start wb-item-flexStart">
+                                    <a class="wb-trouble-pos">处置描述</a>
+                                    <span>{{each.maintenanceDesc }}</span>
+                                </div>
+                                <div class="wb-flex wb-flex-start wb-item-flexStart">
+                                    <a class="wb-trouble-pos">应急措施</a>
+                                    <span>{{each.emergencyHandle}}</span>
+                                </div>
+                                <div class="wb-update-img" style="margin-top: .5rem">
+                                    <img v-for="(srcIMg,index) in each.attachment" :src="url + srcIMg.attachPath.substring(0,srcIMg.attachPath.length-4)+'_48X48'+srcIMg.attachPath.substring(srcIMg.attachPath.length-4,srcIMg.attachPath.length)" @click="openPicture(1,srcIMg,index,each.attachment)">
+                                </div>
+                            </li>
+                            <li v-if="issueDetails.length !=0" v-for="each1 in issueDetails ">
+                                <h5 class="wb-record-h5">
+                                    <b class="wbicon-circle2 wb-text-primary"></b>
+                                    <span>业主整改</span>
+                                    <span>{{each1.userName}}</span>
+                                    <span>{{each1.createTime}}</span>
+                                </h5>
+                                <div class="wb-flex wb-flex-start wb-item-flexStart">
+                                    <a class="wb-trouble-pos">整改描述</a>
+                                    <span>{{each1.issueDesc}}</span>
+                                </div>
+                                <div class="wb-update-img" style="margin-top: .5rem">
+                                    <img v-for="(srcIMg1,index) in each1.attachment" :src="url + srcIMg1.attachPath.substring(0,srcIMg1.attachPath.length-4)+'_48X48'+srcIMg1.attachPath.substring(srcIMg1.attachPath.length-4,srcIMg1.attachPath.length)"  @click="openPicture(1,srcIMg1,index,each1.attachment)">
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+                    <div class="aui-content-padded wb-btn-content" v-if="mark && maintenanceState!=0 && maintenanceState!=1">
+                         <div class="aui-btn aui-btn-block aui-btn-warning aui-btn-sm wb-btn-primary" @click="submitBtn">处置</div>
+                    </div></div>`,
+				data: function() {
+					return {
+						accidentNo: '',
+						deviceAddress: '',
+						attachment: [],
+						url: webapp_global.imageUrl + '/',
+						description: '',
+						reportTime: '',
+						reportPerson: '',
+						deviceType: '',
+						handleDetails: [],
+						issueDetails: [],
+						mark: false,
+						maintenanceState: obj.maintenanceState,
+						accidentSource: [],
+						stateWarn: '',
+						eleLocation: false
+					}
+				},
+				methods: {
+					openPicture: function(flag, item, index, attaches) {
+						//图片被点击了
+						var paramObj = JSON.parse(localStorage.getItem('userObj'));
+						if(flag == 1) {
+							//处置记录
+						} else if(flag == 0) {
+						}
+
+						var passObj = {
+							"item": item,
+							"index": index,
+							"attaches": attaches,
+							"flag": 0
+						}
+						api.openWin({
+							name: 'picture',
+							url: './picture.html',
+							rect: {
+								x: 0,
+								y: 0,
+								w: 320,
+								h: 480
+							},
+							pageParam: passObj,
+							bounces: true,
+							bgColor: 'rgba(0,0,0,0)',
+							vScrollBarEnabled: true,
+							hScrollBarEnabled: true
+						});
+					},
+					loadPosition: function() {
+						api.openWin({
+							name: 'danger_floorplan.html',
+							url: './danger_floorplan.html',
+							rect: {
+								x: 0,
+								y: 0,
+								w: 320,
+								h: 480
+							},
+							pageParam: this.objPage,
+							bounces: false,
+							bgColor: 'rgba(0,0,0,0)',
+							vScrollBarEnabled: true,
+							hScrollBarEnabled: true
+						});
+					},
+					submitBtn: function() {
+						var paramObj = JSON.parse(localStorage.getItem('userObj'));
+						var that = this;
+//						queryUnitBle(obj).then(function(ret) {
+							var ret = false;
+							if(ret) {
+								that.initBle().then(function(bool) {
+									if(bool) { //蓝牙已经打开
+										obj.isUseBle = true;
+										api.openWin({
+											name: 'eme_management.html',
+											url: './eme_management.html',
+											rect: {
+												x: 0,
+												y: 0,
+												w: 320,
+												h: 480
+											},
+											pageParam: obj,
+											bounces: false,
+											bgColor: 'rgba(0,0,0,0)',
+											vScrollBarEnabled: true,
+											hScrollBarEnabled: true
+										});
+									} else {
+										api.toast({
+											msg: '请打开手机蓝牙进行操作',
+											duration: 2000,
+											location: 'middle'
+										});
+									}
+								});
+							} else {
+								obj.isUseBle = false;
+								api.openWin({
+									name: 'eme_management.html',
+									url: './eme_management.html',
+									rect: {
+										x: 0,
+										y: 0,
+										w: 320,
+										h: 480
+									},
+									pageParam: obj,
+									bounces: false,
+									bgColor: 'rgba(0,0,0,0)',
+									vScrollBarEnabled: true,
+									hScrollBarEnabled: true
+								});
+							}
+//						});
+					},
+					//蓝牙检测
+					initBle:function() {
+						var that = this;
+						ble = api.require('ble');
+						var promise = new Promise(function(resolve, reject) {
+							ble.initManager(function(ret) {
+								//poweredOn：设备开启状态 -- 可用状态
+								//poweredOff：设备关闭状态
+								//resetting：正在重置状态
+								//unauthorized：设备未授权状态
+								//unknown：初始的时候是未知的
+								//unsupported：设备不支持的状态
+								var bool;
+								if(ret.state == "poweredOn") {
+									bool = true;
+								} else if(ret.state == "poweredOff" || ret.state == "resetting" || ret.state == "unauthorized" || ret.state == "unknown" || ret.state == "unsupported") {
+									bool = false;
+								}
+								resolve(bool);
+							});
+						})
+						return promise;
+					},
+					init: function(res) {
+						var that = this;
+						this.objPageParme = {
+							dangerId: res.accidentId,
+							orderId: res.orderId
+						}
+						api.ajax({
+							url: webapp_global.url + "/maintenance/order/getDangerDetails",
+							method: 'get',
+							dataType: "json",
+							data: {
+								values: {
+									dangerId: res.accidentId,
+									orderId: res.orderId
+								}
+							}
+						}, function(ret, err) {
+							var data;
+							if(ret) {
+								data = ret.data;
+								that.accidentNo = data.accidentNo
+								that.deviceAddress = data.deviceAddress
+								that.attachment = data.attachment
+								that.reportTime = data.reportTime
+								that.reportPerson = data.reportPerson
+								that.deviceType = data.deviceType
+								//
+								if(typeof data.handleDetails == "string") {
+									that.handleDetails = JSON.parse(data.handleDetails)
+								} else {
+									that.handleDetails = data.handleDetails
+								}
+								that.accidentSource = data.accidentSource
+								that.issueDetails = data.issueDetails
+								that.objPage = {
+									proprietorId: data.proprietorId,
+									maintenanceDetails: {
+										buildId: data.buildId,
+										floor: data.floor,
+										build: data.build,
+										deviceAddress: data.deviceAddress,
+										deviceName: data.deviceName,
+										floorId: data.floorId,
+										deviceType: data.deviceType,
+										deviceIds: data.deviceId,
+										deviceId: data.deviceId,
+										deviceTypeId: data.deviceTypeId
+									}
+								};
+								//stateWarn
+								if(ret.data.solved == '1') {
+									that.stateWarn = "处理中"
+									that.mark = true
+								}
+								if(ret.data.solved == '2') {
+									that.stateWarn = "已处理"
+									that.mark = false
+								}
+								if(ret.data.solved == '0') {
+									that.stateWarn = "未处理"
+									that.mark = true
+								}
+
+								//所有参数都满足时才可定位设备
+								if(data.proprietorId && data.buildId && data.floorId && data.deviceId && data.deviceTypeId) {
+									that.eleLocation = true;
+								}
+							}
+						})
+					}
+				},
+				created: function() {
+					this.init(obj)
+				}
+			})
+		}
+		//处置之后判断该业主企业有没有蓝牙
+		function queryUnitBle(obj) {
+			var promise = new Promise(function(resolve, reject) {
+				//0:没有 1:有
+				api.ajax({
+					url: webapp_global.url + "/maintenance/checkEnterpriseExistBluetooth",
+					method: 'get',
+					data: {
+						values: {
+							unitId: obj.proprietorId
+						}
+					}
+				}, function(ret, err) {
+					if(ret){
+						var code = ret["code"];
+						if(code == "success") {
+							var data = ret["data"];
+							if(data.exist == 1) {
+								resolve(false);
+								//									resolve(true);//因为蓝牙卡顿，暂时为false
+							} else {
+								resolve(false);
+							}
+						} else {
+							//蓝牙查询失败
+							resolve(false);
+						}
+					}else{
+						resolve(false);
+					}
+
+				})
+
+//				$.ajax({
+//					type: "get",
+//					url: webapp_global.url + "/maintenance/checkEnterpriseExistBluetooth",
+//					data: {
+//						unitId: obj.proprietorId
+//					},
+//					success(ret) {
+//						var code = ret["code"];
+//						if(code == "success") {
+//							var data = ret["data"];
+//							if(data.exist == 1) {
+//								resolve(false);
+//								//									resolve(true);//因为蓝牙卡顿，暂时为false
+//							} else {
+//								resolve(false);
+//							}
+//						} else {
+//							//蓝牙查询失败
+//							resolve(false);
+//						}
+//					},
+//					error(err) {
+//						//蓝牙查询失败
+//						resolve(false);
+//					}
+//				});
+			})
+			return promise;
+		}
+		//初始化监听事件
+		function initEvents() {
+			api.addEventListener({
+				name: 'keyback'
+			}, function(ret, err) {
+				if(ble) {
+					ble.stopScan();
+					//清空模块当前缓存的所监听蓝牙设备的所有数据
+					ble.clearAllSimpleNotifyData();
+				}
+				api.closeFrame({
+					name: 'dangerTpl.html'
+				});
+			});
+			api.addEventListener({
+				name: 'dangerNoSolve'
+			}, function(ret, err) {
+				queryEmeInfo(ret.value.obj);
+			});
+//			api.addEventListener({
+//				name: 'dangerSolve'
+//			}, function(ret, err) {
+//				api.closeWin();
+//			});
+			//ios右滑控制
+		      api.addEventListener({
+		        name:'swiperight'
+		      }, function(ret, err){
+		      });
+		}
+	</script>
+</html>

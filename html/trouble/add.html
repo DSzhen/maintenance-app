@@ -1,0 +1,795 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+		<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+		<link rel="stylesheet" type="text/css" href="../../css/api.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/aui.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/mobileSelect.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/wbicon/style.css" />
+		<link rel="stylesheet" href="../../css/xficon/style.css" />
+		<style type="text/css">
+			html {
+				font-family: "Microsoft YaHei";
+			}
+
+			body {
+				color: #333;
+				background-color: #eeeef5;
+			}
+
+			.aui-content-padded {
+				margin: 0;
+			}
+
+			.wb-flex {
+				display: -webkit-box;
+				display: -webkit-flex;
+				display: flex;
+				-webkit-box-pack: justify;
+				-webkit-justify-content: center;
+				justify-content: center;
+				-webkit-box-align: center;
+				-webkit-align-items: center;
+				align-items: center;
+			}
+
+			.wb-item-flexStart {
+				-webkit-align-items: flex-start;
+				align-items: flex-start;
+			}
+
+			.wb-space-between {
+				-webkit-justify-content: space-between;
+				justify-content: space-between;
+			}
+
+			.wb-flex-start {
+				-webkit-justify-content: flex-start;
+				justify-content: flex-start;
+			}
+
+			.aui-card-list-content-padded .wb-flex+.wb-flex {
+				margin-top: .35rem;
+			}
+
+			.wb-breakdown-title {
+				color: #666;
+			}
+
+			.wb-breakdown-text {
+				color: #999;
+				margin-top: .05rem;
+			}
+
+			.wb-list-item-inner {
+				width: 100%;
+				padding-right: .5rem;
+			}
+
+			.aui-list textarea {
+				height: 4rem;
+				margin: 0;
+				padding: .4rem;
+				font-size: .72rem;
+				background-color: #fafafa;
+				border: 1px solid #e8e8e8;
+			}
+
+			.aui-list .aui-list-item-label {
+				font-size: .75rem;
+				width: 100%;
+			}
+
+			.aui-list .aui-list-item-input {
+				padding-right: 0;
+			}
+
+			.aui-list-item {
+				background: #fff;
+			}
+
+			.aui-list .aui-list-item {
+				padding-left: .5rem;
+				margin-top: .5rem;
+				border: 0;
+				background: #fff;
+			}
+
+			.wb-update-image {
+				margin-top: .4rem;
+				padding-bottom: .5rem;
+			}
+
+			.wb-card-title {
+				color: #333;
+			}
+
+			.wb-update-img {
+				margin-left: .2rem;
+			}
+
+			.wb-update-img img {
+				display: inline-block;
+				width: 3rem;
+				height: 3rem;
+				margin-right: .4rem;
+				border: 0;
+				background-color: #e0e0e0;
+			}
+
+			.wb-update-camrea {
+				display: inline-block;
+				width: 3rem;
+				height: 3rem;
+				text-align: center;
+				line-height: 3.3rem;
+				font-size: 2rem;
+				color: #999;
+				border: 1px dashed #efefef;
+				vertical-align: top;
+			}
+
+			.aui-card-list-header {
+				color: #333;
+				border-bottom: 1px solid #ddd;
+			}
+
+			.wb-card-list-header b {
+				margin-left: -.5rem;
+				color: #ff961b;
+			}
+
+			.wb-card-title,
+			.wb-trouble-txt {
+				color: #333;
+				font-size: .72rem;
+			}
+
+			.wb-card-title {
+				font-size: .75rem;
+				white-space: nowrap;
+			}
+
+			.wb-trouble-item.is-active {
+				color: #fff;
+				background-color: #ff961b;
+			}
+
+			.wb-card-list-header {
+				font-size: .75rem;
+			}
+
+			.wb-trouble-item {
+				display: inline-block;
+				height: 1.4rem;
+				line-height: 1.55rem;
+				padding: 0 1rem;
+				color: #333;
+				background-color: #fff;
+				border-radius: .7rem;
+			}
+
+			.wb-trouble-item.is-active {
+				color: #fff;
+				background-color: #ff961b;
+			}
+
+			.wb-maintain-item {
+				padding-top: .55rem;
+				padding-bottom: .5rem;
+				padding-right: .75rem;
+				border-bottom: 1px solid #ddd;
+			}
+
+			.wb-maintain-state .aui-list-item-label {
+				height: 1.6rem;
+				line-height: 1.6rem;
+			}
+
+			.aui-list .wb-maintain-ul .aui-list-item-label {
+				font-size: .72rem;
+			}
+
+			.wb-btn-content {
+				margin-top: 1rem;
+				padding-bottom: 1rem;
+				padding-left: .8rem;
+				padding-right: .8rem;
+			}
+
+			.wb-btn-content .aui-btn {
+				height: 2.2rem;
+				line-height: 2.4rem;
+				color: #fff;
+				font-size: .8rem;
+			}
+
+			.wb-btn-content .wb-btn-primary {
+				background-color: #ff961b !important;
+			}
+
+			.wb-btn-content .wb-btn-success {
+				background-color: #57bd59 !important;
+			}
+
+			.wb-btn-content .aui-btn {
+				width: 48%;
+			}
+
+			.wb-card-title+.wb-info-content .wb-text-info {
+				color: #5a9cff;
+			}
+
+			.aui-list-item-input input {
+				padding-left: .3rem;
+				height: 1.6rem;
+				line-height: 1.6rem;
+				background-color: #fafafa;
+				border: 1px solid #e8e8e8;
+			}
+
+			.aui-card-list-content-padded {
+				padding: .5rem;
+			}
+			/*删除图片*/
+
+			.xf-carera-content {
+				margin-left: .3rem;
+			}
+
+			.xf-carera-content li {
+				position: relative;
+				display: inline-block;
+				width: 3rem;
+				vertical-align: top;
+				margin-left: .3rem;
+			}
+
+			.xf-icon-imgDelete {
+				position: absolute;
+				right: -.2rem;
+				top: -.45rem;
+				color: red;
+			}
+
+			.xf-image-update {
+				display: inline-block;
+				width: 3rem;
+				height: 3rem;
+				text-align: center;
+				border: 1px solid #ddd;
+			}
+
+			.xf-image-icon {
+				font-size: 2rem;
+				line-height: 3rem;
+				color: #999;
+			}
+
+			.xf-iamge-model {
+				display: inline-block;
+				width: 3rem;
+				height: 3rem;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div id="addApp" class="wb-content">
+			<section class="aui-content-padded">
+
+				<div class="aui-card-list aui-margin-b-10">
+					<div class="aui-card-list-content-padded aui-padded-t-15">
+						<div class="wb-card-list">
+							<div class="wb-flex wb-space-between">
+								<h5 class="wb-card-title">设施类型：<span id="checkItemTypeParentName" class="wb-info-text"></span></h5>
+							</div>
+							<div class="wb-flex wb-flex-start">
+								<h5 class="wb-card-title">维保类型：</h5>
+								<span id="checkItemTypeName" class="wb-info-text"></span>
+							</div>
+							<div class="wb-flex wb-flex-start">
+								<h5 class="wb-card-title">楼栋楼层：</h5>
+								<div class="wb-info-content">
+									<a id="area2" class="wb-text-info">请选择</a>
+								</div>
+							</div>
+							<div class="wb-flex wb-flex-start">
+								<h5 class="wb-card-title">　　设施：</h5>
+								<div class="wb-info-content">
+									<a id="deviceChoose" @click="choose" class="wb-text-info">请选择</a>
+								</div>
+							</div>
+							<div class="aui-list aui-form-list">
+								<div class="aui-list-item aui-padded-l-0 aui-margin-t-0">
+									<div class="aui-list-item-inner">
+										<h5 class="wb-card-title" style="width: auto;white-space: nowrap">　　位置：</h5>
+										<div class="aui-list-item-input">
+											<input id="address" type="text">
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!--故障情况-->
+				<ul class="aui-list aui-form-list aui-margin-b-10">
+					<li class="aui-list-item">
+						<div class="wb-list-item-inner">
+							<div class="aui-list-item-label">故障情况</div>
+							<div class="aui-list-item-input">
+								<textarea id="faultDescription" placeholder="请添加描述"></textarea>
+							</div>
+						</div>
+					</li>
+					<li class="aui-list-item">
+						<div class="wb-update-image">
+							<div class="wb-flex wb-flex-start wb-item-flexStart">
+								<h5 class="wb-card-title">照片</h5>
+								<ul class="xf-carera-content" id="imgUpdate">
+									<li class="xf-image-update"><b class="wbicon-camera xf-image-icon" onclick="imageClick()"></b></li>
+								</ul>
+							</div>
+						</div>
+					</li>
+				</ul>
+				<!--维修情况-->
+				<div class="aui-card-list aui-margin-b-0" style="background-color: #fff">
+					<div class="aui-card-list-header">
+						<h3 class="wb-card-list-header"><b class="wbicon-splice"></b>维保情况</h3>
+					</div>
+					<div class="aui-card-list-content-padded aui-padded-r-0 aui-padded-t-0">
+						<ul class="wb-maintain-ul aui-margin-l-5 ">
+							<li class="wb-maintain-item">
+								<div class="wb-flex wb-space-between">
+									<a class="wb-trouble-txt">是否停用系统</a>
+									<div class="wb-trouble-type">
+										<a @click="isStop=1" :class="isStop==1?'wb-trouble-item is-active':'wb-trouble-item'">是</a>
+										<a @click="isStop=0" :class="isStop==0?'wb-trouble-item is-active aui-margin-l-10':'wb-trouble-item aui-margin-l-10'">否</a>
+									</div>
+								</div>
+							</li>
+							<li class="wb-maintain-item">
+								<div class="wb-flex wb-space-between">
+									<a class="wb-trouble-txt">是否报消防部门备案</a>
+									<div class="wb-trouble-type">
+										<a @click="isRecord=1" :class="isRecord==1?'wb-trouble-item is-active':'wb-trouble-item'">是</a>
+										<a @click="isRecord=0" :class="isRecord==0?'wb-trouble-item aui-margin-l-10 is-active':'wb-trouble-item aui-margin-l-10'">否</a>
+									</div>
+								</div>
+							</li>
+						</ul>
+						<ul class="aui-list aui-form-list wb-maintain-state">
+							<li class="aui-list-item aui-padded-l-5">
+								<div class="wb-list-item-inner">
+									<div class="aui-list-item-label">安全保护措施</div>
+									<div class="aui-list-item-input">
+										<textarea id="safetyMeasures" placeholder="" style="width: 98.5%"></textarea>
+									</div>
+								</div>
+							</li>
+							<li class="aui-list-item aui-padded-l-5">
+								<div class="wb-list-item-inner">
+									<div class="aui-list-item-label">维修方法</div>
+									<div class="aui-list-item-input">
+										<textarea id="handleMethod" placeholder="" style="width: 98.5%"></textarea>
+									</div>
+								</div>
+							</li>
+						</ul>
+					</div>
+					<!--按钮-->
+					<div class="wb-flex wb-space-between aui-content-padded wb-btn-content">
+						<div @click="submitFun('0', '1')" class="aui-btn aui-btn-sm wb-btn-primary">需要进一步维修</div>
+						<div @click="submitFun('1', '0')" class="aui-btn aui-btn-sm wb-btn-success">故障已排除</div>
+					</div>
+				</div>
+			</section>
+		</div>
+	</body>
+	<script type="text/javascript" src="../../script/api.js"></script>
+	<script type="text/javascript" src="../../config/config.js"></script>
+	<script type="text/javascript" src="../../script/vue.js"></script>
+	<script type="text/javascript" src="../../script/zepto.js"></script>
+	<script type="text/javascript" src="../../script/mobileSelect.js"></script>
+	<script type="text/javascript">
+		var sumbitObj, formVm;
+		var fileatt = [];
+		apiready = function() {
+			$('#checkItemTypeParentName').text(api.pageParam.checkItemTypeParentName);
+			$('#checkItemTypeName').text(api.pageParam.checkItemTypeName);
+
+			formVm = new Vue({
+				el: '#addApp',
+				data: function() {
+					return {
+						imageArr: [],
+						isStop: null,
+						isRecord: null,
+						isSaveing: false
+					}
+				},
+				methods: {
+					initBulid: function(data) {
+						var that = this;
+						var paramObj = JSON.parse(localStorage.getItem("userObj"));
+						api.ajax({
+							url: webapp_global.url + '/recordEnterprise/enterpriseBulidInfo',
+							dataType: "json",
+							data:{
+								values: {
+									unitId:api.pageParam.enterpriseId,
+									orgId:paramObj.orgId
+								}
+							},
+							method: 'get'
+						}, function(ret, err) {
+							if(ret) {
+								var type = ret
+								var data = type.data;
+								var res = ''
+								if(typeof data == 'string') {
+									res = JSON.parse(data)
+								} else {
+									res = data
+								}
+								var tpl = res.builds;
+								if(tpl.length == 0) return
+								var retData = [];
+								tpl.forEach(function(item, index) {
+									var obj = {};
+									obj.id = item.buildId;
+									obj.value = item.buildName;
+									obj.childs = [];
+									for(var i = 0; i < item.floors.length; i++) {
+										var temp = {}
+										temp.id = item.floors[i].floorId;
+										temp.value = item.floors[i].floorName;
+										obj.childs.push(temp)
+									}
+									retData.push(obj)
+								})
+
+								new MobileSelect({
+									trigger: '#area2',
+									title: '选择楼层',
+									wheels: [{
+										data: retData
+									}],
+									position: [0, 1],
+									callback: function(indexArr, data) {
+										that.getShe = data
+									}
+								});
+
+							} else {}
+						});
+
+					},
+					imageClick: function() {
+						//上传照片
+						var that = this;
+						api.actionSheet({
+							cancelTitle: '取消',
+							buttons: ['拍照', '从相册选择']
+						}, function(ret, err) {
+							var index = ret.buttonIndex;
+							if(index == 1) {
+								that.photograph();
+							} else if(index == 2) {
+								that.gallery();
+							}
+						});
+
+					},
+					//拍照
+					photograph: function() {
+						var that = this;
+						api.getPicture({
+							sourceType: 'camera',
+							encodingType: 'jpg',
+							mediaValue: 'pic',
+							destinationType: 'url',
+							allowEdit: true,
+							quality: 50,
+							saveToPhotoAlbum: false
+						}, function(ret, err) {
+							if(ret) {
+								var tempData = ret.data;
+								if(tempData == "") return
+								var res = tempData.split('/');
+								that.imageArr.push(tempData);
+								fileatt.push(tempData);
+								that.showImgList(fileatt);
+							} else {
+//								api.toast({
+//									msg: '网络异常，请设置网络连接！',
+//									location: 'bottom'
+//								});
+							}
+						});
+					},
+					//从图库选择
+					gallery: function() {
+						var that = this;
+						api.getPicture({
+							sourceType: 'album',
+							encodingType: 'jpg',
+							mediaValue: 'pic',
+							destinationType: 'url',
+							allowEdit: true,
+							quality: 50,
+							saveToPhotoAlbum: false
+						}, function(ret, err) {
+							if(ret) {
+								var tempData = ret.data;
+								if(tempData == "") return
+								var res = tempData.split('/');
+								that.imageArr.push(tempData);
+								fileatt.push(tempData);
+								that.showImgList(fileatt);
+							} else {
+//								api.toast({
+//									msg: '网络异常，请设置网络连接！',
+//									location: 'bottom'
+//								});
+							}
+						});
+
+					},
+					showImgList: function(res) {
+						var tpl = "";
+						for(var i = 0; i < res.length; i++) {
+							var temp = "";
+							temp = this.imgTpl(res[i], i);
+							tpl += temp
+						}
+						tpl += '<li class="wb-update-camrea"><b class="wbicon-camera" onclick="imageClick()"></b></li>';
+						$('#imgUpdate').html(tpl)
+					},
+					imgTpl: function(src, index, type) {
+						if(!src) return ""
+						var tempId = this.random();
+						var tpl = '<li id=' + tempId + ' ><a><img class="xf-iamge-model"  src="' + src + '" onclick="openPicture(' + index + ')"  ></a><em onclick="deleteImg(\'' + src + '\',\'' + tempId + '\')" class="xficon-forbindden xf-icon-imgDelete"></em></li>';
+						return tpl
+					},
+					random:function(){
+						var len = len || 32;
+						var chars = 'ABCDEFGHJKMNPQRSTWXYZabcdefhijkmnprstwxyz2345678';
+						var maxPos = chars.length;
+						var pwd = '';
+						for (var i = 0; i < len; i++) {
+							pwd += chars.charAt(Math.floor(Math.random() * maxPos));
+						}
+						return pwd
+					},
+					choose: function() {
+						if(!this.getShe) {
+							api.toast({
+								msg: '请选择楼层信息或设备信息',
+								location: 'bottom'
+							});
+							return false
+						}
+						var that = this;
+						var obj1 = JSON.parse(localStorage.getItem("userObj"));
+						var pageParam = {
+							unitId: api.pageParam.enterpriseId,
+							buildId: this.getShe[0].id,
+							floorId: this.getShe[1].id,
+							deviceTypePid: api.pageParam.checkItemTypeParentId
+						};
+						api.openWin({
+							name: 'win_chooseImg.html',
+							url: './win_chooseImg.html',
+							rect: {
+								x: 0,
+								y: 57,
+								w: 'auto',
+								h: api.winHeight - 57
+							},
+							bounces: false,
+							pageParam: pageParam,
+							vScrollBarEnabled: false,
+							hScrollBarEnabled: true
+						});
+					},
+					submitFun: function(solved, continueMaintenance) {
+						var ob1 = JSON.parse(localStorage.getItem("userObj"));
+						var that = this;
+
+						//验证
+						if(!that.getShe) {
+							api.toast({
+								msg: '请选择楼层信息',
+								location: 'bottom'
+							});
+							return false
+						}
+						if($('#address').val() == '') {
+							api.toast({
+								msg: '请填写位置信息',
+								location: 'bottom'
+							});
+							return false
+						}
+						if($('#faultDescription').val() == '') {
+							api.toast({
+								msg: '请填写故障情况',
+								location: 'bottom'
+							});
+							return false
+						}
+						if(fileatt.length == 0) {
+							api.toast({
+								msg: '请上传照片',
+								location: 'bottom'
+							});
+							return false
+						}
+						if(that.isStop == null) {
+							api.toast({
+								msg: '请选择是否停用系统',
+								location: 'bottom'
+							});
+							return false
+						}
+						if(that.isRecord == null) {
+							api.toast({
+								msg: '请选择是否报消防部门备案',
+								location: 'bottom'
+							});
+							return false
+						}
+						if(that.isRecord == 0 || that.isStop == 0) {
+							if($('#safetyMeasures').val() == "") {
+								api.toast({
+									msg: '请填写安全保护措施',
+									location: 'bottom'
+								});
+								return false
+							}
+						}
+						if($('#handleMethod').val() == "") {
+							api.toast({
+								msg: '请填写维修方法',
+								location: 'bottom'
+							});
+							return false
+						}
+
+						var params = {
+							maintenanceTaskId: api.pageParam.maintenanceTaskId,
+							checkId: api.pageParam.id,
+							buildId: that.getShe[0].id,
+							build: that.getShe[0].value,
+							floorId: that.getShe[1].id,
+							floor: that.getShe[1].value,
+							deviceAddress: $('#address').val(),
+							faultDescription: $('#faultDescription').val(),
+							solved: solved,
+							continueMaintenance: continueMaintenance,
+							stopUsing: that.isStop,
+							reportRecord: that.isRecord,
+							safetyMeasures: $('#safetyMeasures').val(),
+							handleMethod: $('#handleMethod').val(),
+							handler: ob1.loginName,
+							handlerId: ob1.userid,
+							checkItemTypeId: api.pageParam.checkItemTypeId,
+							checkItemTypeParentId: api.pageParam.checkItemTypeParentId,
+							checkItemTypeName: api.pageParam.checkItemTypeName,
+							checkItemTypeParentName: api.pageParam.checkItemTypeParentName
+						};
+
+						if(sumbitObj) {
+							params.deviceId = sumbitObj.deviceId;
+							params.deviceName = sumbitObj.deviceName;
+							params.deviceTypeId = sumbitObj.deviceTypeId;
+							params.deviceTypeName = sumbitObj.deviceTypeName;
+						}
+						if(!that.isSaveing) {
+							// 埋点：1 :维修  0 排除
+							if(continueMaintenance == 1) {
+							} else {
+							}
+							//是停用
+							if(that.isStop == 1) {
+							}
+							//是备案
+							if(that.isRecord == 1) {
+							}
+							that.isSaveing = true;
+							api.ajax({
+								url: webapp_global.url + '/maintenancePlanProcess/faultHandling',
+								method: 'POST',
+								timeout:20,
+								data: {
+									values: params,
+									files: {
+										files: fileatt
+									}
+								}
+							}, function(ret, err) {
+								that.isSaveing = false;
+								if(ret && ret.code == 'success') {
+									api.toast({
+										msg: '提交成功！',
+										location: 'bottom'
+									});
+									api.closeWin();
+									api.execScript({
+										name: 'routine/win_allList.html',
+										frameName: 'allList.html',
+										script: 'updateHtml()'
+									});
+								} else {
+									api.toast({
+										msg: '提交失败！',
+										location: 'bottom'
+									});
+								}
+							});
+						}
+					}
+				},
+				created: function() {
+					this.initBulid()
+				}
+			});
+		}
+
+		function update(res) {
+			var text = res.buildName + res.floorName + res.deviceAddress;
+			$('#address').val(text);
+			$('#deviceChoose').text(res.deviceName);
+			sumbitObj = res
+		}
+
+		function imageClick() {
+			formVm.imageClick()
+		}
+
+		function deleteImg(src, div) {
+			$("#" + div).remove()
+			if(fileatt.length > 0) {
+				for(var i = 0; i < fileatt.length; i++) {
+					if(fileatt[i] == src) {
+						fileatt.splice(i, 1);
+					}
+				}
+			}
+		}
+
+		function openPicture(index) {
+
+			var res;
+			res = fileatt;
+
+			var passObj = {
+				"index": index,
+				"attaches": res,
+				"flag": 1
+			}
+			api.openWin({
+				name: 'picture',
+				url: './picture.html',
+				rect: {
+					x: 0,
+					y: 0,
+					w: 320,
+					h: 480
+				},
+				pageParam: passObj,
+				bounces: true,
+				bgColor: 'rgba(0,0,0,0)',
+				vScrollBarEnabled: true,
+				hScrollBarEnabled: true
+			});
+		}
+	</script>
+
+</html>

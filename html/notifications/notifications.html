@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="en">
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+		<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+		<title>消息提醒</title>
+		<link rel="stylesheet" type="text/css" href="../../css/api.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/aui.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/wbicon/style.css" />
+		<style>
+			.xf-bg {
+				background-color: #f5f4f9;
+			}
+
+			.xf-flex {
+				display: -webkit-box;
+				display: -webkit-flex;
+				display: flex;
+				width: 100%;
+				-webkit-box-sizing: border-box;
+				-moz-box-sizing: border-box;
+				box-sizing: border-box;
+			}
+
+			.xf-flex_item {
+				justify-content: flex-start;
+				flex-grow: 1;
+			}
+
+			.xf-msg-wrap {
+				/*padding: .5rem 0 0rem .5rem;*/
+				/* background-color: #fff;*/
+				padding: .5rem 0;
+			}
+
+			.xf-state-size {
+				/*display: inline-block;*/
+				/*width: 3rem;*/
+				/*height: 3rem;*/
+				/*line-height: 3rem;*/
+				/*border-radius: .2rem;*/
+				/*color: #fff;*/
+				/*text-align: center;*/
+				display: inline-block;
+				width: 2.7rem;
+				height: 2.7rem;
+				line-height: 2.7rem;
+				border-radius: .2rem;
+				color: #fff;
+				text-align: center;
+			}
+
+			.xf-msg-item {
+				position: relative;
+				padding: .5rem .5rem .25rem;
+				border-bottom: .05rem solid #eee;
+				width: 100%;
+				-webkit-box-sizing: border-box;
+				-moz-box-sizing: border-box;
+				box-sizing: border-box;
+				margin-right: 5rem;
+			}
+
+			.xf-msg-item:last-child {
+				margin-bottom: 0;
+			}
+
+			.xf-msg-item_icon {
+				max-width: 3rem;
+				width: 3rem;
+				margin-right: .2rem;
+			}
+
+			.xf-msg-item_inner {
+				overflow: hidden;
+				padding-right: .25rem;
+			}
+			.xf-msg-item_inner span{
+				position:relative;
+				top:1px;
+				vertical-align: middle;
+			}
+			.xf-mine-link {
+				display: inline-block;
+				max-width: 50px;
+				color: #FFF;
+				text-align: center;
+				font-size: .8rem;
+				color: #979797;
+				-webkit-transform: scale(1.1, 1.2);
+				-moz-transform: scale(1.1, 1.2);
+				-ms-transform: scale(1.1, 1.2);
+				-o-transform: scale(1.1, 1.2);
+				transform: scale(1.1, 1.2);
+			}
+
+			.xf-mine-link a {
+				color: inherit;
+			}
+
+			.xf-panel {
+				background-color: #fff;
+				box-sizing: border-box;
+				margin-bottom: .5rem;
+				padding: 0;
+				font-size: .7rem;
+				/*margin-right: 0.5rem;*/
+			}
+
+			.xf-msg-item_inner img {
+				display: inline-block;
+				vertical-align: middle;
+				width:20px;
+			}
+
+			.xf-span-margin {
+				display: inline-block;
+				margin-top: 0.5rem;
+			}
+
+			.header {
+				height: 57px;
+				width: 100%;
+				display: block;
+				line-height: 57px;
+				padding-top: 11px;
+				font-size: .8rem;
+			}
+
+			.header.active {
+				display: block;
+			}
+
+			.top-menu {
+				/*padding: 0 43px 0 8px;*/
+				text-align: center;
+				color: #fff;
+				font-weight: bold;
+			}
+			/*按钮*/
+			.backBtn {
+				height: 40px;
+				width: 35px;
+				position: absolute;
+				right: left;
+				bottom: 0;
+			}
+			
+			.backBtn::before {
+				position: absolute;
+				top: .7rem;
+				left: .75rem;
+				display: block;
+				content: '';
+				width: 10px;
+				height: 10px;
+				border-left: 1px solid;
+				border-top: 1px solid;
+				color: #fff;
+				transform: rotate(-45deg);
+			}
+
+			.btn {
+				height: 40px;
+				width: 35px;
+				position: absolute;
+				right: 0;
+				bottom: 0;
+			}
+
+			.header.home>div.active {
+				opacity: 1;
+			}
+
+			.header.home {
+				/*background: -moz-linear-gradient(top, #febd00 0%, #ff951b 100%);
+				background: -webkit-gradient(linear, left top, right bottom, color-stop(0%, #febd00), color-stop(100%, #ff951b));
+				background: -webkit-linear-gradient(top, #febd00 0%, #ff951b 100%);
+				background: -o-linear-gradient(top, #febd00 0%, #ff951b 100%);
+				background: -ms-linear-gradient(top, #febd00 0%, #ff951b 100%);
+				background: linear-gradient(to top, #febd00 0%, #ff951b 100%);*/
+				background-color: #ff961b;
+			}
+
+			.header.home .top-menu>div {
+				color: #fff;
+				opacity: .8;
+			}
+
+			.header.home .top-menu>div.active {
+				opacity: 1;
+			}
+
+			.img_style {
+				width: 1.5rem;
+				float: left;
+				margin-top: 6px;
+			}
+
+			.img_more {
+				width: 0.5rem;
+				margin-top: -2px;
+				margin-left: 26px
+			}
+
+			.xf-panel .xf-flex .xf-flex_item {
+				color: #727171;
+			}
+
+			.xf-button {
+				border-radius: 0;
+				margin-top: 1rem;
+				display: block;
+				width: 100%;
+				background-color: #ff9b18;
+				border: 0;
+				color: #fff;
+				font-size: 1rem;
+				height: 2rem;
+			}
+
+			#myPhoto {
+				width: 2.6rem;
+				height: 2.6rem;
+				border-radius: .3rem;
+			}
+
+
+			.dot{
+				position: absolute;
+				right:1.7rem;
+				top: 50%;
+				transform: translate(-50%,-60%);
+				border: red solid 3px;
+				border-radius: 50%;
+				width: 0;height: 0;
+			}
+
+		</style>
+	</head>
+
+	<body style="margin:0">
+		<header>
+			<div class="header home active">
+				<div class="backBtn" tapmode onclick="back()"></div>
+				<div id="title" class="top-menu">消息提醒</div>
+			</div>
+		</header>
+			<section class="xf-msg-wrap" id="message_list">
+				<div class="xf-panel">
+					<li class="xf-msg-item xf-flex" style="line-height: 2;  height: 2.5rem;" onclick="police_remind()">
+						<a class="xf-flex_item xf-msg-item_inner ">
+						<img src="../../image/message_img/notifications1.png" alt="">
+						<span>真警提醒</span>
+						</a>
+						<span class="xf-flex_item xf-mine-link"><span class="xf-span-margin"><img class="img_more"  src="../../image/new/new_more.png" ></span></span>
+						<i class="dot" v-if="Number(dataList.msg_alarm_num)>0"></i>
+					</li>
+				</div>
+				<div class="xf-panel">
+					<li class="xf-msg-item xf-flex" style="line-height: 2;  height: 2.5rem;" onclick="task_manage()">
+						<a class="xf-flex_item xf-msg-item_inner ">
+						<img src="../../image/message_img/notifications2.png" alt="">
+						<span>任务提醒</span>
+						</a>
+						<span class="xf-flex_item xf-mine-link"><span class="xf-span-margin"><img class="img_more"  src="../../image/new/new_more.png" ></span></span>
+						<i class="dot" v-if="Number(dataList.msg_task_num)>0"></i>
+					</li>
+				</div>
+				<div class="xf-panel">
+					<li class="xf-msg-item xf-flex" style="line-height: 2;  height: 2.5rem;" onclick="service_relationship()">
+						<a class="xf-flex_item xf-msg-item_inner ">
+						<img src="../../image/message_img/notifications3.png" alt="">
+						<span>服务关系提醒</span>
+						</a>
+						<span class="xf-flex_item xf-mine-link"><span class="xf-span-margin"><img class="img_more"  src="../../image/new/new_more.png" ></span></span>
+						<i class="dot" v-if="Number(dataList.msg_service_num)>0"></i>
+					</li>
+
+				</div>
+				<!--<div class="xf-panel">
+					<li class="xf-msg-item xf-flex" style="line-height: 2;  height: 2.5rem;" onclick="to_bluetooth()">
+						<a class="xf-flex_item xf-msg-item_inner ">
+						<img src="../../image/message_img/notifications4.png" alt="">
+						<span>蓝牙链接通知</span>
+						</a>
+						<span class="xf-flex_item xf-mine-link"><span class="xf-span-margin"><img class="img_more"  src="../../image/new/new_more.png" ></span></span>
+						<i class="dot" v-if="Number(dataList.msg_blue_num)>0"></i>
+					</li>
+
+				</div>
+				<div  class="xf-panel">
+					<li class="xf-msg-item xf-flex" style="line-height: 2;  height: 2.5rem;" onclick="to_system()">
+						<a class="xf-flex_item xf-msg-item_inner ">
+						<img src="../../image/message_img/notifications5.png" alt="">
+						<span>系统公告</span>
+						</a>
+						<span class="xf-flex_item xf-mine-link"><span class="xf-span-margin"><img class="img_more"  src="../../image/new/new_more.png" ></span></span>
+						<i class="dot" v-if="Number(dataList.msg_notice_num)>0"></i>
+					</li>
+				</div>-->
+
+
+		</section>
+	</body>
+	<script src="../../config/config.js"></script>
+	<script src="../../script/zepto.js"></script>
+	<script src="../../script/api.js"></script>
+	<script type="text/javascript" src="../../script/vue.js"></script>
+	<script type="text/javascript" src="../../script/iphoneX.js"></script>
+	<script>
+		var paramObj = JSON.parse(localStorage.getItem('userObj'));
+		var model_div;
+		apiready = function() {
+			iphoneXfit();
+			if(isIphoneX()){
+				$(".backBtn").css("top","1.8rem");
+			}
+			//我得模块得埋点
+			//添加监听事件
+			apiEvents();
+			//获取是否显示红点
+			getInfo();
+		}
+		function getInfo(){
+			var paramObj = JSON.parse(localStorage.getItem('userObj'));
+			var datas={
+				 orgId:paramObj.orgId,
+				 userId:paramObj.userid,
+//				orgId:'340104FWJG201806250001',
+//				userId:'2c90ff3d6446f76c01644910b9b50002',
+				terminal:1
+			}
+			api.ajax({
+        url: webapp_global.url + "/maintenance/message/messageStatistics",
+				method: 'get',
+				dataType: "json",
+				data: {
+		        values: datas
+		    }
+			}, function(ret, err) {
+				var code = ret["code"];
+				if(code == "success") {
+					var data = ret["data"];
+					tosetMs(data)
+				}
+			})
+		}
+		function tosetMs(data_list){
+			if(model_div){
+				model_div.set_data(data_list)
+			}else{
+				model_div = new Vue({
+					el: "#message_list",
+					data() {
+						return {
+							dataList:{}
+						}
+					},
+					created:function(){
+						this.dataList=data_list
+					},
+					methods:{
+						set_data:function(val){
+							this.dataList=val
+						}
+					}
+				})
+			}
+
+		}
+		// 真警提醒
+		function police_remind(){
+			openPage("notifications","_police_remind")
+		}
+		// 任务提醒
+		function task_manage(){
+			openPage("notifications","_task_manage")
+		}
+		// 服务关系提醒
+		function service_relationship(){
+			openPage("notifications","_service_relationship")
+		}
+		// 蓝夜服务链接
+		function to_bluetooth(){
+			api.toast({
+				msg: '正在开发中，敬请期待！',
+				duration: 2000,
+				location: 'middle'
+			});
+		}
+		// 系统公告
+		function to_system(){
+			api.toast({
+				msg: '正在开发中，敬请期待！',
+				duration: 2000,
+				location: 'middle'
+			});
+		}
+		//打开页面
+		function openPage(file, name, pageParam) {
+			api.openWin({
+				name: name,
+				url: '../../html/' + file + '/' + name + '.html',
+				rect: {
+					x: 0,
+					y: 0,
+					w: 320,
+					h: 480
+				},
+				pageParam: pageParam,
+				bounces: false,
+				bgColor: 'rgba(0,0,0,0)',
+				vScrollBarEnabled: true,
+				hScrollBarEnabled: true
+			});
+		}
+
+
+		function apiEvents() {
+			api.addEventListener({
+			    name: 'sendNotications'
+			}, function(ret, err) {
+			    getInfo()
+			});
+
+			var connectionType = api.connectionType;
+			if(connectionType == "none") {
+				api.toast({
+					msg: '网络走丢了，请找回网络',
+					duration: 2000,
+					location: 'middle',
+					global: true
+				});
+			}
+			//监听设备断开网络的事件，字符串类型
+			api.addEventListener({
+				name: 'offline'
+			}, function(ret, err) {
+				api.toast({
+					msg: '网络走丢了，请找回网络',
+					duration: 2000,
+					location: 'middle',
+					global: true
+				});
+			});
+			//监听设备连接到网络的事件，字符串类型
+			api.addEventListener({
+				name: 'online'
+			}, function(ret, err) {
+				api.toast({
+					msg: '网络已经找回，请刷新页面',
+					duration: 2000,
+					location: 'middle',
+					global: true
+				});
+			});
+			api.addEventListener({
+				name: 'keyback'
+			}, function(ret, err) {
+				back();
+			});
+
+		}
+		//返回，关闭当前详情页，
+		function back() {
+			api.closeWin({
+				name: 'notifications'
+			});
+		}
+	</script>
+
+</html>

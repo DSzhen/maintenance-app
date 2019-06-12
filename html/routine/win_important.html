@@ -1,0 +1,122 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>单个维保跳转页</title>
+    <link rel="stylesheet" type="text/css" href="../../css/api.css" />
+    <link rel="stylesheet" href="../../css/emergency/win_eme.css" />
+</head>
+
+<body>
+<header id="header">
+    <div class="header home active">
+        <div class="backBtn" tapmode onclick="back()"></div>
+        <div id="title" class="top-menu"></div>
+        <div class="add_btn btn" tapmode onclick="fnMore()"></div>
+    </div>
+</header>
+</body>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript">
+    apiready = function() {
+        $api.byId('title').innerHTML = api.pageParam.checkItemTypeName;
+        var typeEnter = api.pageParam.checkItemTypeId;
+        if(typeEnter =="0100001") {
+            //消控室 跳转页面
+            api.openFrame({
+                name: "control.html",
+                url: './control.html',
+                rect: {
+                    x: 0,
+                    y: 57,
+                    w: 'auto',
+                    h: api.winHeight - 57
+                },
+                pageParam: api.pageParam,
+                bounces: false,
+                vScrollBarEnabled: false,
+                hScrollBarEnabled: true
+            });
+        }
+        if(typeEnter =="01000000") {
+            //消防供配电设施 跳转页面
+            api.openFrame({
+                name: "dynamo.html",
+                url: './dynamo.html',
+                rect: {
+                    x: 0,
+                    y: 57,
+                    w: 'auto',
+                    h: api.winHeight - 57
+                },
+                pageParam: api.pageParam,
+                bounces: false,
+                vScrollBarEnabled: false,
+                hScrollBarEnabled: true
+            });
+        }
+        if(typeEnter =="05000000") {
+            //消防供水系统 跳转页面
+            api.openFrame({
+                name: "waterPump.html",
+                url: './waterPump.html',
+                rect: {
+                    x: 0,
+                    y: 57,
+                    w: 'auto',
+                    h: api.winHeight - 57
+                },
+                pageParam: api.pageParam,
+                bounces: false,
+                vScrollBarEnabled: false,
+                hScrollBarEnabled: true
+            });
+        }
+        if(typeEnter =="010000000") {
+            //防排烟系统 跳转页面
+            api.openFrame({
+                name: "smoke.html",
+                url: './smoke.html',
+                rect: {
+                    x: 0,
+                    y: 57,
+                    w: 'auto',
+                    h: api.winHeight - 57
+                },
+                pageParam: api.pageParam,
+                bounces: false,
+                vScrollBarEnabled: false,
+                hScrollBarEnabled: true
+            });
+        }
+        if(typeEnter =="0100002") {
+            //气体钢瓶间 跳转页面
+            api.openFrame({
+                name: "gas.html",
+                url: './gas.html',
+                rect: {
+                    x: 0,
+                    y: 57,
+                    w: 'auto',
+                    h: api.winHeight - 57
+                },
+                pageParam: api.pageParam,
+                bounces: false,
+                vScrollBarEnabled: false,
+                hScrollBarEnabled: true
+            });
+        }
+
+
+
+    };
+    //返回，关闭当前详情页，
+    function back() {
+        api.closeWin()
+    }
+</script>
+
+</html>

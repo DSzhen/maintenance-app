@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<link rel="stylesheet" type="text/css" href="../../css/aui.css" />
+		<link rel="stylesheet" href="../../css/wbicon/style.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/mobileSelect.css" />
+		<link rel="stylesheet" href="../../css/mint-ui.css" />
+		<style>
+			html {
+				font-family: "Microsoft YaHei";
+			}
+
+			body {
+				color: #333;
+				background-color: #f5f5f9;
+			}
+
+			.aui-bg {
+				background-color: #fff;
+			}
+
+			.aui-bg+.aui-bg {
+				margin-top: .3rem;
+			}
+
+			.aui-info {
+				padding-top: .75rem;
+				padding-bottom: .75rem;
+				border-bottom: 1px solid #ddd;
+			}
+
+			.aui-info .aui-info-item {
+				color: #333;
+				font-size: .75rem;
+			}
+
+			.aui-info .aui-info-item:last-child {
+				color: #999;
+			}
+
+			.aui-info-item a {
+				margin-top: 4px;
+				color: #999;
+			}
+
+			.aui-flex {
+				-webkit-box-sizing: border-box;
+				box-sizing: border-box;
+				display: -webkit-box;
+				display: -webkit-flex;
+				display: flex;
+				-webkit-box-pack: justify;
+				-webkit-justify-content: flex-start;
+				justify-content: flex-start;
+				-webkit-box-align: center;
+				-webkit-align-items: center;
+				align-items: center;
+				padding-top: .75rem;
+				padding-bottom: .75rem;
+			}
+
+			.aui-flex-item .aui-flex-info {
+				color: #333;
+				font-size: .75rem;
+			}
+
+			.aui-flex-item .aui-flex-info:last-child {
+				color: #999;
+			}
+
+			[v-cloak] {
+				display: none;
+			}
+
+			.select-qua {
+				height: 2.2rem;
+				background-color: white;
+				width: 100%;
+				font-size: .75rem;
+			}
+
+			.aui-list-item-input {
+				background-color: white;
+				text-align: center;
+			}
+
+			.aui-list-item-input {
+				font-size: .7rem;
+			}
+
+			.selectOptions {
+				font-size: .5rem;
+			}
+
+			.aui-flex-img {
+				width: 2.4rem;
+				height: 2.4rem;
+				color: #fff;
+				font-size: 1.2rem;
+				text-align: center;
+				line-height: 2.6rem;
+				border-radius: 50%;
+			}
+
+			.aui-red {
+				background-color: #ff747b;
+			}
+
+			.aui-sucess {
+				background-color: #91c98c;
+			}
+			.no_data{
+				padding-top: 30%;
+				text-align: center;
+				color: #c2c2c6;
+			  font-size: .8rem;
+			}
+			.no_data img{
+				width: 45%;
+				max-width: 300px;
+				display: inline-block;
+				margin-bottom: 1.2rem;
+			}
+		</style>
+	</head>
+
+	<body>
+		<section class="aui-content" id="informingList" v-cloak>
+			<div class="aui-bg ">
+				<div class="aui-info aui-margin-l-10 aui-padded-r-10">
+					<div class="aui-info-item">业主单位</div>
+					<div class="aui-info-item">
+						<div id="unitName">{{proprietorName}}</div>
+						<a class="wbicon-arrowDown2 aui-margin-l-15"></a>
+					</div>
+				</div>
+			</div>
+			<div class="no_data" style="display:none">
+				<img src="../../image/no_zizi.png" alt="">
+				<p>暂时还没有相关信息~</p>
+			</div>
+			<div class="aui-bg" v-for="item in dataList">
+				<div class="aui-flex aui-padded-l-10 aui-padded-r-10" @click="queryMaintInfoById(item.id)">
+					<div v-if="item.status == 0" class="aui-flex-item aui-flex-img aui-red"><b class="wbicon-edit"></b></div>
+					<div v-if="item.status == 1" class="aui-flex-item aui-flex-img aui-sucess"><b class="wbicon-refer"></b></div>
+					<div class="aui-flex-item aui-margin-l-10 aui-padded-r-10">
+						<div class="aui-flex-info">提交人：<span>{{item.userName}}</span></div>
+						<div class="aui-flex-info">{{item.commitTime}}<span class="aui-margin-l-10">消防检查告知单</span></div>
+					</div>
+				</div>
+			</div>
+			<div class='noshuju' style="text-align:center;color:#999999; padding:10px 0; display:none">没有数据啦</div>
+			<div class='to_load' style="text-align:center;color:#999999;padding:10px 0; display:none">加载更多...</div>
+		</section>
+		<script type="text/javascript" src="../../script/api.js"></script>
+		<script type="text/javascript" src="../../script/aui-tab.js"></script>
+		<script type="text/javascript" src="../../script/aui-collapse.js"></script>
+		<script type="text/javascript" src="../../script/vue.js"></script>
+		<script type="text/javascript" src="../../script/zepto.js"></script>
+
+		<script type="text/javascript" src="../../script/mint-ui.js"></script>
+		<script type="text/javascript" src="../../config/config.js"></script>
+		<script type="text/javascript" src="../../script/mobileSelect.js"></script>
+		<script>
+			//定义一个变量防止重复请求ajax
+			var preventAjaxRepeatSubmit = true;
+			var pageNo=2;
+			var userObj = JSON.parse(localStorage.getItem("userObj"));
+			var bottons = [],
+				informingVue;
+			var tab = new auiTab({
+				element: document.getElementById("tab"),
+			}, function(ret) {});
+			var collapse = new auiCollapse({
+				autoHide: false //是否自动隐藏已经展开的容器
+			});
+			//手风琴
+			apiready = function() {
+				api.parseTapmode();
+				//初始化业主单位列表
+				_queryProprietorList();
+				//初始化api常用方法
+				_initApiEvent();
+			}
+			//初始化业主单位列表
+			function _queryProprietorList() {
+				Vue.$indicator.open("加载中...");
+				api.ajax({
+					url: webapp_global.url + '/maintenance/queryProprietorList',
+					method: 'get',
+					data: {
+						values: {
+							userId: userObj.userid,
+							orgId: userObj.orgId,
+							proprietorName: ""
+						},
+					}
+				}, function(ret, err) {
+					Vue.$indicator.close();
+					bottons = [];
+					if(ret) {
+						var code = ret["code"];
+						if(code == "success") {
+							var data = ret["data"];
+							if(data && data.length > 0) {
+								for(var i = 0; i < data.length; i++) {
+									var obj = {
+										id: data[i].proprietorId,
+										value: data[i].proprietorName
+									}
+									bottons.push(obj);
+								}
+								//查询该业主单位下的所有告知单
+								_initInformingVue(userObj.orgId, data[0].proprietorId, data[0].proprietorName);
+							} else {
+							}
+						} else {}
+					} else {
+						api.toast({
+							msg: '没有绑定业主单位',
+							duration: 2000,
+							location: 'bottom'
+						});
+					}
+				});
+			}
+			//初始化vue赋值
+			function _initInformingVue(orgId, proprietorId, proprietorName) {
+				if(!informingVue) {
+					informingVue = new Vue({
+						el: '#informingList',
+						data() {
+							return {
+								dataList: [],
+								proprietorId: proprietorId,
+								proprietorName: proprietorName
+							}
+						},
+						methods: {
+							//修改数组值
+							setDataList: function(list) {
+								this.dataList = list;
+								if(list.length>9){
+									setTimeout(function(){
+										$(".to_load").show();
+									},500)
+								}
+								
+								if(list.length>0){
+									$(".no_data").hide();
+								}else{
+									$(".no_data").show();
+								}
+							},
+							change_page:function(item){
+								this.dataList.push(item)
+							},
+							//查询告知单详情
+							queryMaintInfoById: function(id) {
+								api.openWin({
+									name: "_informingDetails",
+									url: './_informingDetails.html',
+									rect: {
+										x: 0,
+										y: 0,
+										w: 320,
+										h: 480
+									},
+									pageParam: {
+										id: id
+									},
+									bounces: false,
+									bgColor: 'rgba(0,0,0,0)',
+									vScrollBarEnabled: true,
+									hScrollBarEnabled: true
+								});
+							}
+						},
+						mounted: function() {
+							this.$nextTick(function() {
+								new MobileSelect({
+									trigger: '#unitName',
+									title: '选择业主单位',
+									wheels: [{
+										data: bottons
+									}],
+									callback: function(indexArr, data) {
+										_queryMaintenanceInforming(orgId, data[0].id, data[0].value);
+									}
+								})
+							})
+						}
+					})
+				}
+				//查询告知单列表
+				_queryMaintenanceInforming(orgId, proprietorId);
+			}
+			//查询该业主单位下的所有告知单
+			function _queryMaintenanceInforming(orgId, proprietorId) {
+				//保存localStorage业主单位信息
+				var obj = {
+					proprietorId: proprietorId,
+				}
+				localStorage.setItem("informingProprietor", JSON.stringify(obj));
+				Vue.$indicator.open("加载中...");
+				api.ajax({
+					url: webapp_global.url + '/maintenance/queryMaintenanceInformingPage',
+					method: 'get',
+					data: {
+						values: {
+							orgId: orgId,
+							proprietorId: proprietorId,
+							pageNo:1,
+							pageSize:10,
+						},
+					}
+				}, function(ret, err) {
+					Vue.$indicator.close();
+					if(ret) {
+						var code = ret["code"];
+						if(code == "success") {
+							var data = ret["data"];
+							informingVue.setDataList(data.rows);
+						} else {
+							informingVue.setDataList([]);
+							//没有数据
+						}
+					} else {
+						informingVue.setDataList([]);
+						api.toast({
+							msg: '没有告知单',
+							duration: 2000,
+							location: 'bottom'
+						});
+					}
+				})
+			}
+
+			function _queryMaintenanceInforming_page(orgId, proprietorId){
+				//保存localStorage业主单位信息
+				if(preventAjaxRepeatSubmit){
+					preventAjaxRepeatSubmit = false;
+					var obj = {
+						proprietorId: proprietorId,
+					}
+					localStorage.setItem("informingProprietor", JSON.stringify(obj));
+					api.ajax({
+						url: webapp_global.url + '/maintenance/queryMaintenanceInformingPage',
+						method: 'get',
+						timeout:20,
+						data: {
+							values: {
+								orgId: orgId,
+								proprietorId: proprietorId,
+								pageNo:pageNo,
+								pageSize:10,
+							},
+						}
+					}, function(ret, err) {
+						preventAjaxRepeatSubmit = true;
+						Vue.$indicator.close();
+						api.refreshHeaderLoadDone();
+						api.parseTapmode();
+						var data = ret.data.rows;
+						if(data.length==0){
+							$(".to_load").hide()
+							$(".noshuju").show();
+							setTimeout(function(){
+								$(".noshuju").hide();
+							},2000)
+						}else{
+							$(".to_load").show()
+							$(".noshuju").hide();
+							pageNo++
+							data.forEach(function(item) {
+									informingVue.change_page(item)
+							})
+						}
+					})
+				}
+			}
+			//初始化api常用方法
+			function _initApiEvent() {
+				api.addEventListener({
+					name: 'scrolltobottom',
+					extra: {
+						threshold: 0
+					}
+				}, function(ret, err) {
+					var obj = JSON.parse(localStorage.getItem("informingProprietor"));
+					if(obj) {
+						_queryMaintenanceInforming_page(userObj.orgId, obj.proprietorId);
+					}
+				});
+
+
+
+
+				api.addEventListener({
+					name: 'updateInformingList'
+				}, function(ret, err) {
+					var obj = JSON.parse(localStorage.getItem("informingProprietor"));
+					if(obj) {
+						_queryMaintenanceInforming(userObj.orgId, obj.proprietorId);
+					}
+				});
+				//ios右滑控制
+      api.addEventListener({
+        name:'swiperight'
+      }, function(ret, err){
+      });
+//				api.setRefreshHeaderInfo({
+//					visible: true,
+//					bgColor: '#ccc',
+//					textColor: '#fff',
+//					textDown: '下拉刷新...',
+//					textUp: '松开刷新...',
+//					showTime: true
+//				}, function(ret, err) {
+//					pageNo=2
+//					api.refreshHeaderLoadDone();
+//					api.parseTapmode();
+//					var obj = JSON.parse(localStorage.getItem("informingProprietor"));
+//					if(obj) {
+//						_queryMaintenanceInforming(userObj.orgId, obj.proprietorId);
+//					}
+//				});
+			}
+		</script>
+	</body>
+
+</html>

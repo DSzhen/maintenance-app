@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>处理中维保列表</title>
+		<link rel="stylesheet" href="../../css/api.css" />
+		<link rel="stylesheet" href="../../css/emergency/eme_processing.css" />
+		<link rel="stylesheet" href="../../css/aui.css" />
+		<link rel="stylesheet" href="../../css/wbicon/style.css" />
+		<link rel="stylesheet" href="../../css/mint-ui.css" />
+		<style type="text/css">
+			body,
+			html {
+				font-family: "Helvetica";
+				-webkit-touch-callout: none;
+				-webkit-text-size-adjust: none;
+				-webkit-tap-highlight-color: transparent;
+				-webkit-user-select: none;
+				background-color: #f5f5f9
+			}
+
+			.aui-content-padded {
+				margin: .5rem;
+			}
+
+			.aui-card-list {
+				margin-bottom: .5rem;
+				box-shadow: 0 4px 8px 0 rgba(229, 229, 229, .65);
+				border-radius: .2rem;
+			}
+
+			.wb-flex {
+				display: -webkit-box;
+				display: -webkit-flex;
+				display: flex;
+				-webkit-box-pack: justify;
+				-webkit-justify-content: center;
+				justify-content: center;
+				-webkit-box-align: center;
+				-webkit-align-items: center;
+				align-items: center;
+			}
+
+			.wb-flex-start {
+				-webkit-justify-content: flex-start;
+				justify-content: flex-start;
+			}
+
+			.wb-space-between {
+				-webkit-justify-content: space-between;
+				justify-content: space-between;
+			}
+
+			.aui-card-list-content-padded {
+				padding: 0.5rem 0.5rem;
+			}
+
+			.aui-tab-item {
+				width: 100%;
+				height: 2.4rem;
+				line-height: 2.4rem;
+				font-size: 0.8rem;
+				color: #666;
+			}
+
+			.aui-tab-item.aui-active {
+				color: #ff961b;
+				border-bottom: 2px solid #ff961b;
+			}
+
+			.aui-card-list-header {
+				position: relative;
+				min-height: 0 !important;
+				padding: .25rem .5rem .1rem !important;
+				border-bottom: 1px solid #ddd;
+				border-top-left-radius: 3px;
+				border-top-right-radius: 3px;
+			}
+
+			.aui-card-list-header span {
+				color: #999;
+			}
+
+			.wb-card-list-header {
+				font-size: .7rem;
+				max-width: 80%;
+				color: #999;
+			}
+
+			.wb-pending-txt {
+				color: #333;
+			}
+
+			.wb-card-title {
+				white-space: nowrap;
+				color: #999999;
+			}
+
+			.wb-card-list {
+				width: 88%;
+			}
+
+			.wb-info-text {
+				display: inline-block;
+				max-width: 77%;
+			}
+
+			.wb-info-text span {
+				margin-left: .5rem;
+			}
+
+			.aui-card-list-content-padded .wb-flex+.wb-flex {
+				margin-top: .35rem;
+			}
+			/*.wb-text-defalut {
+			color: #333;
+		}*/
+
+			.wb-list-icon {
+				margin-right: .2rem;
+				font-size: 1.5rem;
+				color: #0a85ff;
+			}
+
+			.wbicon-arrowMark {
+				position: absolute;
+				top: 0;
+				left: 0;
+				color: #ff961b;
+				font-size: .6rem;
+			}
+
+			.defaultDiv-layout {
+				margin-top: 35%;
+				height: 100%;
+				width: 100%;
+				text-align: center;
+			}
+
+			.defaultDiv-layout label {
+				color: #C4C4C4;
+			}
+
+			.defaultDiv {
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				margin-bottom: 1rem;
+			}
+
+			.defaultDiv img {
+				height: 5rem;
+				width: 6rem;
+			}
+
+			.wb-task-inner-item {
+				padding: 0 .4rem;
+				font-size: .6rem;
+				color: #fd7575;
+				background-color: rgba(253, 117, 117, .1);
+				border-radius: .15rem;
+				border: 1px solid #fd7575;
+				margin-top: -.2rem;
+			}
+		</style>
+	</head>
+
+	<body>
+		<section class="aui-content-padded"></section>
+		<div class='noshuju' style="text-align:center;color:#999999; padding:10px 0; display:none">没有数据啦</div>
+		<div class='to_load' style="text-align:center;color:#999999;padding:10px 0; display:none">加载更多...</div>
+		<div class="push-status" style="display: none;" id="pushStatus">火速加载中...</div>
+		<script type="text/javascript" src="../../script/api.js"></script>
+		<script type="text/javascript" src="../../script/zepto.js"></script>
+		<script type="text/javascript" src="../../config/config.js"></script>
+		<script type="text/javascript" src="../../script/vue.js"></script>
+		<script type="text/javascript" src="../../script/mint-ui.js"></script>
+		<script type="text/javascript" src="../../script/utils/splitPage.js"></script>
+		<script type="text/javascript" src="../../script/umeng/zhuge.js"></script>
+
+		<script>
+			//定义一个变量防止重复请求ajax
+			var preventAjaxRepeatSubmit = true;
+			//先清除数据
+			$('.aui-content-padded').html("");
+			//分页
+			var param = {
+				pageSize: 20,
+				addUp: 20
+			}
+			var splitPageFn = new splitPage(param);
+			var userObj = localStorage.getItem("userObj");
+			var activity;
+			if(typeof userObj == "string") {
+				userObj = JSON.parse(userObj);
+			}
+			var requestParam = {
+				userId: userObj.userid,
+				orderState: "1",
+				proprietorId: "",
+				timely: "",
+				bleConnected: "",
+				reassignment: "",
+				bespeak_start_time: "",
+				bespeak_end_time: "",
+				pageNo: 1,
+				pageSize:param.pageSize
+			}
+			apiready = function() {
+				if(!userObj) {
+					api.closeFrame({
+						name: 'main'
+					});
+					api.closeFrame({
+						name: 'frm_user'
+					});
+					api.closeWin({
+						name: "index"
+					})
+					api.openWin({
+						name: 'login',
+						url: '../../html/login.html',
+						bounces: false
+					})
+				}
+				activity = api.require('UILoading');
+				//初始化api事件
+				apiEvents();
+				//查询所有应急维保数据
+				queryAlleme("firstLoad");
+			}
+			//查询所有应急维保数据
+			function queryAlleme(str) {
+				if(str != "firstLoad"){
+					$(".to_load").show();
+				}else{
+					Vue.$indicator.open("加载中...");
+				}
+				$(".noshuju").hide();
+				api.ajax({
+					url: webapp_global.url + "/maintenance/order/orders",
+					method: 'get',
+					dataType: "json",
+					timeout: 20,
+					data: {
+						values: requestParam
+					}
+				}, function(ret, err) {
+					setTimeout(function() {
+						preventAjaxRepeatSubmit = true;//ajax请求完毕
+						Vue.$indicator.close();
+						$(".to_load").hide();
+						if(ret && ret.data) {
+							api.refreshHeaderLoadDone();
+							api.parseTapmode();
+							if(ret.data.length > 0) {
+								var tplHtml = loadHtml(ret.data);
+								$('.aui-content-padded').html(tplHtml);
+								if(requestParam.pageSize > ret.data.length){
+									$(".noshuju").show();
+								}
+							} else {
+								var img = "<div class='defaultDiv-layout'><div class='defaultDiv'><img src='../../image/defaultPage/emergency.png' /></div><label>暂无处理中的应急维保订单</label></div>";
+								$('.aui-content-padded').html(img);
+							}
+						} else {
+							api.refreshHeaderLoadDone();
+							api.parseTapmode();
+							var img = "<div class='defaultDiv-layout'><div class='defaultDiv'><img src='../../image/defaultPage/detectionNetwork.png'/></div><label>网络走丢了,请尝试刷新或者检查网络</label></div>";
+							$('.aui-content-padded').html(img);
+						}
+					}, 100)
+				})
+			}
+			//列表拼接展示
+			function loadHtml(data) {
+				var tpl = "";
+				if(typeof data == "object" && data.length == 0) return
+				for(var i = 0; i < data.length; i++) {
+					// 显示需要什么传什么
+					var obj = {
+						orderId: data[i].orderId,
+						orderType: data[i].orderType,
+						orderState: data[i].orderState,
+						orderKind:data[i].orderKind
+					};
+					//不必显示状态
+					data[i].orderState = "";
+					tpl += '<div class="box" onclick=appendClick(' + JSON.stringify(obj) + ')><div>';
+					tpl += '<span>' + data[i].proprietor + '</span>';
+					if(data[i].isOverdue == "1" && data[i].orderKind == "0") {
+						tpl += '<i class="yuqi">逾期</i>'
+					} 
+					//1是预测性维保
+					if(data[i].orderKind == "0"){
+						tpl += '</div><div class="eme-info"><ul><li><b class="wbicon-linkMan"></b><span>' + data[i].concat + '</span><span class="text-d" onclick="callPhone(' + data[i].concatPhone + ')">' + data[i].concatPhone + '</span></li>';
+						tpl += '<li><b class="wbicon-systemName"></b><span>' + data[i].deviceSysName + '</span></li>';
+						tpl += '<li><b class="wbicon-equipment"></b><span>' + data[i].deviceType + '</span></li>';
+						tpl += '<li><b class="wbicon-timeSolid"></b><span>' + data[i].orderTime + '</span><button class="button" type="button">修改时间</button></li></ul></div></div>';						
+					}else{
+						tpl += '<i class="yuce">预测维保</i>'
+						tpl += '</div><div class="eme-info"><ul><li><b class="wbicon-linkMan"></b><span>' + data[i].concat + '</span><span class="text-d" onclick="callPhone(' + data[i].concatPhone + ')">' + data[i].concatPhone + '</span></li>';
+						tpl += '<li><b class="wbicon-systemName"></b><span>' + data[i].deviceSysName + '</span></li>';
+						tpl += '<li><b class="wbicon-equipment"></b><span>' + data[i].deviceType + '</span></li>';
+						tpl += '<li><b class="wbicon-timeSolid"></b><span>' + data[i].submitTime + '</span><button class="button" type="button">修改时间</button></li></ul></div></div>';
+					}
+					
+				}
+				return tpl
+			}
+			//单条数据的点击事件
+			function appendClick(obj) {
+				var objs={
+					orderId_var:obj.orderId,
+					orderType_var:'',
+					orderState_var:obj.orderState
+				}
+				if(obj.orderType=='2'){
+					objs.orderType_var ="隐患提交"
+				}else{
+					objs.orderType_var ="手动提交"
+				}
+				// 进入应急维保详情页
+				console.log('点击应急维保列表项时触发')
+				growingIoAddEvent('enterEmergencyMaintenanceDetailsPage',objs);
+
+
+				if(typeof obj == "string") {
+					obj = JSON.parse(obj);
+				}
+				obj.gname = "emergency";
+				obj.fname = "eme_processing";
+
+				api.openWin({
+					name: 'win_eme.html',
+					url: './win_eme.html',
+					rect: {
+						x: 0,
+						y: 0,
+						w: 320,
+						h: 480
+					},
+					pageParam: obj,
+					bounces: false,
+					bgColor: 'rgba(0,0,0,0)',
+					vScrollBarEnabled: true,
+					hScrollBarEnabled: true
+				});
+			}
+			//打电话
+			function callPhone(tel) {
+				//埋点 电话被打了
+				var paramObj = JSON.parse(localStorage.getItem('userObj'));
+				window.event.stopPropagation()
+				if(api.systemType != 'ios'){
+					api.call({
+						type: 'tel_prompt',
+						number: tel
+					});
+				}
+			}
+			//初始化api事件
+			function apiEvents() {
+				api.setRefreshHeaderInfo({
+					visible: true,
+					bgColor: '#ccc',
+					textColor: '#fff',
+					textDown: '下拉刷新...',
+					textUp: '松开刷新...',
+					showTime: true
+				}, function(ret, err) {
+					param.pageSize=20
+					requestParam = {
+						userId: userObj.userid,
+						orderState: "1",
+						proprietorId: "",
+						timely: "",
+						bleConnected: "",
+						reassignment: "",
+						bespeak_start_time: "",
+						bespeak_end_time: "",
+						pageSize: param.pageSize
+					}
+					if(preventAjaxRepeatSubmit){
+						preventAjaxRepeatSubmit = false;
+						queryAlleme();
+					}
+				});
+
+				api.addEventListener({
+					name: 'scrolltobottom',
+					extra: {
+						threshold: 0
+					}
+				}, function(ret, err) {
+					if(preventAjaxRepeatSubmit){
+						preventAjaxRepeatSubmit = false;
+						var size = splitPageFn.getAddUpSize();
+						requestParam.pageSize = size;
+						queryAlleme();
+					}
+				});
+				api.addEventListener({
+					name: 'filterOrderData'
+				}, function(ret, err) {
+					if(ret.value.pname=='eme_processing'){
+						afterFilter(ret.value)
+					}
+				});
+				api.addEventListener({
+					name: 'processingRefreshData'
+				}, function(ret, err) {
+					param.pageSize=20
+					requestParam = {
+						userId: userObj.userid,
+						orderState: "1",
+						proprietorId: "",
+						timely: "",
+						bleConnected: "",
+						reassignment: "",
+						bespeak_start_time: "",
+						bespeak_end_time: "",
+						pageNo: 1,
+						pageSize:param.pageSize
+					}
+					if(preventAjaxRepeatSubmit){
+						preventAjaxRepeatSubmit = false;
+						queryAlleme("firstLoad");
+					}
+				});
+				//关闭遮罩
+				api.addEventListener({
+					name: 'filterOrderCloseActivity'
+				}, function(ret, err) {
+					closeFilter();
+				});
+				//ios右滑控制
+      api.addEventListener({
+        name:'swiperight'
+      }, function(ret, err){
+      });
+			}
+			/**与过滤页和emergency交互 start**/
+			//筛选按钮点击
+			var flowerId = ""
+			function processingFilter() {
+				activity.flower({ 
+					center: {
+				        x: 160,
+				        y: 240
+				    },
+				    size: 30,
+				    mask:"rgba(0,0,0,0.1)",
+				    fixed: true
+				}, function(ret) {
+					flowerId = ret.id;
+				});
+				requestParam.pname = "eme_processing";
+				api.openFrame({
+					name: "filter",
+					url: './eme_filter.html',
+					bounces: false,
+					reload: false, //不重新刷新页面
+					scrollEnabled: true,
+					rect: {
+						x: 70,
+						y: 57,
+						w: api.winWidth - 70,
+						h: api.winHeight
+					},
+					animation: {
+						type: "movein", //动画类型（详见动画类型常量）
+						subType: "from_right", //动画子类型（详见动画子类型常量）
+						duration: 100
+					},
+					vScrollBarEnabled: false,
+					pageParam: requestParam
+				});
+			}
+			//筛选过后传过来的数据
+			function afterFilter(options) {
+				requestParam["time-of-appointment"] = options["time-of-appointment"];
+				requestParam.proprietorId = options.proprietorId;
+				requestParam.timely = options.timely;
+				requestParam.bleConnected = options.bleConnected;
+				requestParam.reassignment = options.reassignment;
+				requestParam.bespeak_start_time = options.bespeak_start_time;
+				requestParam.bespeak_end_time = options.bespeak_end_time;
+				var size = splitPageFn.resetcurrentPageCount();
+				requestParam.pageSize = size;
+				if(preventAjaxRepeatSubmit){
+					queryAlleme();
+				}
+			}
+
+			function closeFilter() {
+				activity.closeFlower({
+					id:flowerId
+				});
+				flowerId = "";
+			}
+			/**与过滤页和emergency交互 end**/
+		</script>
+	</body>
+
+</html>

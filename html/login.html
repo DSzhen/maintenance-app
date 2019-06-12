@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="en">
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+		<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+		<title>fixedPane</title>
+		<link rel="stylesheet" type="text/css" href="../css/aui.css" />
+		<link rel="stylesheet" type="text/css" href="../css/xficon/style.css" />
+		<link rel="stylesheet" href="../css/mint-ui.css" />
+		<style>
+			html,
+			body {
+				width: 100%;
+				height: 100%
+			}
+			.xf-login-bg-img{
+				background: url('../image/login_bg.png') no-repeat;
+			}
+			.xf-login-bg {
+				height: 100%;
+				width: 100%;
+				background-clip: content-box;
+				background-size: 100% 100%;
+			}
+			
+			.xf-login-title {
+				margin: -80% 10% 20% 10%;
+			}
+			@media screen and (max-height: 365px) {
+			    .xf-login-title {
+					margin: -65% 10% 20% 10%;
+				}
+			}
+			.xf-login-title ul li {
+				display: flex;
+				line-height: 2.2rem;
+				border-bottom: 1px solid #dfdfdf;
+			}
+			
+			.xficon-user,
+			.xficon-lock {
+				margin-top: .7rem;
+			}
+			
+			.xf-login-span {
+				display: inline-block;
+				text-align: left;
+				width: 3.5rem;
+				margin-left: .4rem;
+			}
+			
+			.xf-button-submit {
+				margin-top: 1rem;
+				display: block;
+				width: 100%;
+				background-color: #ffc107;
+				border: 0;
+				color: #fff;
+				font-size: 1rem;
+				height: 2rem;
+				border-radius: 1rem;
+				margin-top: 2rem;
+			}
+			
+			.xf-button-submit:hover {
+				background-color: #ffb300;
+			}
+			/**新增
+            */
+			
+			.xf-login-bg .xf-input-new {
+				display: inline;
+				width: 70%
+			}
+		</style>
+	</head>
+
+	<body>
+		<div id="loginBg" class="xf-login-bg xf-login-bg-img"></div>
+		<div class="xf-login-title">
+			<ul>
+				<li><i class="xficon-user"></i> <span class="xf-login-span" id="yonghu">用户名</span> <input type="text" class="xf-input-new" id="usename"> </li>
+				<li><i class="xficon-lock"></i> <span class="xf-login-span" id="mima">密码</span> <input type="password" class="xf-input-new" id="password"> </li>
+			</ul>
+
+			<button type="button" id="login" class="xf-button-submit">登录</button>
+		</div>
+	</body>
+	<script type="text/javascript" src="../script/zepto.js"></script>
+	<script type="text/javascript" src="../script/api.js"></script>
+	<script type="text/javascript" src="../script/vue.js"></script>
+	<script type="text/javascript" src="../script/md5-min.js"></script>
+	<script type="text/javascript" src="../config/config.js"></script>
+	<script type="text/javascript" src="../script/umeng/zhuge.js"></script>
+	<script type="text/javascript" src="../script/mint-ui.js"></script>
+	<script>
+		var gio, userInfoPage;
+
+		function login() {
+			var usename = $('#usename').val();
+			var password = $('#password').val();
+			if(!usename || !password) {
+				api.toast({
+					msg: '用户名或密码不能为空',
+					location: 'bottom'
+				});
+				return
+			}
+			//苹果测试上线写死用户
+			if(usename == "iostestuser" && password == "a123456"){
+				var userInfo = {"id":"2c90ff3d6446f76c01644b0173e4000a","userName":"胡亚浓","loginName":"tiyan","userTelphone":"18810459875","password":"Y13RNmw6TBE=","userEmail":"","photoUrl":"user/headHortrait/340104FWJG201806250002/2c90ff3d6446f76c01644b0173e4000a/21c51b42394d49a6aa13c15ec9944d84.jpg","userSex":"1","userCardNo":"","dataRes":"11","createUserId":"","updateUserId":"2c90ff3d6446f76c01644b0173e4000a","sysCode":"sys_maintenance_app","orgCode":"","deptCode":"","postCodes":"","roleIds":"","userType":"","userToken":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJBUFAiLCJzeXNDb2RlIjoic3lzX21haW50ZW5hbmNlX2FwcCIsInVzZXJfaWQiOiIyYzkwZmYzZDY0NDZmNzZjMDE2NDRiMDE3M2U0MDAwYSIsImlzcyI6IkdTQyIsImV4cCI6MTU1OTc4NTI1NSwiaWF0IjoxNTU5Njk4ODU1fQ.KBWtJE-nQfH6aHNZFkVLGmOcAagBnQtmlRK96KA0tHE","userid":"2c90ff3d6446f76c01644b0173e4000a","orgName":"XX维保公司","username":"胡亚浓","name":"胡亚浓","subCenterName":"合肥市运营中心体验","subCenterCode":"340100YYZX201807260001","orgId":"340104FWJG201806250002","telephone":"18810459875","headportrait":"user/headHortrait/340104FWJG201806250002/2c90ff3d6446f76c01644b0173e4000a/c813e10463bf45fa847e93692ebda849.jpg"}
+				localStorage.setItem('userObj', JSON.stringify(userInfo));
+				api.openWin({
+					name: 'index',
+					url: '../index.html',
+					bounces: false
+				})
+				return true;
+			}else{
+				var newPass = password + "true";
+				var finalPass = hex_md5(newPass);
+				Vue.$indicator.open("加载中...");
+				api.ajax({
+					url: webapp_global.url + "/userAuth/userAuthLogin",
+					method: 'POST',
+					dataType: "json",
+					data: {
+						values: {
+							'loginName': usename,
+							'password': finalPass,
+							'sysCode': 'sys_maintenance_app',
+							"client": "APP"
+						}
+					}
+				}, function(ret, err) {
+					Vue.$indicator.close();
+					if(ret && ret["code"] == "success") {
+						//登录成功之后查询所属维保公司列表
+						var data = ret["data"];
+						if(data) {
+							userInfoPage = data;
+							queryOwnOrg(data, getUserInfo);
+						}
+					} else {
+						api.toast({
+							msg: ret["message"],
+							location: 'bottom'
+						});
+						return;
+					}
+				})
+			}
+		}
+		//查询所属组织机构
+		function queryOwnOrg(options, callback) {
+			api.ajax({
+				method: "post",
+				url: webapp_global.url + "/userAuth/getOrgListByUserId",
+				data: {
+					values: {
+						userId: options.id,
+						sysCode: "sys_maintenance_app"
+					}
+				},
+				dataType: "json"
+			}, function(ret, err) {
+				if(ret) {
+					var code = ret["code"];
+					if(code == "success") {
+						var data = ret["data"];
+						if(data && data.length > 0) {
+							if(data.length == 1) {
+								if(data[0] && data[0].authStatus == "1") {
+									api.toast({
+										msg: '用户已经被注销',
+										location: 'bottom'
+									});
+									return;
+								} else if(data[0] && data[0].authStatus == "2") {
+									api.toast({
+										msg: '用户已经被锁定',
+										location: 'bottom'
+									});
+									return;
+								}
+								callback(data[0], options);
+							} else {
+								//打开选择组织机构页面
+								api.openWin({
+									name: 'selectOrg',
+									url: './mymessage/selectOrganization.html',
+									pageParam: data,
+									reload: true
+								});
+							}
+						} else {
+							api.toast({
+								msg: "该账号没有分配组织机构",
+								location: 'bottom'
+							});
+						}
+					}
+				}
+			})
+		}
+
+		function getUserInfo(orgInfo, userInfo) {
+			if(!userInfo) {
+				userInfo = userInfoPage
+			}
+			//保存极光的cid
+			// _saveJpushCid(userInfo);
+			//用户信息写入到localStorage
+			api.ajax({
+				url: webapp_global.url + "/userAuth/getIdByUserIdAndOrg",
+				method: 'get',
+				dataType: "json",
+				data: {
+					values: {
+						userId: userInfo.id,
+						orgCode: orgInfo.orgCode
+					}
+				}
+			}, function(rets, err) {
+				var _data = rets.data;
+				var dataId = "";
+				if(typeof _data == "string"){
+					dataId = _data;
+				}else{
+					dataId = _data.id
+				}
+				//保存极光的cid
+				_saveJpushCid(dataId);
+				userInfo.userid = dataId; //主键id
+				userInfo.orgName = orgInfo.orgName;
+				userInfo.username = userInfo.userName;
+				userInfo.name = userInfo.userName;
+				api.ajax({
+					url: webapp_global.url + "/userInfo/getUserInfo",
+					method: 'get',
+					dataType: "json",
+					data: {
+						values: {
+							userId: userInfo.userid,
+							orgCode: orgInfo.orgCode
+						}
+					}
+				}, function(ret, err) {
+					var code = ret["code"];
+					if(code == "success") {
+						var data = ret["data"];
+						console.log(JSON.stringify(data))
+						userInfo.subCenterName = data.subCenterName;
+						userInfo.subCenterCode = data.subCenterCode;
+						userInfo.orgId = orgInfo.orgCode;
+						userInfo.telephone = data.telephone;
+						userInfo.headportrait = data.headportrait;
+						console.log(JSON.stringify(userInfo));
+						localStorage.setItem('userObj', JSON.stringify(userInfo));
+						//调新接口
+						getUserAboutInfoById(userInfo.userid);
+
+						//去请求是否显示引导页
+						is_show_guidance(userInfo.id, userInfo.loginName)
+					}
+				})
+			})
+
+		}
+		// userInfo/getUserAboutInfoById  根据用户id获取用户信息（用户名称，手机号，本侧角色，公司所在城市，运营中心名称，公司名称，用户数量）
+		function getUserAboutInfoById(userId){
+			console.log(userId)
+				api.ajax({
+					url: webapp_global.url + "/userInfo/getUserAboutInfoById",
+					method: 'get',
+					dataType: "json",
+					data: {
+						values: {
+							id: userId
+						}
+					}
+				}, function(ret, err) {
+						var code = ret["code"];
+						if(code == "success") {
+							var data = ret["data"];
+							//GrowingIO 埋点
+								gio.setUserId({
+									"userId":userId,
+								}, function(ret, err) {
+									//回调函数事件处理
+								});
+								var userInfo =JSON.parse(localStorage.getItem('userObj'));
+								gio.setPeopleVariable({
+									"unitUserNum_ppl":data.wbzxUserNum_ppl,
+									"subCenterName_ppl":data.yyzxName_ppl,
+									"userUnitCity_ppl":data.cityName_ppl,
+									"userRole_ppl":data.userRole_ppl,
+									"userPhone_ppl":data.userPhone_ppl,
+									"userUnitName_ppl": userInfo.orgName,
+									"userName_ppl": data.userName_ppl,
+									"userLoginName_ppl": data.loginName_ppl
+								}, function(ret, err) {
+									//回调函数事件处理
+								});
+						}
+					}
+				)
+		}
+		//去请求是否显示引导页
+		function is_show_guidance(userId, userName) {
+			api.ajax({
+				url: webapp_global.url + "/userInfo/appNewGuidance",
+				method: 'post',
+				dataType: "json",
+				data: {
+					values: {
+						userId: userId,
+						userName: userName,
+						deviceId: api.deviceId,
+						deviceName: api.deviceName,
+						deviceModel: api.deviceModel,
+						systemType: api.systemType,
+						systemVersion: api.systemVersion,
+						connectionType: api.connectionType,
+						appVersion: api.appVersion
+					}
+				}
+			}, function(ret, err) {
+				var code = ret["code"];
+				if(code == "success") {
+					var data = ret["data"];
+					api.closeFrame({
+						name: 'frm_user'
+					});
+					api.closeWin({
+						name: "index"
+					})
+					if(data == '1' &&  api.deviceModel != 'iPhone10,3') {
+						api.openWin({
+							name: 'index',
+							url: './guidance/guidance.html',
+							bounces: false,
+							reload: true
+						})
+					} else {
+						api.openWin({
+							name: 'index',
+							url: '../index.html',
+							bounces: false
+						})
+					}
+				}
+
+			})
+
+		}
+
+		function _saveJpushCid(data) {
+			var jpush = api.require('ajpush');
+			jpush.init(function(ret) {
+				if(ret && ret.status) {
+					//success
+				}
+			});
+			//获取cid
+			jpush.getRegistrationId(function(ret) {
+				var registrationId = ret.id;
+				console.log(registrationId)
+				api.ajax({
+					url: webapp_global.url + "login/updateCID",
+					method: 'POST',
+					data: {
+						values: {
+							// userId: data.id,
+							userId: data,
+							cid: registrationId
+						}
+					}
+				}, function(ret, err) {})
+			})
+		}
+		apiready = function() {
+			$("#login").unbind("click");
+			$("#login").on("click", function() {
+				login();
+			})
+			initEvent();
+			gio = api.require('GrowingIO');
+			if(api.systemType == "ios") {
+			}else{
+				gio.init(); 
+			}
+		}
+
+		function initEvent() {
+			api.sendEvent({
+				name: 'stopLocation',
+				extra: {}
+			});
+
+			api.addEventListener({
+				name: 'keyback'
+			}, function(ret, err) {return});
+			api.addEventListener({
+				name: 'joinEnterprise'
+			}, function(ret, err) {
+				getUserInfo(ret.value)
+			});
+			//ios右滑控制
+			api.addEventListener({
+				name: 'swiperight'
+			}, function(ret, err) {});
+			var winHeight = document.documentElement.clientHeight;
+			$(window).resize(function() {
+				var h = document.documentElement.clientHeight
+				if(winHeight == h){
+					$("#loginBg").addClass("xf-login-bg-img");
+				}else{
+					$("#loginBg").removeClass("xf-login-bg-img");
+				}
+			})
+//			$("#usename").focus(function(){
+//				$("#loginBg").removeClass("xf-login-bg-img");
+//			}).blur(function(){
+//				$("#loginBg").addClass("xf-login-bg-img");
+//			});
+//			$("#password").focus(function(){
+//				$("#loginBg").removeClass("xf-login-bg-img");
+//			}).blur(function(){
+//				$("#loginBg").addClass("xf-login-bg-img");				
+//			});
+		}
+	</script>
+
+</html>

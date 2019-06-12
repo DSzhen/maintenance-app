@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+		<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+		<title>服务关系提醒</title>
+		<link rel="stylesheet" type="text/css" href="../../css/api.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/aui.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/gg.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/messageIcon/style.css" />
+		<style>
+			html,
+			body {
+				height: 100%;
+				display: flex;
+				display: -webkit-flex;
+				display: -webkit-box;
+				flex-flow: column;
+				-webkit-flex-flow: column;
+				-webkit-box-orient: vertical;
+				background-color: #f6f6f6;
+			}
+			.img_more {
+				width: .5rem;
+				height: 1rem!important;
+			}
+
+      .summary_head{
+        width: 30px;
+        height: 30px!important;
+      }
+      .summary_time_p{
+        line-height: 1.5;
+        background-color: #d1d1d1;
+        color: #fff;
+        display: inline-block;
+        padding: .1rem .5rem;
+				font-size: .7rem;
+      }
+			.title_op{
+				width: 90%;
+				margin-left: 3px;
+				overflow: hidden;
+				white-space: nowrap;
+				text-overflow:ellipsis;
+				font-size: .8rem;
+				line-height: 1.7;
+				padding-top: 2px;
+				color: #333;
+			}
+      .summary_p1{
+        font-weight: bold;
+        color: #000;
+        font-size: .8rem;
+      }
+      .summary_p2{
+        color: #727272;
+      }
+      .summary_p3{
+        color: #ff961b;
+        margin-top: 10px;
+        line-height: 1.5!important;
+        font-weight: 500;
+        padding-bottom: 5px;
+      }
+			.summary_div{
+				padding:6px 25px 6px 35px;
+			}
+			.summary_div_p {
+				display: -webkit-box;
+				-webkit-box-orient: vertical;
+				-webkit-line-clamp: 3;
+				overflow: hidden;
+				/*min-height: 4rem;*/
+			}
+			.summary_div_bottom{
+				padding: 7px 25px 7px 35px;
+			}
+			.color666{
+				color: #666;
+			}.color999{
+				color: #999;
+			}
+			.icon_size{
+				font-size: 1rem;
+				position: relative;
+				top:1px;
+			}
+			[v-cloak] {
+				display: none;
+			}
+			.no_data{
+				padding-top: 3rem;
+			}
+			.no_data p{
+				padding-top: 1rem;
+				font-weight: 600;
+			}
+			.border-bottom-colorddd-2{
+				border-bottom: #efefef solid 1px;
+			}
+			.p-b5{padding-bottom: 5px;}
+
+		</style>
+	</head>
+
+	<body>
+			<div style="padding:.5rem">
+				<div class="no_data" style="display:none">
+					<img src="../../image/message_img/zanwu_data.png" alt="">
+					<p>暂无数据</p>
+				</div>
+				<!--  -->
+        <div class="have_data" id="content" v-cloak>
+  				<div class="item-div m-t20px" v-for='item in dataList'  @click="jump_detail()">
+              <div class="text-center">
+                <div class="border-radius100 summary_time_p">{{item.pushTime.substring(5,item.pushTime.length-3)}}</div>
+              </div>
+              <div class="bg-white  m-t10 box-shadow1 border-radius2">
+								<div class="pd5-10">
+									<div class="div-flex border-bottom-colorddd-2 p-b5">
+										<div class="div-flex left-center">
+
+												<!-- 服务关系绑定提醒 -->
+											<span class="mes-emergency_five icon_size" v-if="item.type=='31'"></span>
+											<!--  服务关系解除提醒 -->
+											<span class="mes-emergency_six icon_size" v-if="item.type=='32'"></span>
+										</div>
+                    <p class="color000 title_op">{{item.title}}</p>
+                  </div>
+								</div>
+                <div class="">
+                  <div class="summary_div border-bottom-colorddd-2 ">
+                      <p class="summary_div_p color666">{{item.content}}</p>
+                  </div>
+									<div class="div-flex summary_div_bottom" v-if="item.type=='31'">
+                      <p class="flex1 div-flex left-center summary_p2 fs14 color999">查看详情</p>
+										<img class="img_more"  src="../../image/new/new_more.png" >
+                  </div>
+                </div>
+              </div>
+          </div>
+
+          <!--  -->
+          <div class='noshuju' style="text-align:center;color:#999999; padding:10px 0; display:none">没有数据啦</div>
+    			<div class='to_load' style="text-align:center;color:#999999;padding:10px 0; display:none">加载更多...</div>
+          <!--  -->
+
+        </div>
+			</div>
+	</body>
+	<script type="text/javascript" src="../../script/api.js"></script>
+	<script type="text/javascript" src="../../script/vue.js"></script>
+	<script type="text/javascript" src="../../script/zepto.js" ></script>
+	<script type="text/javascript" src="../../config/config.js" ></script>
+	<script>
+		var paramObj;
+		var mainInfoVue;
+	  var pageNo=2;
+		apiready = function() {
+			paramObj = JSON.parse(localStorage.getItem('userObj'));
+			initEvents();
+			// 初始化列表
+      getSummary_load();
+		}
+		//初始化列表 分页为第一页
+		function getSummary_load(){
+			pageNo=1
+			getSummary(1)
+		}
+
+		//查询数据
+		function getSummary(types) {
+				var datas={
+						userId:paramObj.userid,
+						msgType:'3',
+						pageNo:pageNo,
+						pageSize:10
+				}
+				api.ajax({
+		        url: webapp_global.url + "/maintenance/message/listPage",
+						method: 'post',
+						dataType: "json",
+						data:{
+							values:datas
+						}
+				}, function(ret, err) {
+						api.refreshHeaderLoadDone();
+						api.parseTapmode();
+						//当等于1,初始化进来，直接赋值给数组
+						if(types==1){
+							if(ret.data.list.length>0){
+								$(".no_data").hide();
+								$(".have_data").show();
+								pageNo++;
+								get_line(ret.data.list)
+							}else{
+								$(".no_data").show();
+								$(".have_data").hide();
+							}
+						}else{
+							//当不等于1，执行上拉加载分页
+							if(ret.data.list.length>0){
+								pageNo++;
+								ret.data.list.forEach(function(item) {
+										mainInfoVue.change_page(item)
+								})
+							}else{
+								$(".to_load").hide()
+				        $(".noshuju").show();
+							}
+						}
+				})
+		}
+		function get_line(dataList) {
+			if(!mainInfoVue){
+					mainInfoVue = new Vue({
+						el: "#content",
+						data() {
+							return {
+								dataList:{},
+								urls:webapp_global.imageUrl,
+								div_width:$(".div_width").width()
+							}
+						},
+						created:function(){
+							this.setDadas_all(dataList)
+						},
+						methods: {
+							setDadas_all(dataList){
+								this.dataList=dataList;
+							},
+							setDadas(dataList){
+								var that=this;
+								that.dataList=[];
+								setTimeout(function(){
+									that.dataList=dataList;
+								},100)
+							},
+              change_page:function(item){
+                	this.dataList.push(item)
+              },
+							jump_detail(){
+								api.openWin({
+								    name: 'proprietorUnitAll',
+								    url: '../mymessage/proprietorUnitAll.html',
+								    pageParam: {
+								        name: '详情'
+								    }
+								});
+							}
+						}
+					})
+			}else{
+				mainInfoVue.setDadas(dataList)
+			}
+
+		}
+
+		//监听事件
+		function initEvents() {
+      // 下拉刷新。调用请求后台接口
+      api.setRefreshHeaderInfo({
+        visible: true,
+        bgColor: '#ccc',
+        textColor: '#fff',
+        textDown: '下拉刷新...',
+        textUp: '松开刷新...',
+        showTime: true
+      }, function(ret, err) {
+        pageNo=2;
+        $(".to_load").hide()
+        $(".noshuju").hide();
+					setTimeout(function(){
+						getSummary_load()
+					},1500)
+      });
+      api.addEventListener({
+        name: 'scrolltobottom',
+        extra: {
+          threshold: 0
+        }
+      }, function(ret, err) {
+					$(".to_load").show()
+	        $(".noshuju").hide();
+					setTimeout(function(){
+						getSummary(2)
+					},1500)
+      });
+			api.addEventListener({
+				name: 'keyback'
+			}, function(ret, err) {
+				back();
+			});
+		}
+		//返回，关闭当前详情页，
+		function back() {
+			api.closeWin({
+				name: 'service_relationship'
+			});
+		}
+	</script>
+
+</html>

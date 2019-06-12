@@ -1,0 +1,360 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <link rel="stylesheet" type="text/css" href="../../css/api.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/aui.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/wbicon/style.css" />
+    <style type="text/css">
+        html {
+            font-family: "Microsoft YaHei";
+        }
+        body {
+            color: #333;
+            background-color: #eeeef5;
+        }
+        .aui-content-padded {
+            margin: 0;
+        }
+        .wb-flex {
+            display: -webkit-box;
+            display: -webkit-flex;
+            display: flex;
+            -webkit-box-pack: justify;
+            -webkit-justify-content: center;
+            justify-content: center;
+            -webkit-box-align: center;
+            -webkit-align-items: center;
+            align-items: center;
+        }
+        .wb-item-flexStart {
+            -webkit-align-items: flex-start;
+            align-items: flex-start;
+        }
+        .wb-space-between {
+            -webkit-justify-content: space-between;
+            justify-content: space-between;
+        }
+        .wb-flex-start {
+            -webkit-justify-content: flex-start;
+            justify-content: flex-start;
+        }
+        .aui-card-list-content-padded .wb-flex + .wb-flex {
+            margin-top: .35rem;
+        }
+        .wb-breakdown-title {
+            color: #666;
+        }
+        .wb-breakdown-text {
+            color: #999;
+            margin-top: .05rem;
+        }
+        .wb-list-item-inner {
+            width: 100%;
+            padding-right: .5rem;
+        }
+        .aui-list textarea {
+            height: 4rem;
+            margin: 0;
+            padding: .4rem;
+            font-size: .72rem;
+            background-color: #fafafa;
+            border: 1px solid #e8e8e8;
+        }
+        .aui-list .aui-list-item-label {
+            font-size: .75rem;
+            width: 100%;
+        }
+        .aui-list .aui-list-item-input {
+            padding-right: 0;
+        }
+        .aui-list-item {
+            background: #fff;
+        }
+        .aui-list .aui-list-item {
+            padding-left: .5rem;
+            margin-top: .5rem;
+            border: 0;
+            background: #fff;
+        }
+        .wb-update-image {
+            margin-top: .4rem;
+            padding-bottom: .5rem;
+        }
+        .wb-card-title {
+            color: #333;
+        }
+        .wb-update-img {
+            margin-left: .2rem;
+        }
+        .wb-update-img img {
+            display: inline-block;
+            width: 3rem;
+            height: 3rem;
+            margin-right: .4rem;
+            border: 0;
+            background-color: #e0e0e0;
+        }
+        .wb-update-camrea {
+            display: inline-block;
+            width: 3rem;
+            height: 3rem;
+            text-align: center;
+            line-height: 3.3rem;
+            font-size: 2rem;
+            color: #999;
+            border: 1px dashed #efefef;
+            vertical-align: top;
+        }
+        .aui-card-list-header {
+            color: #333;
+            border-bottom: 1px solid #ddd;
+        }
+        .wb-card-list-header b {
+            margin-left: -.5rem;
+            color: #ff961b;
+        }
+        .wb-card-title, .wb-trouble-txt {
+            color: #333;
+            font-size: .72rem;
+        }
+        .wb-card-title {
+            font-size: .75rem;
+        }
+        .wb-trouble-item.is-active {
+            color: #fff;
+            background-color: #ff961b;
+        }
+        .wb-card-list-header {
+            font-size: .75rem;
+        }
+        .wb-trouble-item {
+            display: inline-block;
+            height: 1.4rem;
+            line-height: 1.55rem;
+            padding: 0 1rem;
+            color: #333;
+            background-color: #fff;
+            border-radius: .7rem;
+        }
+        .wb-trouble-item.is-active {
+            color: #fff;
+            background-color: #ff961b;
+        }
+        .wb-maintain-item {
+            padding-top: .55rem;
+            padding-bottom: .5rem;
+            padding-right: .75rem;
+            border-bottom: 1px solid #ddd;
+        }
+        .wb-maintain-state .aui-list-item-label {
+            height: 1.6rem;
+            line-height: 1.6rem;
+        }
+        .aui-list .wb-maintain-ul .aui-list-item-label {
+            font-size: .72rem;
+        }
+        .wb-btn-content {
+            margin-top: 1rem;
+            padding-bottom: 1rem;
+            padding-left: .8rem;
+            padding-right: .8rem;
+        }
+        .wb-btn-content .aui-btn {
+            height: 2.2rem;
+            line-height: 2.4rem;
+            color: #fff;
+            font-size: .8rem;
+        }
+        .wb-btn-content .wb-btn-primary {
+            background-color: #ff961b !important;
+        }
+        .wb-btn-content .wb-btn-success {
+            background-color: #57bd59 !important;
+        }
+        .wb-card-title + .wb-info-content .wb-text-info {
+            color: #5a9cff;
+        }
+        .aui-list-item-input input {
+            padding-left: .3rem;
+            height: 1.6rem;
+            line-height: 1.6rem;
+            background-color: #fafafa;
+            border: 1px solid #e8e8e8;
+        }
+        .aui-card-list-content-padded {
+            padding: .5rem;
+        }
+    </style>
+</head>
+<body>
+<div id="addApp" class="wb-content">
+    <section class="aui-content-padded">
+
+
+        <!--维修情况-->
+        <div class="aui-card-list aui-margin-b-0" style="background-color: #fff">
+            <div class="aui-card-list-header">
+                <h3 class="wb-card-list-header"><b class="wbicon-splice"></b>维保情况</h3>
+            </div>
+            <div class="aui-card-list-content-padded aui-padded-r-0 aui-padded-t-0">
+                <ul class="wb-maintain-ul aui-margin-l-5 ">
+                    <li class="wb-maintain-item">
+                        <div class="wb-flex wb-space-between">
+                            <a class="wb-trouble-txt">是否停用系统</a>
+                            <div class="wb-trouble-type">
+                                <a @click="isStop=1" :class="isStop==1?'wb-trouble-item is-active':'wb-trouble-item'">是</a>
+                                <a @click="isStop=0" :class="isStop==0?'wb-trouble-item is-active aui-margin-l-10':'wb-trouble-item aui-margin-l-10'">否</a>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="wb-maintain-item">
+                        <div class="wb-flex wb-space-between">
+                            <a class="wb-trouble-txt">是否报消防部门备案</a>
+                            <div class="wb-trouble-type">
+                                <a @click="isRecord=1" :class="isRecord==1?'wb-trouble-item is-active':'wb-trouble-item'">是</a>
+                                <a @click="isRecord=0" :class="isRecord==0?'wb-trouble-item aui-margin-l-10 is-active':'wb-trouble-item aui-margin-l-10'">否</a>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+                <ul class="aui-list aui-form-list wb-maintain-state">
+                    <li class="aui-list-item aui-padded-l-5">
+                        <div class="wb-list-item-inner">
+                            <div class="aui-list-item-label">安全保护措施</div>
+                            <div class="aui-list-item-input">
+                                <textarea id="safetyMeasures" placeholder="" style="width: 98.5%"></textarea>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="aui-list-item aui-padded-l-5">
+                        <div class="wb-list-item-inner">
+                            <div class="aui-list-item-label">维修方法</div>
+                            <div class="aui-list-item-input">
+                                <textarea id="handleMethod" placeholder="" style="width: 98.5%"></textarea>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <!--按钮-->
+            <div class="aui-content-padded wb-btn-content wb-mt-1">
+                <div class="aui-btn aui-btn-block aui-btn-warning aui-btn-sm wb-btn-success" @click="submitFun()">故障已排除</div>
+            </div>
+        </div>
+    </section>
+</div>
+</body>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../config/config.js"></script>
+<script type="text/javascript" src="../../script/vue.js"></script>
+<script type="text/javascript" src="../../script/zepto.js"></script>
+<script type="text/javascript">
+
+    var formVm;
+    apiready = function () {
+        formVm =new Vue({
+            el: '#addApp',
+            data: function () {
+                return {
+                    isStop: null,
+                    isRecord: null,
+                    isSaveing: false
+                }
+            },
+            methods: {
+                submitFun : function () {
+                    var ob1 =  JSON.parse(localStorage.getItem("userObj"));
+                    var that = this;
+
+
+                    //验证
+                    if(that.isStop == null){
+                        api.toast({
+                            msg: '请选择是否停用系统',
+                            location: 'bottom'
+                        });
+                        return false
+                    }
+                    if(that.isRecord == null){
+                        api.toast({
+                            msg: '请选择是否报消防部门备案',
+                            location: 'bottom'
+                        });
+                        return false
+                    }
+
+                    if($("#safetyMeasures").val() == null || $("#safetyMeasures").val() == ''){
+                        api.toast({
+                            msg: '请填写安全保护措施',
+                            location: 'bottom'
+                        });
+                        return false
+                    }
+
+                    if($("#handleMethod").val() == null || $("#handleMethod").val() == ''){
+                        api.toast({
+                            msg: '请填写维修方法',
+                            location: 'bottom'
+                        });
+                        return false
+                    }
+
+                    var params = {
+                        faultId: api.pageParam.faultId,
+                        stopUsing: that.isStop,
+                        reportRecord: that.isRecord,
+                        safetyMeasures: $('#safetyMeasures').val(),
+                        handleMethod: $('#handleMethod').val(),
+                        handler: ob1.loginName,
+                        handlerId: ob1.userid
+                    };
+
+                    if(!that.isSaveing){
+                        that.isSaveing = true;
+                        api.ajax({
+                            url: webapp_global.url +'/serverUnit/dealLegacyFault',
+                            method: 'GET',
+                            timeout:20,
+                            data : {
+                                values: params
+                            }
+                        },function(ret, err){
+                        	that.isSaveing = false;
+                            if (ret && ret.code == 'success') {
+                                api.toast({
+                                    msg: '提交成功！',
+                                    location: 'bottom'
+                                });
+                                api.execScript({
+                                    name: 'trouble/win_detail.html',
+                                    frameName: 'detail',
+                                    script: 'closeWin()'
+                                });
+                                api.execScript({
+                                    name: 'trace/win_workmateTpl.html',
+                                    frameName: 'workmateTpl.html',
+                                    script: 'uploadHtml()'
+                                });
+                                api.closeWin();
+                            }else{
+                                api.toast({
+                                    msg: '提交失败！',
+                                    location: 'bottom'
+                                });
+                            }
+                        });
+                    }
+                }
+            },
+            created : function () {
+
+            }
+        });
+    }
+
+
+</script>
+</html>

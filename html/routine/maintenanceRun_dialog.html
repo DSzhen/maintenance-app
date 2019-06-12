@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+		<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+		<link rel="stylesheet" type="text/css" href="../../css/aui.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/wbicon/style.css" />
+		<title>是否规范弹框</title>
+		<style>
+			html,
+			body {
+				background-color: rgba(0, 0, 0, 0.1);
+				font-family: "微软雅黑";
+			}
+			
+			.standard_dialog {
+				z-index: 999;
+				position: fixed;
+				top: 40%;
+				width: 14.05rem;
+				margin-left: 11%;
+				border-radius: .4rem;
+				background-color: #FFFFFF;
+			}
+			
+			.header {
+				height: 1.7rem;
+				width: 100%;
+				text-align: center;
+				line-height: 1.7rem;
+				background-color: #ffb156;
+				color: white;
+				font-size: .7rem;
+				border-top-left-radius: .4rem;
+				border-top-right-radius: .4rem;
+			}
+			
+			.standard_content {
+				margin-top: .3rem;
+			}
+			
+			.standard_content span {
+				display: block;
+				font-size: .65rem;
+				margin-left: .5rem;
+				margin-right: .5rem;
+			}
+			
+			.cont_span {
+				height: 2rem;
+				overflow: hidden;
+				text-overflow: ellipsis;
+				display: -webkit-box;
+				-webkit-line-clamp: 2;
+				-webkit-box-orient: vertical;
+				width: 100%;
+				font-size: .65rem;
+				padding:0 .5rem;
+			}
+			
+			.standard_footer {
+				height: 1.7rem;
+				line-height: 1.7rem;
+				text-align: center;
+				font-size: .65rem;
+				border-top: .001rem solid #CCCCCC;
+				color: #616161;
+				margin-top: .2rem;
+			}
+			
+			[v-cloak] {
+				display: none;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div class="standard_dialog" id="app" v-cloak>
+			<div class="header">
+				<span>{{planName}}正在进行</span>
+			</div>
+			<div class="standard_content">
+				<span>不能同时进行2个及以上例行维保！</span>
+				<div class="cont_span">请联系{{names}}了解情况。</div>
+			</div>
+			<div class="standard_footer" @click="iKnow">
+				<span>知道了</span>
+			</div>
+		</div>
+	</body>
+	<script type="text/javascript" src="../../config/config.js"></script>
+	<script type="text/javascript" src="../../script/api.js"></script>
+	<script type="text/javascript" src="../../script/vue.js"></script>
+	<script type="text/javascript" src="../../script/zepto.js"></script>
+	<script>
+		var pageParam, pageVue;
+		apiready = function() {
+			pageParam = api.pageParam;
+			//请求数据展示规范或者不规范
+			_init();
+		}
+		//请求数据展示规范或者不规范
+		function _init() {
+			pageVue = new Vue({
+				el: "#app",
+				data() {
+					return {
+						names: pageParam.names,
+						planName: pageParam.planName
+					}
+				},
+				created() {
+					//					if(this.names.length>34){
+					//						this.names = this.names.substring(0,34)+"..."
+					//					}
+				},
+				methods: {
+					//知道了
+					iKnow() {
+						api.closeFrame();
+					}
+				}
+			})
+		}
+	</script>
+
+</html>

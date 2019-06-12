@@ -1,0 +1,101 @@
+@font-face {
+  font-family: 'wbicon';
+  src:  url('fonts/wbicon.eot?pysim5');
+  src:  url('fonts/wbicon.eot?pysim5#iefix') format('embedded-opentype'),
+    url('fonts/wbicon.ttf?pysim5') format('truetype'),
+    url('fonts/wbicon.woff?pysim5') format('woff'),
+    url('fonts/wbicon.svg?pysim5#wbicon') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+
+[class^="wbAidicon-"], [class*=" wbAidicon-"] {
+  /* use !important to prevent issues with browser extensions that change fonts */
+  font-family: 'wbicon' !important;
+  speak: none;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+
+  /* Better Font Rendering =========== */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.wbAidicon-arrowDown:before {
+  content: "\e916";
+}
+.wbAidicon-searchSolid:before {
+  content: "\e917";
+}
+.wbAidicon-userList:before {
+  content: "\e918";
+}
+.wbAidicon-wbMinitor:before {
+  content: "\e915";
+}
+.wbAidicon-reset:before {
+  content: "\e914";
+}
+.wbAidicon-edit:before {
+  content: "\e900";
+}
+.wbAidicon-backSolid:before {
+  content: "\e901";
+}
+.wbAidicon-maintain:before {
+  content: "\e902";
+}
+.wbAidicon-aroundSolid:before {
+  content: "\e903";
+}
+.wbAidicon-exit:before {
+  content: "\e904";
+}
+.wbAidicon-layer:before {
+  content: "\e905";
+}
+.wbAidicon-peopleManagement:before {
+  content: "\e906";
+}
+.wbAidicon-maintainPlan:before {
+  content: "\e907";
+}
+.wbAidicon-orderManagement:before {
+  content: "\e908";
+}
+.wbAidicon-systemManagement:before {
+  content: "\e909";
+}
+.wbAidicon-circle:before {
+  content: "\e90a";
+}
+.wbAidicon-arrowRight:before {
+  content: "\e90b";
+}
+.wbAidicon-8:before {
+  content: "\e90c";
+}
+.wbAidicon-search:before {
+  content: "\e90d";
+}
+.wbAidicon-delete:before {
+  content: "\e90e";
+}
+.wbAidicon-remove:before {
+  content: "\e90f";
+}
+.wbAidicon-back:before {
+  content: "\e910";
+}
+.wbAidicon-user:before {
+  content: "\e911";
+}
+.wbAidicon-clatify:before {
+  content: "\e912";
+}
+.wbAidicon-phone:before {
+  content: "\e913";
+}

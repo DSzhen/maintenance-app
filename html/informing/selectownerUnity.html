@@ -1,0 +1,298 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+		<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+		<title>选择业主单位</title>
+		<link rel="stylesheet" type="text/css" href="../../css/aui.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/wbicon/style.css" />
+		<style type="text/css">
+			html {
+				font-family: "Microsoft YaHei";
+			}
+			
+			body {
+				color: #333;
+				background-color: #f5f5f9;
+			}
+			
+			.aui-bar-input {
+				-webkit-box-sizing: border-box;
+				box-sizing: border-box;
+				display: -webkit-box;
+				display: -webkit-flex;
+				display: flex;
+				-webkit-box-pack: justify;
+				-webkit-justify-content: flex-start;
+				justify-content: flex-start;
+				-webkit-box-align: center;
+				-webkit-align-items: center;
+				align-items: center;
+				padding-left: 2.5rem;
+				background-color: #fff;
+			}
+			
+			.aui-bar-addon {
+				display: block;
+				float: left;
+				width: 2.5rem;
+				color: #bfbfbf;
+				font-size: 1rem;
+				text-align: center;
+				margin-left: -2.5rem;
+			}
+			
+			.aui-input {
+				padding: 0 .5rem;
+				font-size: .75rem !important;
+				border: 1px solid rgba(199, 199, 203, .35);
+				-webkit-border-radius: .1rem;
+				-moz-border-radius: .1rem;
+				border-radius: .1rem;
+			}
+			
+			.aui-radio {
+				width: .85rem;
+				height: .85rem;
+				margin-top: 2px;
+				border: 1px solid #ff9f15;
+				-webkit-border-radius: 50%;
+				-moz-border-radius: 50%;
+				border-radius: 50%;
+			}
+			
+			.wb-unit-list li {
+				padding-top: .8rem;
+				padding-bottom: .75rem;
+				color: #242424;
+				border-bottom: 1px solid #ddd;
+			}
+			
+			.aui-list-item-input {
+				display: -webkit-box;
+				display: -webkit-flex;
+				display: flex;
+				-webkit-box-pack: justify;
+				-webkit-justify-content: flex-start;
+				justify-content: flex-start;
+				-webkit-align-items: center;
+				align-items: center;
+			}
+			
+			.aui-radio:checked,
+			.aui-radio.aui-checked {
+				background-color: #ff9f15;
+				border: solid 1px #ff9f15;
+				text-align: center;
+				background-clip: padding-box;
+			}
+			
+			.aui-radio:checked:before,
+			.aui-radio.aui-checked:before,
+			.aui-radio:checked:after,
+			.aui-radio.aui-checked:after {
+				content: '';
+				width: 0.45rem;
+				height: 0.25rem;
+			}
+			/*无数据提醒CSS*/
+			
+			.aui-data-notice {
+				position: absolute;
+				top: 15rem;
+				left: 50%;
+				-webkit-transform: translate(-50%, -80%);
+				-moz-transform: translate(-50%, -70%);
+				-ms-transform: translate(-50%, -70%);
+				-o-transform: translate(-50%, -70%);
+				transform: translate(-50%, -70%);
+			}
+			
+			.aui-data-notice img {
+				width: 5rem;
+				margin: 0 auto;
+			}
+			
+			.aui-text-notice {
+				display: block;
+				margin-top: .8rem;
+				font-size: .8rem;
+				color: #c2c2c6;
+			}
+			
+			.aui-input-remove {
+				position: absolute;
+				top: 55%;
+				right: 3%;
+				-webkit-transform: translateY(-50%);
+				-moz-transform: translateY(-50%);
+				-ms-transform: translateY(-50%);
+				-o-transform: translateY(-50%);
+				transform: translateY(-50%);
+				font-size: .9rem;
+				color: #d1d1d1;
+			}
+			
+			.vueContainer {
+				background-color: #fff
+			}
+			
+			[v-cloak] {
+				display: none;
+			}
+		</style>
+	</head>
+
+	<body>
+		<section class="aui-content">
+			<div class="aui-content-padded aui-margin-l-10 aui-margin-r-10">
+				<div class="aui-bar-input">
+					<a class="aui-bar-addon" onclick="queryResult()"><b class="wbicon-search2"></b></a>
+					<input type="search" id="unitName" class="aui-input" placeholder="请输入企业名称" />
+					<a class="aui-input-remove" style="display: none"><b class="wbicon-removeOutline"></b></a>
+				</div>
+			</div>
+		</section>
+		<section id="app" class="aui-content vueContainer" v-cloak>
+			<div class="aui-content-padded aui-margin-0 aui-padded-l-15">
+				<ul class="wb-unit-list">
+					<li v-for="item in data">
+						<div class="aui-list-item-input">
+							<label :for="item.proprietorId">
+                    <input :id="item.proprietorId" class="aui-radio aui-margin-r-10" type="radio" name="name1" :value="item.proprietorId">
+                    <span>{{item.proprietorName}}</span>
+                    </label>
+						</div>
+					</li>
+				</ul>
+			</div>
+			<!--无数据提醒-->
+			<div v-if="dataLength == 0" class="aui-data-notice">
+				<img src="../../image/informing/qs.png">
+				<span class="aui-text-notice">暂无可选业主单位！</span>
+			</div>
+		</section>
+	</body>
+	<script type="text/javascript" src="../../script/api.js"></script>
+	<script type="text/javascript" src="../../script/aui-tab.js"></script>
+	<script type="text/javascript" src="../../script/aui-collapse.js"></script>
+	<script type="text/javascript" src="../../script/zepto.js"></script>
+	<script type="text/javascript" src="../../script/vue.js"></script>
+	<script type="text/javascript" src="../../config/config.js"></script>
+	<script type="text/javascript">
+		var userObj = JSON.parse(localStorage.getItem("userObj"));
+		var unitListVue;
+
+		apiready = function() {
+			api.parseTapmode();
+			queryUnitList('');
+			//ios右滑控制
+      api.addEventListener({
+        name:'swiperight'
+      }, function(ret, err){
+      });
+		};
+
+		function queryUnitList(name) {
+			if(!unitListVue) {
+				unitListVue = new Vue({
+					el: "#app",
+					data() {
+						return {
+							data: [],
+							dataLength:1,
+						}
+					},
+					created:function() {
+						var that = this;
+
+						function callback(data) {
+							that.setData(data);
+						}
+						getData(name, callback);
+					},
+					methods: {
+						setData:function(data) {
+							this.data = data;
+							this.dataLength = data.length;
+						},
+						getName:function(id) {
+							var d = this.data;
+							var name;
+							for(var i = 0; i < d.length; i++) {
+								if(id == d[i].proprietorId) {
+									name = d[i].proprietorName
+								}
+							}
+							return name;
+						}
+					}
+				})
+			} else {
+				function callback(data) {
+					unitListVue.setData(data);
+				}
+				getData(name, callback)
+			}
+		}
+
+		function getData(name, callback) {
+			api.ajax({
+				url: webapp_global.url + "/maintenance/queryProprietorList",
+				method: 'get',
+				dataType: "json",
+				data: {
+					values: {
+						userId: userObj.userid,
+						orgId: userObj.orgId,
+						proprietorName: name
+					}
+				}
+			}, function(ret, err) {
+				if(ret) {
+					var code = ret["code"];
+					if(code == "success") {
+						var data = ret["data"];
+						callback(data);
+					} else {
+						callback([]);
+					}
+				} else {
+					callback([]);
+				}
+			})
+		}
+
+		//点击查询图标进行过滤
+		function queryResult() {
+			$("input[name='name1']:checked").prop("checked", false);
+			// 获取用户在输入框输入的值
+			var inputVal = $api.val($api.byId('unitName'));
+			queryUnitList(inputVal);
+		}
+
+		function selectownerUnity() {
+			var value = $("input[name='name1']:checked").val();
+			var name = unitListVue.getName(value);
+			if(!value || !name) {
+				api.toast({
+					msg: '请选择业主单位',
+					duration: 2000,
+					location: 'bottom'
+				});
+				return
+			}
+			api.sendEvent({
+				name: 'selectUnitValue',
+				extra: {
+					id: value,
+					name: name
+				}
+			});
+			api.closeWin();
+		}
+	</script>
+
+</html>

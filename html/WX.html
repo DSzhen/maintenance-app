@@ -1,0 +1,102 @@
+				var wx = api.require('wx');
+				wx.isInstalled(function(ret, err) {
+					if(ret.installed) {
+
+					} else {
+						api.toast({
+							msg: '当前设备未安装微信客户端',
+							duration: 2000,
+							location: 'bottom'
+						});
+					}
+				});
+				api.actionSheet({
+					cancelTitle: '取消',
+					buttons: ['微信好友', '朋友圈',"图片","音频","视频","网页"]
+				}, function(ret, err) {
+					var index = ret.buttonIndex;
+					if(index == 1) {
+						wx.shareText({
+							apiKey: '', 
+							scene: 'session', //session（会话）timeline（朋友圈）favorite（收藏）.
+							text: '我分享的会话'
+						}, function(ret, err) {
+							if(ret.status) {
+								alert('分享成功');
+							} else {
+								alert(err.code);
+							}
+						});
+					} else if(index == 2) {
+						wx.shareText({
+							apiKey: '',
+							scene: 'session', //session（会话）timeline（朋友圈）favorite（收藏）.
+							text: '我分享的朋友圈'
+						}, function(ret, err) {
+							if(ret.status) {
+								alert('分享成功');
+							} else {
+								alert(err.code);
+							}
+						});
+					}else if(index == 3){
+						wx.shareImage({
+						    apiKey: '',
+						    scene: 'session', 
+						    thumb: 'widget://image/footer/user-active.png',
+						    contentUrl: 'widget://image/footer/cabinet.png' 
+						}, function(ret, err) {
+						    if (ret.status) {
+						        alert('分享成功');
+						    } else {
+						        alert(err.code);
+						    }
+						});
+					}else if(index == 4){
+						wx.shareMusic({
+						    apiKey: '',
+						    scene: 'session',
+						    title: '测试标题',
+						    description: '分享内容的描述',
+						    thumb: 'widget://image/footer/user-active.png',
+						    contentUrl: 'http://docs.apicloud.com/test/m.mp3'
+						}, function(ret, err) {
+						    if (ret.status) {
+						        alert('分享成功');
+						    } else {
+						        alert(err.code);
+						    }
+						});
+					}else if(index == 5){
+						wx.shareVideo({
+						    apiKey: '',
+						    scene: 'session',
+						    title: '测试标题',
+						    description: '分享内容的描述',
+						    thumb: 'widget://image/footer/user-active.png',
+						    contentUrl: 'http://resource.apicloud.com/video/apicloud.mp4'
+						}, function(ret, err) {
+						    if (ret.status) {
+						        alert('分享成功'); 
+						    } else {
+						        alert(err.code);
+						    }
+						});
+					}else if(index == 6){
+						wx.shareWebpage({
+						    apiKey: '',
+						    scene: 'session',
+						    title: '测试标题',
+						    description: '分享内容的描述',
+						    thumb: 'widget://image/footer/user-active.png',
+						    contentUrl: 'http://apicloud.com'
+						}, function(ret, err) {
+						    if (ret.status) {
+						        alert('分享成功');
+						    } else {
+						        alert(err.code);
+						    }
+						});
+					}
+				});
+			

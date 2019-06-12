@@ -1,0 +1,88 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+		<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+		<link rel="stylesheet" type="text/css" href="../../css/api.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/aui.css" />
+		
+		<style type="text/css">
+			body {
+				background-color: #f6f6f6;
+			}
+
+			.header{
+	        	background-color:#ff961b;
+	        	height: 57px;
+				width: 100%;
+				display: block;
+				line-height: 57px;
+				padding-top: 11px;
+				font-size: .8rem;
+	        }
+	       .wb-card-title {
+	            color: #303033;
+	            font-size: .75rem;
+	            padding-right:.15rem;
+	            /*white-space: nowrap;*/
+	        }
+	        .back{
+	        	font-size: .7rem !important;
+	        	font-weight: bold !important;
+	        }
+	        .aui-btn{
+	        	top: 1rem;
+	        }
+		</style>
+	</head>
+
+	<body>
+		<section class="aui-content wb-content">
+			<header class="aui-bar aui-bar-nav header">
+				<a class="aui-pull-left aui-btn">
+					<span class="aui-iconfont aui-icon-left back" onclick="back()"></span>
+				</a>
+				<div class="aui-title">故障记录 </div>
+			</header>
+		</section>
+	</body>
+	<script type="text/javascript" src="../../script/api.js"></script>
+	<script type="text/javascript" src="../../script/zepto.js"></script>
+	<script type="text/javascript" src="../../script/iphoneX.js"></script>
+	<script type="text/javascript">
+		apiready = function() {
+			iphoneXfit();
+			if(!isIphoneX()){
+				$(".aui-btn").css("top",".3rem");
+			}
+			var pageParam = api.pageParam;
+			var mainHeight, mainTop;
+			//api.winHeight
+			mainTop = $('.wb-content').height();
+			//此入再减出下方按钮的高度
+			mainHeight = api.winHeight - mainTop;
+			api.openFrame({
+				name: 'malfunctionList',
+				url: './malfunctionList.html', 
+				rect: {
+					x: 0,
+					y: mainTop,
+					w: 'auto',
+					h: mainHeight
+				},
+				pageParam: api.pageParam,
+				bounces: false,
+				vScrollBarEnabled: false,
+				hScrollBarEnabled: false
+			});
+		}
+		function back() {
+			api.closeWin({
+				name:''
+			});
+		}
+	</script>
+
+</html>

@@ -1,0 +1,251 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <link rel="stylesheet" type="text/css" href="../../css/aui.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/wbicon/style.css" />
+    <style type="text/css">
+        html {
+            font-family: "Microsoft YaHei";
+        }
+        body {
+            color: #333;
+            background-color: #eeeef5;
+        }
+        .aui-content-padded {
+            margin: 0;
+        }
+        .wb-flex {
+            display: -webkit-box;
+            display: -webkit-flex;
+            display: flex;
+            -webkit-box-pack: justify;
+            -webkit-justify-content: space-between;
+            justify-content: space-between;
+            -webkit-box-align: center;
+            -webkit-align-items: center;
+            align-items: center;
+        }
+        .aui-card-list-content-padded .wb-flex + .wb-flex {
+            margin-top: .4rem;
+        }
+        .aui-card-list-header {
+            padding: .45rem .5rem .4rem;
+            color: #333;
+            border-bottom: 1px solid #ddd;
+        }
+        .wb-card-list-header {
+            font-size: .75rem;
+        }
+        .wb-card-list-header b {
+            margin-left: -.2rem;
+            color: #ff961b;
+            font-weight: bold;
+            vertical-align: -1px;
+        }
+        .wb-maintain-item {
+            margin-top: .75rem;
+            margin-bottom: .75rem;
+        }
+        .aui-card-list-content-padded {
+            padding: .5rem;
+        }
+        .aui-card-list {
+            margin-bottom: .5rem;
+            background: #fff;
+        }
+        .wb-trouble-txt {
+            display: inline-block;
+            max-width: 57%;
+            color: #333;
+            font-size: .72rem;
+        }
+        .wb-type-btn {
+            height: 1.4rem;
+            line-height: 1.45rem;
+            padding: 0 .7rem;
+            border-radius: .7rem;
+        }
+        .aui-btn-default.wb-type-btn {
+            color: #666 !important;
+            background-color: #eee !important;
+        }
+        .aui-btn-success.wb-type-btn {
+            color: #fff !important;
+            background-color: #57bd59 !important;
+        }
+        .wb-btn-content {
+            margin-top: 1.2rem;
+            margin-bottom: 1.2rem;
+            padding-left: .8rem;
+            padding-right: .8rem;
+        }
+        .wb-btn-content .aui-btn-block.aui-btn-sm {
+            height: 2.2rem;
+            line-height: 2.4rem;
+            font-size: .8rem;
+        }
+        .wb-btn-content .wb-btn-primary {
+            color: #fff;
+            background-color: #ff961b !important;
+        }
+        .wb-btn-content .wb-btn-primary:hover,
+        .wb-btn-content .wb-btn-primary:focus {
+            color: #fff;
+            background-color: #fb8d0c !important;
+        }
+        .wb-trouble-type button {
+            border: 0;
+        }
+        .wb-maintain-title {
+            font-size: .75rem;
+        }
+    </style>
+</head>
+<body>
+<div class="wb-content" id="smoke">
+    <section class="aui-content-padded">
+        <div class="aui-card-list">
+            <div class="aui-card-list-header">
+                <h3 class="wb-card-list-header"><b class="wbicon-splice"></b>防排烟系统</h3>
+            </div>
+            <div class="aui-card-list-content-padded aui-padded-t-5 aui-padded-b-5">
+                <ul class="wb-maintain-ul aui-margin-l-10 aui-margin-r-10" v-for="item in controlData">
+                    <li class="wb-maintain-title aui-margin-t-10 aui-margin-b-10">{{item.name}}<span class="aui-margin-l-10">1楼301室</span></li>
+                    <li class="wb-maintain-item" v-for="each in item.children">
+                        <div class="wb-flex">
+                            <a class="wb-trouble-txt aui-ellipsis-1">{{each.name}}</a>
+                            <div class="wb-trouble-type">
+                                <button type="button" :class=each.btnClassSuccess @click="isOk(each)" v-if="isShowBtn">正常</button>
+                                <button type="button" :class=each.btnClassSuccess @click="isOk(each)" v-else disabled >正常</button>
+                                <button type="button" :class=each.btnClassError   @click="isErr(each) "  v-if="isShowBtn" >故障</button>
+                                <button type="button" :class=each.btnClassError   @click="isErr(each)" v-else disabled  >故障</button>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </section>
+    <div class="aui-content-padded wb-btn-content">
+        <div class="aui-btn aui-btn-block aui-btn-warning aui-btn-sm wb-btn-primary" v-if="isShowBtn" @click="submit">提交</div>
+    </div>
+</div>
+</body>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/vue.js"></script>
+<script type="text/javascript">
+
+    function submit(){
+        api.closeWin({
+        });
+    }
+    apiready = function () {
+        new Vue({
+            el : '#smoke',
+            data : function () {
+                return {
+                    controlData : [
+                        {
+                            name : "风机房",
+                            address : '1楼301室',
+                            children : [
+                                {
+                                    name : '送风机能否正常手动启动',
+                                    state : 0,
+                                    btnClassSuccess : 'aui-btn aui-btn-default wb-type-btn aui-margin-l-10',
+                                    btnClassError : 'aui-btn aui-btn-default wb-type-btn aui-margin-l-10'
+                                },{
+                                    name : '送风机能否正常自启动',
+                                    state : 0,
+                                    btnClassSuccess : 'aui-btn aui-btn-default wb-type-btn aui-margin-l-10',
+                                    btnClassError : 'aui-btn aui-btn-default wb-type-btn aui-margin-l-10'
+                                },{
+                                    name : '排烟风机能否正常手动启动',
+                                    state : 0,
+                                    btnClassSuccess : 'aui-btn aui-btn-default wb-type-btn aui-margin-l-10',
+                                    btnClassError : 'aui-btn aui-btn-default wb-type-btn aui-margin-l-10'
+                                },{
+                                    name : '送风口是否有风',
+                                    state : 0,
+                                    btnClassSuccess : 'aui-btn aui-btn-default wb-type-btn aui-margin-l-10',
+                                    btnClassError : 'aui-btn aui-btn-default wb-type-btn aui-margin-l-10'
+                                },{
+                                    name : '排烟口是否有风',
+                                    state : 0,
+                                    btnClassSuccess : 'aui-btn aui-btn-default wb-type-btn aui-margin-l-10',
+                                    btnClassError : 'aui-btn aui-btn-default wb-type-btn aui-margin-l-10'
+                                },
+                                {
+                                    name : '送风阀是否有风',
+                                    state : 0,
+                                    btnClassSuccess : 'aui-btn aui-btn-default wb-type-btn aui-margin-l-10',
+                                    btnClassError : 'aui-btn aui-btn-default wb-type-btn aui-margin-l-10'
+                                },
+                                {
+                                    name : '排烟阀是否有风',
+                                    state : 0,
+                                    btnClassSuccess : 'aui-btn aui-btn-default wb-type-btn aui-margin-l-10',
+                                    btnClassError : 'aui-btn aui-btn-default wb-type-btn aui-margin-l-10'
+                                }
+                            ]
+                        }
+                    ]
+                }
+            },
+            methods :  {
+                submit : function () {
+                    localStorage.setItem('smokeObj',JSON.stringify(this.controlData));
+                    api.closeWin({
+                    });
+                },
+                isOk : function (each) {
+                    each.btnClassSuccess= 'aui-btn aui-btn-success wb-type-btn aui-margin-l-10'
+                    each.btnClassError= 'aui-btn aui-btn-default wb-type-btn aui-margin-l-10'
+                    each.state =1
+                },
+                isErr : function (each) {
+                    each.btnClassSuccess= 'aui-btn aui-btn-default wb-type-btn aui-margin-l-10'
+                    each.btnClassError= 'aui-btn aui-btn-danger wb-type-btn aui-margin-l-10'
+                    each.state =2
+                    //跳转到异常页面
+                    //此处少代码
+                    each.mainId = api.pageParam.id
+                    each.enterType = 3
+                    each.enterpriseId = api.pageParam.proprietorId
+                    //进入故障详情的页面
+                    api.openWin({
+                        name: "win_add",
+                        url: '../trouble/win_add.html',
+                        vScrollBarEnabled: false,
+                        pageParam: api.pageParam
+                    })
+
+                },
+                init : function(){
+                    var obj =  JSON.parse(localStorage.getItem('smokeObj'));
+                    // if(!obj) return
+                    // this.controlData =obj
+                }
+            },
+            created : function () {
+                this.init()
+                this.isShowBtn = api.pageParam.isShowBtn
+            }
+        })
+    }
+
+
+
+
+    function closeWin(){
+        api.closeWin({
+        });
+    }
+
+
+
+</script>
+</html>

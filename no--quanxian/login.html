@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+		<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+		<title>fixedPane</title>
+		<link rel="stylesheet" type="text/css" href="../css/aui.css" />
+		<link rel="stylesheet" type="text/css" href="../css/xficon/style.css" />
+		<link rel="stylesheet" href="../css/mint-ui.css" />
+		<style>
+			html,
+			body {
+				width: 100%;
+				height: 100%
+			}
+
+			.xf-login-bg {
+				background: url('../image/login_bg.jpg') no-repeat;
+				background-clip: content-box;
+				background-size: cover;
+				padding-top: 75%;
+				padding-left: 10%;
+				padding-right: 10%;
+			}
+
+			.xf-login-form {
+				color: #232323;
+				margin-bottom: 1rem;
+			}
+
+			.xf-login-form dt {
+				display: block;
+				padding: .8rem 0 0;
+			}
+
+			.xf-login-form dd {
+				height: 2.5rem;
+				padding: .3rem 0 .6rem 0;
+				border-bottom: 1px solid #dddddd;
+			}
+
+			.xf-login-form dd .xf-input {
+				border: 1px solid #dddddd;
+				line-height: 1.8rem;
+				min-height: 1.8rem;
+				color: #232323;
+				border: 0;
+				font-size: .7rem;
+			}
+
+			.xf-button-submit {
+				margin-top: 1rem;
+				display: block;
+				width: 100%;
+				background-color: #ffc107;
+				border: 0;
+				color: #fff;
+				font-size: 1rem;
+				height: 2rem;
+				border-radius: 1rem;
+				margin-top: 2rem;
+			}
+
+			.xf-button-submit:hover {
+				background-color: #ffb300;
+			}
+			/**新增
+            */
+
+			.xf-login-bg .xf-input-new {
+				display: inline;
+				width: 70%
+			}
+		</style>
+	</head>
+
+	<body class="xf-login-bg">
+		<!-- <dl class="xf-login-form">
+        <dt><i class="xficon-user"></i>  用户名</dt>
+        <dd><input type="text" class="xf-input" id="usename"></dd>
+    </dl>
+    <dl class="xf-login-form">
+        <dt<i class="xficon-lock"></i>  密码</dt>
+        <dd><input type="password" class="xf-input" id="password"></dd>
+    </dl> -->
+		<ul>
+			<li style="border-bottom: 1px solid #dfdfdf"><i class="xficon-user"></i> <span style=" display:inline-block ;text-align:left;width: 2.5rem;" id="yonghu">用户名</span> <input type="text" class="xf-input-new" id="usename"> </li>
+			<li style="border-bottom: 1px solid #dfdfdf"><i class="xficon-lock"></i> <span style="display:inline-block ;text-align:left;width: 2.5rem; id=" mima " ">密码</span> <input type="password" class="xf-input-new" id="password"> </li>
+		</ul>
+
+		<button type="button" id="login" class="xf-button-submit">登录</button>
+	</body>
+<script type="text/javascript" src="../script/zepto.js"></script>
+	<script type="text/javascript" src="../script/api.js"></script>
+	<script type="text/javascript" src="../script/vue.js"></script>
+	<script type="text/javascript" src="../script/md5-min.js"></script>
+	<script type="text/javascript" src="../config/config.js"></script>
+	<script type="text/javascript" src="../script/umeng/zhuge.js"></script>
+	<script type="text/javascript" src="../script/mint-ui.js"></script>
+	<script>
+		function login() {
+			var gio;
+			var usename = $('#usename').val();
+			var password = $('#password').val();
+			if(!usename || !password) {
+				api.toast({
+					msg: '用户名或密码不能为空',
+					location: 'bottom'
+				});
+				return
+			}
+			var newPass = password + "true";
+			var finalPass = hex_md5(newPass);
+			api.ajax({
+				url: webapp_global.frameUrl + "/login/toLogin1.mvc",
+				method: 'POST',
+				dataType: "json",
+				data: {
+					values: {
+						'loginName': usename,
+						'password': finalPass,
+						'systemCode': ''
+					}
+				}
+			}, function(ret, err) {
+				var result = eval("(" + JSON.parse(err.body) + ")")
+				if(result.success) {
+					//获取当前用户登录的信息
+					getUserMsg()
+				} else {
+					if(result.message == "lock") {
+						api.toast({
+							msg: '用户已经被锁定',
+							location: 'bottom'
+						});
+					} else {
+						api.toast({
+							msg: '用户不存在，或用户名密码错误',
+							location: 'bottom'
+						});
+					}
+					return
+				}
+			})
+		}
+
+		function getUserMsg() {
+			api.ajax({
+				url: webapp_global.frameUrl + "/user/getUserMsg.mvc",
+				method: 'POST',
+				dataType: "json",
+				data: {}
+			}, function(ret, err) {
+				getUserInfo(ret);
+			})
+		}
+
+		function getUserInfo(data) {
+			api.ajax({
+				url: webapp_global.url + "/userInfo/getUserInfo",
+				method: 'get',
+				dataType: "json",
+				data: {
+					values: {
+						userId: data.id,
+						orgCode:data.orgCode
+					}
+				}
+			}, function(ret, err) {
+				var code = ret["code"];
+				if(code == "success") {
+					var data = ret["data"];
+					if(data.id) {
+						//保存极光的cid
+						_saveJpushCid(ret.data);
+						var userInfo = ret["data"];
+						if(typeof userInfo == "string") {
+							userInfo = JSON.parse(userInfo);
+						}
+						ret.data.name = ret.data.username;
+						localStorage.setItem('useName', $('#usename').val());
+						localStorage.setItem('userObj', JSON.stringify(ret.data));
+
+						//获取埋点信息
+						getUserAboutInfoById(data.id);
+
+						// 诸葛io埋点
+						// 开始记录埋点信息
+						//去请求是否显示引导页
+						is_show_guidance(data.id,$('#usename').val())
+					} else {
+						api.toast({
+							msg: '查询用户信息失败！',
+							location: 'bottom'
+						});
+						return;
+					}
+				} else {
+					api.toast({
+						msg: '查询用户信息失败！',
+						location: 'bottom'
+					});
+					return
+				}
+			})
+		}
+		function getUserAboutInfoById(userId){
+			api.ajax({
+				url: webapp_global.url + "/userInfo/getUserAboutInfoById",
+				method: 'get',
+				dataType: "json",
+				data: {
+					values: {
+						id: userId
+					}
+				}
+			}, function(ret, err) {
+					var code = ret["code"];
+					if(code == "success") {
+						var data = ret["data"];
+						//GrowingIO 埋点
+							gio.setUserId({
+								"userId":userId,
+							}, function(ret, err) {
+								console.log(JSON.stringify(ret))
+								//回调函数事件处理
+							});
+							var userInfo =JSON.parse(localStorage.getItem('userObj'));
+							gio.setPeopleVariable({
+								"unitUserNum_ppl":data.wbzxUserNum_ppl,
+								"subCenterName_ppl":data.yyzxName_ppl,
+								"userUnitCity_ppl":data.cityName_ppl,
+								"userRole_ppl":data.userRole_ppl,
+								"userPhone_ppl":data.userPhone_ppl,
+								"userUnitName_ppl": userInfo.orgName,
+								"userName_ppl": data.userName_ppl,
+								"userLoginName_ppl": data.loginName_ppl
+							}, function(ret, err) {
+								//回调函数事件处理
+								console.log("growingIO:" + JSON.stringify(ret))
+							});
+					}
+				}
+			)
+			//GrowingIO 埋点
+//			if(openGio){
+//				growingIoAddEvent('dl');
+//				gio.setUserId({
+//				     "userId":userInfo.userid,
+//				 },function(ret, err){
+//				      //回调函数事件处理
+//				 });
+//				 gio.setPeopleVariable({
+//				     "userLoginName_ppl":userInfo.loginName,
+//				     "userName_ppl": userInfo.username,
+//				     "userUnitName_ppl": userInfo.orgName,
+//				     "userOperationCenter_ppl": userInfo.subCenterName
+//				 },function(ret, err){
+//			       //回调函数事件处理
+//			      console.log("growingIO:"+JSON.stringify(ret))
+//			   });
+//			}
+
+		}
+		//去请求是否显示引导页
+		function is_show_guidance(userId,userName){
+			api.ajax({
+				url: webapp_global.url + "/userInfo/appNewGuidance",
+				method: 'post',
+				dataType: "json",
+				data: {
+					values: {
+						userId: userId,
+						userName:userName,
+						deviceId:api.deviceId,
+						deviceName:api.deviceName,
+						deviceModel:api.deviceModel,
+						systemType:api.systemType,
+						systemVersion:api.systemVersion,
+						connectionType:api.connectionType,
+						appVersion:api.appVersion
+					}
+				}
+			}, function(ret, err) {
+				var code = ret["code"];
+				if(code == "success") {
+					var data = ret["data"];
+					if(data=='1'){
+						api.openWin({
+							name: 'index',
+							url: './guidance/guidance.html',
+							bounces: false,
+							reload:true
+						})
+					}else{
+						api.openWin({
+							name: 'index',
+							url: '../index.html',
+							bounces: false
+						})
+					}
+				}
+
+			})
+
+		}
+		function _saveJpushCid(data) {
+			var jpush = api.require('ajpush');
+			jpush.init(function(ret) {
+				if(ret && ret.status) {
+					//success
+				}
+			});
+			//获取cid
+			jpush.getRegistrationId(function(ret) {
+				var registrationId = ret.id;
+				api.ajax({
+					url: webapp_global.url + "login/updateCID",
+					method: 'POST',
+					data: {
+						values: {
+							userId: data.userid,
+							cid: registrationId
+						}
+					}
+				}, function(ret, err) {})
+			})
+		}
+		apiready = function() {
+			$("#login").unbind("click");
+			$("#login").on("click", function() {
+				login();
+			})
+			if(openGio) {
+				gio = api.require('GrowingIO');
+				gio.init();
+			}
+			var umeng = api.require('umengTJ'); //调用统计模块初始化，一般在app首页面调用
+			umeng.init({
+				appid: '5b61226bf43e4802e9000186',
+				path: 'apicloud'
+			}, function(ret, err) { //通过 config.xml 配置appid
+				if(ret.status) {
+					//alert(JSON.stringify(ret));
+				} else {
+					// alert(JSON.stringify(err));
+				}
+			});
+			api.sendEvent({
+				name: 'stopLocation',
+				extra: {}
+			});
+//ios右滑控制
+	      api.addEventListener({
+	        name:'swiperight'
+	      }, function(ret, err){
+	      });
+			api.addEventListener({
+				name: 'keyback'
+			}, function(ret, err) {
+				return
+			});
+		}
+	</script>
+
+</html>

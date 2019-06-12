@@ -1,0 +1,27 @@
+{
+	"orderId": "12456",
+	"proprietorId": "业主单位Id",
+	"proprietorName": "业主单位",
+	"proprietorCoordinate": "117.2,38.7",
+	"submitter": "小三",
+	"submitTime": "2018-07-10 9:20",
+	"concat": "小四",
+	"concatPhone": "15811124563",
+	"orderTime": "2018-07-10 9:20",
+	"//": "维保状态0未处置，1已出发，2已抵达，3已完成，4已确认，5已评价",
+	"maintenanceState": "0",
+	"memo": "备注信息备注信息备注信息备注信息备注信息备注信息备注信息备注信息",
+	"\\": "订单类型1无隐患，2有隐患",
+	"orderType": "2",
+	"maintenanceDetails": [
+		{
+			"accidentId": "隐患Id",
+			"accidentNo": "隐患编号",
+			"build": "楼栋",
+			"floor": "楼层",
+			"deviceAddress": "位置",
+			"deviceName": "设施",
+			"processState": "维保状态"
+		}
+	]
+}

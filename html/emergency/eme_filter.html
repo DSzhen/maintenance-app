@@ -1,0 +1,813 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+		<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+		<link rel="stylesheet" href="../../css/api.css" />
+		<link rel="stylesheet" href="../../css/aui.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/wbicon/style.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/mobileSelect.css" />
+		<link rel="stylesheet" href="../../css/mint-ui.css" />
+		<style type="text/css">
+			html {
+				font-family: "Microsoft YaHei";
+				height: 100%;
+			}
+
+			body {
+				color: #333;
+				background-color: #eeeef5;
+				height: 100%;
+			}
+
+			.aui-content-padded {
+				margin: 0 0 .5rem 0;
+			}
+
+			.aui-card-list {
+				margin-bottom: .5rem;
+			}
+
+			.wb-flex {
+				display: -webkit-box;
+				display: -webkit-flex;
+				display: flex;
+				-webkit-box-pack: justify;
+				-webkit-justify-content: center;
+				justify-content: center;
+				-webkit-box-align: center;
+				-webkit-align-items: center;
+				align-items: center;
+			}
+
+			.wb-flex-start {
+				-webkit-justify-content: flex-start;
+				justify-content: flex-start;
+			}
+
+			.wb-space-between {
+				-webkit-justify-content: space-between;
+				justify-content: space-between;
+			}
+
+			.aui-tab-item {
+				width: 100%;
+				height: 2.4rem;
+				line-height: 2.4rem;
+				font-size: 0.8rem;
+				color: #666;
+			}
+
+			.aui-tab-item.aui-active {
+				color: #ff961b;
+				border-bottom: 2px solid #ff961b;
+			}
+
+			.aui-card-list-header {
+				padding: .5rem .5rem .45rem;
+				font-size: .75rem;
+			}
+
+			.aui-card-list-content-padded {
+				padding: 0.5rem 0.5rem;
+			}
+
+			.aui-card-list {
+				border-top-left-radius: 3px;
+				border-top-right-radius: 3px;
+			}
+
+			.aui-card-list-header {
+				position: relative;
+				border-bottom: 1px solid #ddd;
+				border-top-left-radius: 3px;
+				border-top-right-radius: 3px;
+			}
+
+			.wb-arrow-mark {
+				position: absolute;
+				top: -.2rem;
+				left: 0;
+				color: #ff961b;
+				font-size: 1rem;
+			}
+
+			.wb-card-list-header {
+				max-width: 80%;
+				font-size: .75rem;
+			}
+
+			.wb-pending-txt {
+				color: #333;
+				font-size: .75rem;
+			}
+
+			.wb-card-title {
+				white-space: nowrap;
+				color: #999999;
+				font-size: .72rem;
+			}
+
+			.wb-card-list {
+				width: 86%;
+			}
+
+			.wb-card-list>div {
+				width: 100%;
+			}
+
+			.wb-info-text {
+				display: inline-block;
+				max-width: 77%;
+				font-size: .75rem;
+			}
+
+			.wb-info-text span {
+				margin-left: .5rem;
+			}
+
+			.aui-card-list-content-padded .wb-flex+.wb-flex {
+				margin-top: .35rem;
+			}
+
+			.wb-text-defalut {
+				color: #333;
+			}
+
+			.wb-list-icon {
+				margin-right: .2rem;
+				font-size: 1.5rem;
+				color: #0a85ff;
+			}
+
+			.filtrate {
+				height: 1.67rem;
+				font-size: .75rem;
+				line-height: 1.67rem;
+				text-align: right;
+				color: #333;
+				font-weight: 500;
+			}
+
+			.filtrate span:last-child {
+				padding: 0 .4rem 0 .2rem;
+			}
+
+			.wb-content {
+				position: relative;
+				height: 100%
+			}
+
+			.wb-filtrateCon {
+				width: 100%;
+				position: absolute;
+				top: 0;
+				right: 0;
+				height: 100%;
+				z-index: 10;
+				background-color: #eeeef5;
+				/*transition: .8s;*/
+			}
+
+			.wb-filtrateCon>p {
+				height: 1.67rem;
+				font-size: .75rem;
+				line-height: 1.67rem;
+				color: #333333;
+				font-weight: 600;
+				padding-left: .25rem;
+				background-color: #fff;
+			}
+
+			.wb-filtrateList {
+				background-color: #fff;
+			}
+
+			.wb-filtrateLi>p {
+				height: 1.33rem;
+				font-size: .67rem;
+				line-height: 1.33rem;
+				color: #666;
+				background-color: #eeeef5;
+				padding-left: .25rem;
+			}
+
+			.searchCon {
+				padding: .3rem .4rem;
+			}
+
+			.searchCon a {
+				color: #999;
+				position: absolute;
+				display: block;
+				right: .5rem;
+				margin-top: -1rem;
+			}
+
+			.check_input {
+				border: 1px solid #a6a6a6!important;
+				height: 1.2rem!important;
+				font-size: .6rem!important;
+				border-radius: .15rem!important;
+				padding-left: .2rem!important;
+				-webkit-appearance: searchfield!important;
+			}
+
+			.wb-filtrateLi>ul {
+				display: flex;
+				justify-content: flex-start;
+				padding: .15rem 0;
+				flex-wrap: wrap;
+				/*CSS3样式，支持webkit，ms*/
+				-ms-flex-wrap: wrap;
+				/*IE9以及一下不支持*/
+				-webkit-flex-wrap: wrap;
+			}
+
+			.wb-filtrateLi>ul li {
+				height: 1.1rem;
+				min-width: 20%;
+				margin: .15rem .33rem;
+				padding-top: .2rem;
+				font-size: .67rem;
+				color: #666;
+				background: #eeeeee;
+				border-radius: .1rem;
+				display: flex;
+				justify-content: center;
+				align-items: center;
+			}
+
+			.wb-active {
+				background-color: #ffebcd!important;
+				color: #fdab3c!important;
+			}
+
+			.wb-btnCon {
+				margin-top: 2rem;
+				left: 0;
+				padding: 0 .3rem;
+				width: 100%;
+			}
+
+			.wb-btnCon .aui-btn {
+				width: 28%;
+				height: 2rem;
+				line-height: 2rem;
+			}
+
+			.wb-btnCon .aui-btn-warning {
+				width: 70%;
+				background-color: #ff961b!important;
+			}
+
+			.wbicon-arrowRight {
+				color: #febf02 !important;
+			}
+
+			#unitName {
+				font-size: .7rem;
+			}
+
+			.wbFiltrate {
+				color: #fdab3c !important;
+			}
+
+			.customTime {
+				margin-left: .4rem;
+				height: 1.6rem;
+				line-height: 1.6rem;
+				display: none;
+			}
+
+			.customTime input {
+				height: 1.1rem;
+				width: 5rem;
+				border: 1px solid #ccc;
+				border-radius: 3px;
+				margin-right: 3px;
+				display: -webkit-inline-box;
+			}
+
+			.div-flex {
+				display: -webkit-box;
+				/* 老版本语法: Safari, iOS, Android browser, older WebKit browsers. */
+				display: -moz-box;
+				/* 老版本语法: Firefox (buggy) */
+				display: -ms-flexbox;
+				/* 混合版本语法: IE 10 */
+				display: -webkit-flex;
+				/* 新版本语法: Chrome 21+ */
+				display: flex;
+				/* 新版本语法: Opera 12.1, Firefox 22+ */
+			}
+
+			.flex1 {
+				-webkit-box-flex: 1;
+				/* OLD - iOS 6-, Safari 3.1-6 */
+				-moz-box-flex: 1;
+				/* OLD - Firefox 19- */
+				-webkit-flex: 1;
+				/* Chrome */
+				-ms-flex: 1;
+				/* IE 10 */
+				flex: 1;
+				/* NEW, Spec - Opera 12.1, Firefox 20+ */
+			}
+
+			.text-left {
+				text-align: left;
+			}
+
+			.text-right {
+				text-align: right;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div class="wb-content">
+			<!--筛选框-->
+			<div class="aui-content wb-filtrateCon">
+				<p class="wbFiltrate wbicon-arrowRight2" onclick="takeUp()"></p>
+				<div class="wb-filtrateList">
+					<ul class="wb-filtrateUl">
+						<li class="wb-filtrateLi">
+							<p>业主单位</p>
+							<div class="searchCon">
+								<div id="unitName">请选择业主单位</div>
+								<a class="wbicon-arrowDown2 aui-margin-l-15"></a>
+							</div>
+						</li>
+						<li id="orderStateDiv" class="wb-filtrateLi">
+							<p>订单状态</p>
+							<ul>
+								<li class="orderState emptyRuntime wb-active" value="10">不限</li>
+								<li class="orderState" value="0">待处理</li>
+								<li class="orderState" value="2">待确认</li>
+								<li class="orderState" value="4">已完成</li>
+							</ul>
+						</li>
+						<li class="wb-filtrateLi">
+							<p>服务及时性</p>
+							<ul>
+								<li class="timely emptyRuntime wb-active" value="10">不限</li>
+								<li class="timely" value="0">正常</li>
+								<li class="timely" value="1">逾期</li>
+							</ul>
+						</li>
+						<li id="bleConnectedDiv" class="wb-filtrateLi">
+							<p>连接蓝牙</p>
+							<ul>
+								<li class="bleConnected emptyRuntime wb-active" value="10">不限</li>
+								<li class="bleConnected" value="1">是</li>
+								<li class="bleConnected" value="0">否</li>
+							</ul>
+						</li>
+						<li class="wb-filtrateLi">
+							<p>历史改派</p>
+							<ul>
+								<li class="reassignment emptyRuntime wb-active" value="10">不限</li>
+								<li class="reassignment" value="1">是</li>
+								<li class="reassignment" value="0">否</li>
+							</ul>
+						</li>
+						<li class="wb-filtrateLi">
+							<p>预约时间</p>
+							<ul>
+								<li class="time-of-appointment emptyRuntime wb-active" value="0">不限</li>
+								<li class="time-of-appointment" value="1">今日</li>
+								<li class="time-of-appointment" value="2">本周</li>
+								<li class="time-of-appointment" value="3">本月</li>
+								<li class="time-of-appointment" value="4">本季度</li>
+								<li class="time-of-appointment" value="5" style="min-width: 30%;">自定义时间</li>
+							</ul>
+							<div class="customTime ">
+								<div class="div-flex">
+									<div class="flex1 text-left">
+										<input id="startTime" type="text" readonly onclick="selectDate('startTime')" />
+										<span class="wbicon-timeSolid"></span>
+									</div>
+									<div class=" text-center">
+										—
+									</div>
+									<div class="flex1 text-right" style="margin-right:7px">
+										<input id="endTime" readonly type="text" onclick="selectDate('endTime')" />
+										<span class="wbicon-timeSolid"></span>
+									</div>
+								</div>
+							</div>
+						</li>
+					</ul>
+				</div>
+				<div class="aui-content wb-btnCon">
+					<div class="aui-btn" onclick="emptyPage()">清空</div>
+					<div class="aui-btn aui-btn-warning" onclick="queryOrderData()">确认</div>
+				</div>
+			</div>
+		</div>
+	</body>
+	<script type="text/javascript" src="../../script/api.js"></script>
+	<script type="text/javascript" src="../../script/aui-tab.js"></script>
+	<script type="text/javascript" src="../../script/zepto.js"></script>
+	<script type="text/javascript" src="../../script/mobileSelect.js"></script>
+	<script type="text/javascript" src="../../script/vue.js"></script>
+	<script type="text/javascript" src="../../script/mint-ui.js"></script>
+	<script type="text/javascript" src="../../config/config.js"></script>
+	<script type="text/javascript" src="../../script/umeng/zhuge.js"></script>
+	<script type="text/javascript">
+		var CLASSNAME = {
+			ORDER_STATUS: "orderState", //维保订单状态:0:待处理;1:处理中;2:待确认;不传为全部
+			TIMELINESS_OF_SERVICE: "timely", //服务及时性:0正常;1逾期;不传为全部
+			CONNECTING_BLUETOOTH: "bleConnected", //连接蓝牙:0未连接;1已连接;不传为全部
+			HISTORICAL_REFORMISTS: "reassignment", //历史改派:0否;1是;不传为全部
+			TIME_OF_APPOINTMENT: "time-of-appointment", //预约时间
+			EMPTYRUNTIME: "emptyRuntime"
+		}
+		var userObj = JSON.parse(localStorage.getItem('userObj'));
+		var pageParam;
+		var proprietorList = [];
+		var UIDatePicker;
+		apiready = function() {
+			pageParam = api.pageParam;
+			UIDatePicker = api.require('UIDatePicker');
+			//绑定页面点击事件
+			_bingEvents();
+			//不同页面控制显隐
+			controlPage();
+			//api定义事件
+			apiEvents();
+			//查询关联的企业
+			_queryProprietorList()
+		};
+		//不同页面控制显隐
+		function controlPage() {
+			if(pageParam.pname == "eme_tobe") {
+				$("#orderStateDiv").css("display", "none");
+				$("#bleConnectedDiv").css("display", "none");
+			} else if(pageParam.pname == "eme_processing") {
+				$("#orderStateDiv").css("display", "none");
+			} else if(pageParam.pname == "eme_confirm") {
+				$("#orderStateDiv").css("display", "none");
+			}
+			//处理页面值问题
+			for(var key in pageParam) {
+				if($("." + key).length > 0) {
+					$("." + key).removeClass("wb-active");
+					if(pageParam[key] == "") {
+						$("." + key + "[value='10']").addClass("wb-active");
+					} else {
+						$("." + key + "[value='" + pageParam[key] + "']").addClass("wb-active");
+					}
+
+					if(pageParam[key] == "5") {
+						$("." + key + "[value='" + pageParam[key] + "']").click();
+						$("#startTime").val(pageParam.bespeak_start_time);
+						$("#endTime").val(pageParam.bespeak_end_time);
+					}
+				}
+			}
+		}
+		//绑定页面按钮事件
+		function _bingEvents() {
+			//订单状态
+			classBind(CLASSNAME.ORDER_STATUS);
+			//服务及时性
+			classBind(CLASSNAME.TIMELINESS_OF_SERVICE);
+			//连接蓝牙
+			classBind(CLASSNAME.CONNECTING_BLUETOOTH);
+			//历史改派
+			classBind(CLASSNAME.HISTORICAL_REFORMISTS);
+			//预约时间
+			classBind(CLASSNAME.TIME_OF_APPOINTMENT);
+
+			function classBind(className) {
+				$("." + className).unbind("click");
+				$("." + className).on("click", function() {
+					$("." + className).removeClass("wb-active");
+					$(this).addClass("wb-active");
+					//控制日期控件
+					if(className == "time-of-appointment") {
+						$(".customTime").css("display", "none");
+						pageParam[className] = this.value + "";
+						timeHandle(this.value);
+					} else {
+						pageParam[className] = this.value + "";
+						if(this.value == "10") {
+							pageParam[className] = ""
+						}
+					}
+				})
+			}
+		}
+
+		function timeHandle(num) {
+			var now = new Date(); //当前日期
+			var nowDayOfWeek = now.getDay(); //今天本周的第几天
+			var nowDay = now.getDate(); //当前日
+			var nowMonth = now.getMonth(); //当前月
+			var nowYear = now.getYear(); //当前年
+			nowYear += (nowYear < 2000) ? 1900 : 0; //
+			switch(num.toString()) {
+				case "0":
+					pageParam.bespeak_start_time = "";
+					pageParam.bespeak_end_time = "";
+					break;
+				case "1":
+					var day = formatDate(now);
+					pageParam.bespeak_start_time = day;
+					pageParam.bespeak_end_time = day;
+					break;
+				case "2":
+					//获得本周的开始日期
+					var getWeekStart = new Date(nowYear, nowMonth, nowDay - nowDayOfWeek + 1);
+					var getWeekStartDate = formatDate(getWeekStart);
+					pageParam.bespeak_start_time = getWeekStartDate;
+					//获得本周的结束日期
+					var getWeekEnd = new Date(nowYear, nowMonth, nowDay + (7 - nowDayOfWeek));
+					var getWeekEndDate = formatDate(getWeekEnd);
+					pageParam.bespeak_end_time = getWeekEndDate;
+					break;
+				case "3":
+					//获得本月的开始日期
+					var getMonthStart = new Date(nowYear, nowMonth, 1);
+					var getMonthStartDate = formatDate(getMonthStart);
+					pageParam.bespeak_start_time = getMonthStartDate;
+					//获得本月的结束日期
+					var getMonthEnd = new Date(nowYear, nowMonth, getMonthDays(nowMonth));
+					var getMonthEndDate = formatDate(getMonthEnd);
+					pageParam.bespeak_end_time = getMonthEndDate;
+					break;
+				case "4":
+					//获得本季度的开始日期
+					var quarterStart = new Date(nowYear, getQuarterStartMonth(), 1);
+					var quarterStartDate = formatDate(quarterStart);
+					pageParam.bespeak_start_time = quarterStartDate;
+					//获得本季度的结束日期
+					var quarterEnd = getQuarterStartMonth() + 2;
+					var quarterEndDate = new Date(nowYear, quarterEnd,
+						getMonthDays(quarterEnd));
+					var quarterEndDateStr = formatDate(quarterEndDate);
+					pageParam.bespeak_end_time = quarterEndDateStr;
+					break;
+				case "5":
+					$(".customTime").css("display", "block");
+					break;
+			}
+			//获得某月的天数
+			function getMonthDays(myMonth) {
+				var monthStartDate = new Date(nowYear, myMonth, 1);
+				var monthEndDate = new Date(nowYear, myMonth + 1, 1);
+				var days = (monthEndDate - monthStartDate) / (1000 * 60 * 60 * 24);
+				return days;
+			}
+			//格式化日期：yyyy-MM-dd
+			function formatDate(date) {
+				var myyear = date.getFullYear();
+				var mymonth = date.getMonth() + 1;
+				var myweekday = date.getDate();
+
+				if(mymonth < 10) {
+					mymonth = "0" + mymonth;
+				}
+				if(myweekday < 10) {
+					myweekday = "0" + myweekday;
+				}
+				return(myyear + "-" + mymonth + "-" + myweekday);
+			}
+			//获得本季度的开始月份
+			function getQuarterStartMonth() {
+				var quarterStartMonth = 0;
+				if(nowMonth < 3) {
+					quarterStartMonth = 0;
+				}
+				if(2 < nowMonth && nowMonth < 6) {
+					quarterStartMonth = 3;
+				}
+				if(5 < nowMonth && nowMonth < 9) {
+					quarterStartMonth = 6;
+				}
+				if(nowMonth > 8) {
+					quarterStartMonth = 9;
+				}
+				return quarterStartMonth;
+			}
+		}
+		//初始化业主单位列表
+		function _queryProprietorList() {
+			Vue.$indicator.open("加载中...");
+			api.ajax({
+				url: webapp_global.url + '/maintenance/getOrderProprietorList',
+				method: 'get',
+				timeout: 20,
+				data: {
+					values: {
+						userId: userObj.userid
+						// orgId: userObj.orgId,
+						// proprietorName: ""
+					},
+				}
+			}, function(ret, err) {
+				Vue.$indicator.close();
+				bottons = [];
+				if(ret) {
+					var code = ret["code"];
+					if(code == "success") {
+						var data = ret["data"];
+						if(data && data.length > 0) {
+							for(var i = 0; i < data.length; i++) {
+								var obj = {
+									id: data[i].proprietorId,
+									value: data[i].proprietorName
+								}
+								proprietorList.push(obj);
+								if(data[i].proprietorId == pageParam.proprietorId) {
+									$("#unitName").html(data[i].proprietorName);
+								}
+							}
+							new MobileSelect({
+								trigger: '#unitName',
+								title: '选择业主单位',
+								wheels: [{
+									data: proprietorList
+								}],
+								callback: function(indexArr, data) {
+									pageParam.proprietorId = data[0].id;
+								}
+							})
+						} else {}
+					} else {}
+				} else {}
+			});
+		}
+		//选择时间
+		function selectDate(str) {
+			var options = {
+				type: 'date',
+				rowHeight: 40,
+				title: '选择时间',
+				styles: {
+					bg: 'rgba(0,0,0,0)',
+					headerViewBackgroundColor: 'rgba(0,0,0,0)',
+					lineBackgroundColor: 'rgba(0,0,0,0)',
+					item: {
+						normal: '#ccc',
+						normalFont: 14,
+						selected: '#fdab3c',
+						selectedFont: 17,
+						cancelBtn: {
+							cancelButtonTextColor: '#1E1E1E',
+							cancelButtonText: '取消',
+							cancelButtonFont: 17
+						},
+						confirmBtn: {
+							confirmButtonTextColor: '#fdab3c',
+							confirmButtonText: '确认',
+							confirmButtonFont: 17
+						},
+					}
+				},
+				fixedOn: "filter"
+			}
+			if(str == "startTime") {
+				var endTime = $("#endTime").val();
+				// if(endTime) {
+				// 	options.maxDate = endTime + " 00:00:00";
+				// 	options.date = endTime + " 00:00:00";
+				// }
+			} else {
+				var startTime = $("#startTime").val();
+				// if(startTime) {
+				// 	options.minDate = startTime + " 00:00:00";
+				// 	options.date = startTime + " 00:00:00";
+				// }
+			}
+			UIDatePicker.open(options, function(ret, err) {
+				if(ret.year) {
+					ret.month += ""
+					ret.day += ""
+					if(ret.month.length == 1) {
+						ret.month = "0" + ret.month;
+					}
+					if(ret.day.length == 1) {
+						ret.day = "0" + ret.day;
+					}
+					var dateStr = ret.year + "-" + ret.month + "-" + ret.day;
+					if(str == "startTime") {
+						$("#startTime").val(dateStr);
+						pageParam.bespeak_start_time = dateStr;
+					} else {
+						$("#endTime").val(dateStr);
+						pageParam.bespeak_end_time = dateStr;
+					}
+				} else {}
+				UIDatePicker.close();
+			});
+		}
+		//清空页面参数
+		function emptyPage() {
+			$("#unitName").html("请选择业主单位");
+			pageParam.proprietorId = "";
+			pageParam.timely = "";
+			pageParam.bleConnected = "";
+			pageParam.reassignment = "";
+			pageParam.bespeak_start_time = "";
+			pageParam.bespeak_end_time = "";
+			pageParam["time-of-appointment"] = "0"
+			$(".customTime").hide();
+			$("." + CLASSNAME.ORDER_STATUS + ",." + CLASSNAME.TIMELINESS_OF_SERVICE + ",." + CLASSNAME.CONNECTING_BLUETOOTH + ",." + CLASSNAME.HISTORICAL_REFORMISTS + ",." + CLASSNAME.TIME_OF_APPOINTMENT).removeClass("wb-active");
+			$("." + CLASSNAME.EMPTYRUNTIME).addClass("wb-active");
+		}
+		//过滤列表数据
+		function queryOrderData() {
+			console.log('点击急维保筛选确定按钮时触发')
+			growingIoAddEvent('emergencyMaintenanceFilter')
+			takeUp();
+			api.sendEvent({
+				name: 'filterOrderData',
+				extra: pageParam
+			});
+		}
+
+		function apiEvents() {
+			//			//左滑事件监听
+			//			api.addEventListener({
+			//				name: 'swiperight'
+			//			}, function(ret, err) {
+			//				takeUp()
+			//			});
+			//手指接触屏幕
+			document.addEventListener("touchstart", function(e) {
+				startx = e.touches[0].pageX;
+				starty = e.touches[0].pageY;
+			}, false);
+			//手指离开屏幕
+			document.addEventListener("touchend", function(e) {
+				var endx, endy;
+				endx = e.changedTouches[0].pageX;
+				endy = e.changedTouches[0].pageY;
+				var direction = getDirection(startx, starty, endx, endy);
+				switch(direction) {
+					case 0:
+						break;
+					case 1:
+						break;
+					case 2:
+						break;
+					case 3:
+						break;
+					case 4:
+						takeUp();
+						break;
+					default:
+				}
+			}, false);
+			//ios右滑控制
+      api.addEventListener({
+        name:'swiperight'
+      }, function(ret, err){
+      });
+		}
+
+		function takeUp() {
+			api.sendEvent({
+				name: 'filterOrderCloseActivity',
+				extra: pageParam
+			});
+			api.closeFrame();
+		}
+		var startx, starty;
+		//获得角度
+		function getAngle(angx, angy) {
+			return Math.atan2(angy, angx) * 180 / Math.PI;
+		};
+
+		//根据起点终点返回方向 1向上 2向下 3向左 4向右 0未滑动
+		function getDirection(startx, starty, endx, endy) {
+			var angx = endx - startx;
+			var angy = endy - starty;
+			var result = 0;
+
+			//如果滑动距离太短
+			if(Math.abs(angx) < 80 && Math.abs(angy) < 80) {
+				return result;
+			}
+
+			var angle = getAngle(angx, angy);
+			if(angle >= -135 && angle <= -45) {
+				result = 1;
+			} else if(angle > 45 && angle < 135) {
+				result = 2;
+			} else if((angle >= 135 && angle <= 180) || (angle >= -180 && angle < -135)) {
+				result = 3;
+			} else if(angle >= -45 && angle <= 45) {
+				result = 4;
+			}
+
+			return result;
+		}
+	</script>
+
+</html>

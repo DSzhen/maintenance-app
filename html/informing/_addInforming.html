@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>新增维保告知单</title>
+		<link rel="stylesheet" type="text/css" href="../../css/api.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/aui.css" />
+		<link rel="stylesheet" href="../../css/wbicon/style.css" />
+		<style>
+			html,
+			body {
+				height: 100%;
+				display: flex;
+				display: -webkit-flex;
+				display: -webkit-box;
+				flex-flow: column;
+				-webkit-flex-flow: column;
+				-webkit-box-orient: vertical;
+			}
+
+			.header {
+				height: 57px;
+				width: 100%;
+				display: block;
+				line-height: 57px;
+				padding-top: 11px;
+				font-size: .8rem;
+			}
+			
+			.header.active {
+				display: block;
+			}
+			
+			.top-menu {
+				/*padding: 0 43px 0 8px;*/
+				text-align: center;
+				color: #fff;
+				font-weight: bold;
+			}
+			/*按钮*/
+			
+			.backBtn {
+				height: 40px;
+				width: 35px;
+				position: absolute;
+				right: left;
+			}
+			
+			.backBtn::before {
+				position: absolute;
+				left: .75rem;
+				top: 1.2rem;
+				display: block;
+				content: '';
+				width: 10px;
+				height: 10px;
+				border-left: 1px solid;
+				border-top: 1px solid;
+				color: #fff;
+				transform: rotate(-45deg);
+			}
+
+			.btn {
+				height: 40px;
+				width: 35px;
+				position: absolute;
+				right: 0;
+				bottom: 0;
+			}
+			/*字体颜色*/
+
+			.header.home>div.active {
+				opacity: 1;
+			}
+
+			.header.home {
+				/*background: -moz-linear-gradient(top, #febd00 0%, #ff951b 100%);
+				background: -webkit-gradient(linear, left top, right bottom, color-stop(0%, #febd00), color-stop(100%, #ff951b));
+				background: -webkit-linear-gradient(top, #febd00 0%, #ff951b 100%);
+				background: -o-linear-gradient(top, #febd00 0%, #ff951b 100%);
+				background: -ms-linear-gradient(top, #febd00 0%, #ff951b 100%);
+				background: linear-gradient(to top, #febd00 0%, #ff951b 100%);*/
+				background-color: #ff961b;
+			}
+
+			.header.home .top-menu>div {
+				color: #fff;
+				opacity: .8;
+			}
+
+			.header.home .top-menu>div.active {
+				opacity: 1;
+			}
+
+			.add_btn {
+				-webkit-background-size: 38px 43px;
+				background-size: 38px 43px;
+				color: white;
+				top: 1.6rem;
+			}
+		</style>
+	</head>
+
+	<body>
+		<header id="header">
+			<div class="header home active">
+				<div class="backBtn" tapmode onclick="back()"></div>
+				<div id="title" class="top-menu"></div>
+				<div class="add_btn btn wbicon-sure" tapmode onclick="addMaintenanceInform()"></div>
+			</div>
+		</header>
+	</body>
+	<script type="text/javascript" src="../../script/api.js"></script>
+	<script type="text/javascript" src="../../script/zepto.js"></script>
+	<script type="text/javascript" src="../../script/iphoneX.js"></script>
+	<script type="text/javascript">
+		apiready = function() {
+			iphoneXfit();
+			if(isIphoneX()) {
+				$(".backBtn").css("top", "1.3rem");
+				$(".add_btn").css("top", "2.2rem");
+			}
+			$api.byId('title').innerHTML = "新增告知单";
+			api.openFrame({
+				name: 'addInforming',
+				url: './addInforming.html',
+				rect: {
+					x: 0,
+					y: isIphoneX() ? 70 : 57,
+					w: 'auto',
+					h: isIphoneX() ? api.winHeight - 90 : api.winHeight - 57
+				},
+				pageParam: api.pageParam,
+				bounces: false,
+				vScrollBarEnabled: false,
+				hScrollBarEnabled: true
+			});
+			initEvents();
+		};
+		//监听事件
+		function initEvents() {
+			api.addEventListener({
+				name: 'keyback'
+			}, function(ret, err) {
+				back()
+			});
+			//ios右滑控制
+      api.addEventListener({
+        name:'swiperight'
+      }, function(ret, err){
+      });
+		}
+		//返回，关闭当前详情页，
+		function back() {
+			api.sendEvent({
+				name: 'updateInformingList',
+				extra: {}
+			});
+			api.closeWin();
+		}
+		//添加告知单
+		function addMaintenanceInform() {
+			api.confirm({
+				msg: '保存此告知单？',
+				buttons: ['确定', '取消']
+			}, function(ret, err) {
+				var index = ret.buttonIndex;
+				if(index == 1) {
+					api.execScript({
+						frameName: 'addInforming',
+						script: "addMaintenanceInform()"
+					});
+				}
+			});
+		}
+	</script>
+
+</html>

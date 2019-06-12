@@ -1,0 +1,607 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+		<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+		<link rel="stylesheet" type="text/css" href="../../css/api.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/aui.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/wbicon/style.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/mobileSelect.css" />
+		<link rel="stylesheet" href="../../css/xficon/style.css" />
+		<style type="text/css">
+			html,body {
+				background-color: #f6f6f6;
+				height: 100%;
+			}
+
+			.aui-content-padded {
+				margin: .5rem 0;
+			}
+
+			.aui-list {
+				padding-top: .2rem;
+				padding-bottom: .5rem;
+			}
+
+			.aui-list .aui-list-item {
+				padding-left: .5rem;
+				border: 0;
+				background: #fff;
+			}
+
+			.wb-flex {
+				display: -webkit-box;
+				display: -webkit-flex;
+				display: flex;
+				-webkit-box-pack: justify;
+				-webkit-justify-content: center;
+				justify-content: center;
+				-webkit-box-align: center;
+				-webkit-align-items: center;
+				align-items: center;
+			}
+
+			.wb-flex-start {
+				-webkit-justify-content: flex-start;
+				justify-content: flex-start;
+			}
+
+			.wb-item-flexStart {
+				-webkit-align-items: flex-start;
+				align-items: flex-start;
+			}
+
+			.aui-list textarea {
+				height: 4rem;
+				margin: 0;
+				padding: .4rem;
+				font-size: .72rem;
+				background-color: #fafafa;
+				border: 1px solid #e8e8e8;
+			}
+
+			.wb-card-list-header b {
+				color: #fd9905;
+				margin-left: -.2rem;
+				font-size: .9rem;
+				vertical-align: -2px;
+			}
+
+			.wb-list-item-inner {
+				width: 100%;
+				padding-right: .5rem;
+			}
+
+			.aui-list .aui-list-item-label {
+				width: 100%;
+				padding-right: 0;
+				font-size: .75rem;
+			}
+
+			.aui-list .aui-list-item-input {
+				padding-right: 0;
+			}
+
+			.wb-btn-content {
+				margin-top: 2rem;
+				padding-left: .8rem;
+				padding-right: .8rem;
+			}
+
+			.wb-btn-content .aui-btn-block.aui-btn-sm {
+				height: 2.2rem;
+				line-height: 2.2rem;
+				font-size: .8rem;
+			}
+
+			.wb-application-time>span {
+				display: block;
+			}
+
+			.wb-application-time>span:last-child {
+				font-size: .6rem;
+			}
+
+			.wb-application-text>span:first-child {
+				display: block;
+			}
+
+			.wb-card-title {
+				color: #333;
+			}
+
+			.wb-btn-content .wb-btn-primary {
+				color: #fff;
+				background-color: #ff961b !important;
+			}
+
+			.wb-btn-content .wb-btn-primary:hover,
+			.wb-btn-content .wb-btn-primary:focus {
+				color: #fff;
+				background-color: #fb8d0c !important;
+			}
+
+			.wb-aui-bg {
+				background-color: #fff;
+			}
+
+			.wb-card-title {
+				padding-left: .5rem;
+				font-size: .75rem;
+			}
+
+			.wb-update-img img {
+				display: inline-block;
+				width: 3rem;
+				height: 3rem;
+				margin-right: .4rem;
+				border: 0;
+				background-color: #e0e0e0;
+			}
+
+			.wb-update-camrea {
+				display: inline-block;
+				width: 3rem;
+				height: 3rem;
+				text-align: center;
+				line-height: 3rem;
+				font-size: 2rem;
+				color: #999;
+				border: 1px dashed #efefef;
+				vertical-align: top;
+			}
+
+			.wb-update-image {
+				margin-top: .4rem;
+				padding-bottom: .5rem;
+			}
+
+			.wb-update-img {
+				margin-left: .2rem;
+			}
+
+			.wb-list-item-title {
+				color: #333;
+				font-size: .75rem;
+				width: 100%;
+			}
+			/*删除图片*/
+
+			.xf-carera-content li {
+				position: relative;
+				display: inline-block;
+				width: 3rem;
+				vertical-align: top;
+			}
+
+			.xf-carera-content li+li {
+				margin-left: .3rem;
+			}
+
+			.xf-icon-imgDelete {
+				position: absolute;
+				right: -.2rem;
+				top: -.45rem;
+				color: red;
+			}
+
+			.xf-image-update {
+				display: inline-block;
+				width: 3rem;
+				height: 3rem;
+				text-align: center;
+				border: 1px solid #ddd;
+			}
+
+			.xf-image-icon {
+				font-size: 2rem;
+				line-height: 3rem;
+				color: #999;
+			}
+
+			.xf-iamge-model {
+				display: inline-block;
+				width: 3rem;
+				height: 3rem;
+			}
+
+			/*#checkItemTypeParentName {
+				float: right;
+				display: flex;
+				width: 13rem;
+			}*/
+
+			.selectType {
+				color: rgb(0, 51, 255);
+			}
+			.nocur {
+				color: #ff961b;
+				display: inline-block;
+				width: 75%;
+				text-align: left;
+			}
+
+			.cur {
+				color: #828285!important;
+				text-align: left!important;
+			}
+			.bottom_btn{
+				padding:  30px;
+			}
+			 .sub_btn{
+			 	 background-color: #ff961b;
+				 color: #fff;
+				 border-radius: 100px;
+				 font-size: .8rem;
+				 padding: 10px 0;
+				 text-align: center;
+			 }
+			
+			 .wbicon-voice{
+				position: absolute;
+			    float: right;
+			    right: 1px;
+			    margin-top: -24px;
+			    margin-right: 14px;
+			    color: #A0A0A0;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div id="maintainApp" class="wb-content">
+			<section class="aui-content-padded wb-aui-bg" style="margin-top:0">
+				<ul class="aui-list aui-form-list">
+					<li class="aui-list-item aui-padded-t-10" style="min-height: 0;">
+						<div class="wb-list-item-inner">
+							<a class="wb-list-item-title">设施类型
+								<div class="nocur" style="margin-left:10px;" id="checkItemTypeParentName">请选择设备类型</div>
+							</a>
+						</div>
+					</li>
+					<li class="aui-list-item">
+						<div class="wb-list-item-inner">
+							<div class="aui-list-item-label">保养情况</div>
+							<div class="aui-list-item-input">
+								<textarea id="maintenanceDescription" placeholder="请添加描述"></textarea>
+								<!--<b onclick="voiceInput('maintenanceDescription')" class="wbicon-voice"></b>-->
+							</div>
+						</div>
+					</li>
+				</ul>
+				<!--照片-->
+				<div class="wb-update-image">
+					<div class="wb-flex wb-flex-start wb-item-flexStart">
+						<h5 class="wb-card-title">照&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;片</h5>
+						<ul class="xf-carera-content" id="imgUpdate" style="margin-left:10px">
+							<li class="xf-image-update"><b class="wbicon-camera xf-image-icon" onclick="imageClick()"></b></li>
+					</div>
+				</div>
+		</div>
+		</section>
+		<!--按钮-->
+		<div class="bottom_btn">
+			<div onclick="submit()" class="sub_btn">确定</div>
+		</div>
+		<!-- <div class="aui-content-padded wb-btn-content">
+			<div onclick="submit()" class="aui-btn aui-btn-block aui-btn-warning aui-btn-sm wb-btn-primary">提交</div>
+		</div> -->
+		</div>
+	</body>
+	<script type="text/javascript" src="../../script/api.js"></script>
+	<script type="text/javascript" src="../../config/config.js"></script>
+	<script type="text/javascript" src="../../script/vue.js"></script>
+	<script type="text/javascript" src="../../script/zepto.js"></script>
+	<script type="text/javascript" src="../../script/mobileSelect.js"></script>
+	<script type="text/javascript" src="../../script/umeng/zhuge.js"></script>
+
+	<script type="text/javascript">
+		var fileatt = [];
+		var isSaveing = false;
+		var checkItemTypeParentIdArr = [];
+		apiready = function() {
+			checkItemTypeParentIdArr = api.pageParam.checkItemTypeParentIdArr;
+			_initCheckItem();
+			initEvent();
+		};
+
+		function _initCheckItem() {
+			if(api.pageParam.checkItemTypeParentId) {
+				$('#checkItemTypeParentName').text(api.pageParam.checkItemTypeParentName);
+				$("#checkItemTypeParentName").addClass("cur");
+			} else {
+				var paramObj = JSON.parse(localStorage.getItem("userObj"));
+				api.ajax({
+					url: webapp_global.url + '/maintenancePlanProcess/getSystemList',
+					dataType: "json",
+					method: 'get'
+				}, function(ret, err) {
+					var code = ret["code"];
+					if(code == "success") {
+						var data = ret["data"];
+						var list = [];
+						if(data && data.length > 0) {
+							for(var i = 0; i < data.length; i++) {
+								var obj = {
+									id: data[i].id,
+									value: data[i].name
+								}
+								for(var j = 0; j < checkItemTypeParentIdArr.length; j++) {
+									if(checkItemTypeParentIdArr[j] == data[i].id) {
+										if(data[i].id != "00000000") {
+											list.push(obj);
+										}
+									}
+								}
+							}
+							$("#checkItemTypeParentName").addClass("selectType");
+							new MobileSelect({
+								trigger: '#checkItemTypeParentName',
+								title: '请选择设备类型',
+								wheels: [{
+									data: list
+								}],
+								callback: function(indexArr, data) {
+									api.pageParam.checkItemTypeParentId = data[0].id
+									api.pageParam.checkItemTypeParentName = data[0].value
+									$("#checkItemTypeParentName").addClass("cur");
+								}
+							})
+						} else {}
+					} else {}
+				})
+			}
+		}
+
+		function imageClick() {
+			api.actionSheet({
+				cancelTitle: '取消',
+				buttons: ['拍照', '从相册选择']
+			}, function(ret, err) {
+				var index = ret.buttonIndex;
+				if(index == 1) {
+					photograph();
+				} else if(index == 2) {
+					gallery();
+				}
+			});
+
+		}
+		//拍照
+		function photograph() {
+			//上传照片
+			api.getPicture({
+				sourceType: 'camera',
+				encodingType: 'jpg',
+				mediaValue: 'pic',
+				destinationType: 'url',
+				allowEdit: true,
+				quality: 50,
+				saveToPhotoAlbum: false
+			}, function(ret, err) {
+				if(ret) {
+					var tempData = ret.data;
+					var res = tempData.split('/');
+					if(tempData == "") return
+					fileatt.push(tempData);
+					showImgList(fileatt);
+				} else {
+//					api.toast({
+//						msg: '网络异常，请设置网络连接！',
+//						location: 'bottom'
+//					});
+				}
+			});
+		}
+		//从图库选择
+		function gallery() {
+			api.getPicture({
+				sourceType: 'album',
+				encodingType: 'jpg',
+				mediaValue: 'pic',
+				destinationType: 'url',
+				allowEdit: true,
+				quality: 50,
+				saveToPhotoAlbum: false
+			}, function(ret, err) {
+				if(ret) {
+					var tempData = ret.data;
+					if(tempData == '') {
+						return
+					}
+					var res = tempData.split('/');
+					fileatt.push(tempData);
+					showImgList(fileatt)
+				} else {
+//					api.toast({
+//						msg: '网络异常，请设置网络连接！',
+//						location: 'bottom'
+//					});
+				}
+			});
+		}
+
+		function showImgList(res) {
+			var tpl = "";
+			for(var i = 0; i < res.length; i++) {
+				var temp = "";
+				temp = imgTpl(res[i], i);
+				tpl += temp
+			}
+			tpl += '<li class="wb-update-camrea"><b class="wbicon-camera" onclick="imageClick()"></b></li>';
+
+			$('#imgUpdate').html(tpl)
+		}
+
+		function imgTpl(src, index, type) {
+			if(!src) return ""
+			var tempId = random();
+			var tpl = '<li id=' + tempId + ' ><a><img class="xf-iamge-model"  src="' + src + '" onclick="openPicture(' + index + ')"  ></a><em onclick="deleteImg(\'' + src + '\',\'' + tempId + '\')" class="xficon-forbindden xf-icon-imgDelete"></em></li>';
+			return tpl
+		}
+
+		function random() {
+			var len = len || 32;
+			var chars = 'ABCDEFGHJKMNPQRSTWXYZabcdefhijkmnprstwxyz2345678';
+			var maxPos = chars.length;
+			var pwd = '';
+			for(var i = 0; i < len; i++) {
+				pwd += chars.charAt(Math.floor(Math.random() * maxPos));
+			}
+			return pwd
+		}
+
+		function deleteImg(src, div) {
+			$("#" + div).remove()
+			if(fileatt.length > 0) {
+				for(var i = 0; i < fileatt.length; i++) {
+					if(fileatt[i] == src) {
+						fileatt.splice(i, 1);
+					}
+				}
+			}
+		}
+
+		function openPicture(index) {
+
+			var res;
+			res = fileatt;
+
+			var passObj = {
+				"index": index,
+				"attaches": res,
+				"flag": 1
+			}
+			api.openWin({
+				name: 'picture',
+				url: './picture.html',
+				rect: {
+					x: 0,
+					y: 0,
+					w: 320,
+					h: 480
+				},
+				pageParam: passObj,
+				bounces: true,
+				bgColor: 'rgba(0,0,0,0)',
+				vScrollBarEnabled: true,
+				hScrollBarEnabled: true
+			});
+		}
+
+		function submit() {
+			var userObj = JSON.parse(localStorage.getItem("userObj"));
+			if(!api.pageParam.checkItemTypeParentId && !api.pageParam.checkItemTypeParentName) {
+				api.toast({
+					msg: '请选择设备类型',
+					location: 'bottom'
+				});
+				return false
+			}
+			//验证
+			if($('#maintenanceDescription').val() == '') {
+				api.toast({
+					msg: '请填写保养情况',
+					location: 'bottom'
+				});
+				return false
+			}
+			if(fileatt.length == 0) {
+				api.toast({
+					msg: '请上传照片',
+					location: 'bottom'
+				});
+				return false
+			}
+
+			var params = {
+				maintenanceTaskId: api.pageParam.planId,
+				checkItemTypeParentId: api.pageParam.checkItemTypeParentId,
+				checkItemTypeParentName: api.pageParam.checkItemTypeParentName,
+				maintenanceDescription: $('#maintenanceDescription').val(),
+				// maintenancePerson: userObj.loginName,
+				userId: userObj.userid
+			};
+
+			if(!isSaveing) {
+				api.confirm({
+					title: '提示',
+					msg: '是否上报保养？',
+					buttons: ['确定', '取消']
+				}, function(ret, err) {
+					var index = ret.buttonIndex;
+					if(index == 1) {
+						isSaveing = true;
+						api.ajax({
+							url: webapp_global.url + '/maintenancePlanProcess/saveMaintainRecord',
+							method: 'POST',
+							data: {
+								values: params,
+								files: {
+									files: fileatt
+								}
+							}
+						}, function(ret, err) {
+							if(ret && ret.code == 'success') {
+								//例行维保 提交上报故障表单后继续添加下一个
+								growingIoAddEvent('submitMaintain',{planId_var:api.pageParam.planId});
+								api.toast({
+									msg: '提交成功！可在保养记录中查看',
+									duration: 2000,
+									location: 'bottom'
+								});
+								setTimeout(function() {
+									api.closeWin();
+								},2000)
+							} else {
+								api.toast({
+									msg: '提交失败！',
+									location: 'bottom'
+								});
+							}
+							isSaveing = false;
+						});
+					}
+				})
+			}
+		}
+		function initEvent(){
+			//监听语音输入的值
+				api.addEventListener({
+					name: 'voiceInputModelValue'
+				}, function(ret, err) {
+					if(ret && ret.value.pageName == "maintainInsert"){
+						$("#"+ret.value.inputFrame).text(ret.value.value);
+					}
+				});
+				//ios右滑控制
+      api.addEventListener({
+        name:'swiperight'
+      }, function(ret, err){
+      });
+		}
+		//语音录入
+			function voiceInput(divId){
+				api.openWin({
+					name: 'voiceInput',
+					url: '../public/voiceInput.html',
+					rect: {
+						x: 0,
+						y: 0,
+						w: 320,
+						h: 480
+					},
+					pageParam: {
+						"pageName":"maintainInsert",
+						"inputFrame":divId
+					},
+					bounces: false,
+					vScrollBarEnabled: true,
+					hScrollBarEnabled: true
+				});
+			}
+	</script>
+
+</html>

@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+		<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+		<title>设置</title>
+		<link rel="stylesheet" type="text/css" href="../../css/api.css" />
+		<link rel="stylesheet" href="../../css/aui.css" />
+		<link rel="stylesheet" href="../../css/MintUistyle.css" />
+		<link rel="stylesheet" href="../../css/wbicon/style.css" />
+		<style>
+			html,
+			body {
+				height: 100%;
+				display: flex;
+				display: -webkit-flex;
+				display: -webkit-box;
+				flex-flow: column;
+				-webkit-flex-flow: column;
+				-webkit-box-orient: vertical;
+			}
+			
+			.header {
+				height: 57px;
+				width: 100%;
+				display: block;
+				line-height: 57px;
+				padding-top: 11px;
+				font-size: .8rem;
+			}
+			
+			.header.active {
+				display: block;
+			}
+			
+			.top-menu {
+				/*padding: 0 43px 0 8px;*/
+				text-align: center;
+				color: #fff;
+				font-weight: bold;
+			}
+			/*按钮*/
+			
+			.backBtn {
+				height: 40px;
+				width: 35px;
+				position: absolute;
+				right: left;
+				bottom: 0;
+			}
+			
+			.backBtn::before {
+				position: absolute;
+				top: .65rem;
+				left: .75rem;
+				display: block;
+				content: '';
+				width: 10px;
+				height: 10px;
+				/*border-left: 2px solid;
+           border-top: 2px solid;*/
+				border-left: 1px solid;
+				border-top: 1px solid;
+				color: #fff;
+				transform: rotate(-45deg);
+			}
+			
+			.btn {
+				height: 40px;
+				width: 35px;
+				position: absolute;
+				right: .5rem;
+				bottom: 0;
+				color: white;
+			}
+			/*首页头部导航*/
+			/*字体颜色*/
+			
+			.header.home>div.active {
+				opacity: 1;
+			}
+			
+			.header.home {
+				/*background: -moz-linear-gradient(top, #febd00 0%, #ff951b 100%);
+				background: -webkit-gradient(linear, left top, right bottom, color-stop(0%, #febd00), color-stop(100%, #ff951b));
+				background: -webkit-linear-gradient(top, #febd00 0%, #ff951b 100%);
+				background: -o-linear-gradient(top, #febd00 0%, #ff951b 100%);
+				background: -ms-linear-gradient(top, #febd00 0%, #ff951b 100%);
+				background: linear-gradient(to top, #febd00 0%, #ff951b 100%);*/
+				background-color: #ff961b;
+			}
+			
+			.header.home .top-menu>div {
+				color: #fff;
+				opacity: .8;
+			}
+			
+			.header.home .top-menu>div.active {
+				opacity: 1;
+			}
+			
+			.add_btn {
+				/*background: #d43d3d url('../image/head/add.png') center center no-repeat;*/
+				-webkit-background-size: 38px 43px;
+				background-size: 38px 43px;
+			}
+			/*****后加入******/
+			
+			.xf-panel {
+				box-sizing: border-box;
+				padding: 0;
+				font-size: 0.7rem;
+				margin-top: 85%;
+			}
+			
+			.xf-button {
+				display: block;
+				width: 90%;
+				background-color: #ff9b18;
+				border: 0;
+				color: #fff;
+				height: 2.5rem;
+				margin-left: 5%;
+				border-radius: 1rem;
+			}
+			
+			.aui-content-padded {
+				margin: 0;
+			}
+			
+			.aui-personal-info {
+				background-color: #fff;
+			}
+			
+			.aui-info-item img {
+				width: 2.6rem;
+				height: 2.6rem;
+				border-radius: .3rem;
+			}
+			
+			.aui-info {
+				padding: .7rem 0;
+				border-bottom: 1px solid #ddd;
+			}
+			
+			.aui-personal-info .aui-info:last-child {
+				border-bottom: 0;
+			}
+			
+			.aui-info .aui-info-item:first-child {
+				color: #040404;
+				font-size: .75rem;
+			}
+			
+			.aui-info .aui-info-item:last-child {
+				color: #999;
+				font-size: .7rem;
+			}
+			
+			.aui-info .aui-info-item .aui-info-item_icon {
+				font-size: .8rem;
+				color: #848484;
+			}
+		</style>
+	</head>
+
+	<body>
+		<header id="header">
+			<div class="header home active">
+				<div class="backBtn" tapmode onclick="back()"></div>
+				<div id="title" class="top-menu"></div>
+			</div>
+		</header>
+		<div class="aui-content-padded">
+			<div class="aui-personal-info aui-padded-l-10">
+				<div class="aui-info aui-padded-r-10" onclick="modifyPassword()">
+					<div class="aui-info-item">修改密码</div>
+					<div class="aui-info-item">
+						<a class="aui-info-item_icon aui-margin-l-10">
+							<b class="wbicon-arrowRight2"></b></a>
+					</div>
+				</div>
+				<div class="aui-info aui-padded-r-10" onclick="versionDescription()">
+					<div class="aui-info-item">版本说明</div>
+					<div class="aui-info-item">
+						<a class="aui-info-item_icon aui-margin-l-10">
+							<b class="wbicon-arrowRight2"></b></a>
+					</div>
+				</div>
+				<div class="aui-info aui-padded-r-10" onclick="switchEnterprise()">
+					<div class="aui-info-item">切换企业</div>
+					<div class="aui-info-item">
+						<a class="aui-info-item_icon aui-margin-l-10">
+							<b class="wbicon-arrowRight2"></b></a>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="xf-panel">
+			<button onclick="exitFun()" class="xf-button active">退出</button>
+		</div>
+	</body>
+	<script type="text/javascript" src="../../config/config.js" ></script>
+	<script type="text/javascript" src="../../script/api.js"></script>
+	<script type="text/javascript" src="../../script/vue.js"></script>
+	<script>
+		var paramObj = JSON.parse(localStorage.getItem('userObj'));
+		apiready = function() {
+			$api.byId('title').innerHTML = "设置";
+			initEvents();
+		}
+		//修改密码
+		function modifyPassword() {
+			api.openWin({
+				name: "modifyPassword",
+				url: './modifyPassword.html',
+				rect: {
+					x: 0,
+					y: 0,
+					w: 320,
+					h: 480
+				},
+				pageParam: {},
+				bounces: false,
+				bgColor: 'rgba(0,0,0,0)',
+				vScrollBarEnabled: true,
+				hScrollBarEnabled: true
+			});
+		}
+		//版本说明
+		function versionDescription() {
+			api.openWin({
+				name: "versionDescription",
+				url: './versionDescription.html',
+				rect: {
+					x: 0,
+					y: 0,
+					w: 320,
+					h: 480
+				},
+				pageParam: {},
+				bounces: false,
+				bgColor: 'rgba(0,0,0,0)',
+				vScrollBarEnabled: true,
+				hScrollBarEnabled: true
+			});
+		}
+		//切换企业
+		function switchEnterprise() {
+			api.ajax({
+				method: "post",
+				url: webapp_global.url + "/userAuth/getOrgListByUserId",
+				data: {
+					values: {
+						userId: paramObj.userid,
+						sysCode: "sys_maintenance_app"
+					}
+				},
+				dataType: "json"
+			}, function(ret, err) {
+				if(ret) {
+					var code = ret["code"];
+					if(code == "success") {
+						var data = ret["data"];
+						if(data && data.length > 0) {
+							//打开选择组织机构页面
+							api.openWin({
+								name: 'selectOrg',
+								url: '../mymessage/selectOrganization.html',
+								pageParam: data,
+								reload:true
+							});
+						} else {
+							api.toast({
+								msg: "该账号只分配了此组织机构",
+								location: 'bottom'
+							});
+						}
+					}
+				}
+			})
+		}
+		//退出
+		function exitFun() {
+			api.confirm({
+				title: '提醒',
+				msg: '退出后服务继续',
+				buttons: ['确定', '取消']
+			}, function(ret, err) {
+				var index = ret.buttonIndex;
+				if(index == 1) {
+					//发送退出事件
+					api.sendEvent({
+					    name: 'exitSystem'
+					});
+					localStorage.clear();
+					var time = (new Date()).getTime();
+					api.closeFrame({
+						name: 'main'
+					});
+					api.closeFrame({
+						name: 'frm_user'
+					});
+					api.closeWin({
+						name: "index"
+					})
+					api.openWin({
+						name: 'login',
+						url: './../login.html?time=' + time,
+						bounces: false
+					})
+				}
+			});
+		}
+		//监听事件
+		function initEvents() {
+			api.addEventListener({
+				name: 'keyback'
+			}, function(ret, err) {
+				back();
+			});
+			//ios右滑控制
+	      api.addEventListener({
+	        name:'swiperight'
+	      }, function(ret, err){
+	      });
+		}
+		//返回，关闭当前详情页，
+		function back() {
+			api.closeWin({
+				name: 'setUp'
+			});
+		}
+	</script>
+
+</html>

@@ -1,0 +1,569 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+		<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+		<link rel="stylesheet" type="text/css" href="../../css/aui.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/wbicon/style.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/xficon/style.css" />
+		<style type="text/css">
+			html {
+				font-family: "Microsoft YaHei";
+				height: 100%;
+			}
+			/** { touch-action: none; }*/
+			body {
+				color: #333;
+				background-color: #eeeef5;
+				height: 100%;
+			}
+			
+			.aui-tab-item.aui-active {
+				color: #fd9905;
+				border-bottom: 2px solid #fd9905;
+			}
+			
+			.aui-list-item-inner.aui-swipe-handle {
+				overflow-x: hidden;
+				position: relative;
+				z-index: 1;
+				background-color: #ffffff;
+			}
+			
+			.aui-swipe-btn {
+				position: absolute;
+				right: 0;
+				z-index: 0;
+				height: 100%;
+				-webkit-box-sizing: border-box;
+				box-sizing: border-box;
+				display: -webkit-box;
+				display: -webkit-flex;
+				display: flex;
+				-webkit-box-flex: 1;
+				-webkit-box-pack: justify;
+				-webkit-justify-content: space-between;
+				justify-content: space-between;
+				-webkit-box-align: center;
+				-webkit-align-items: center;
+				align-items: center;
+			}
+			
+			.aui-swipe-btn .aui-btn {
+				border-radius: 0;
+				height: 100%;
+				-webkit-box-sizing: border-box;
+				box-sizing: border-box;
+				display: -webkit-box;
+				display: -webkit-flex;
+				display: flex;
+				-webkit-box-align: center;
+				-webkit-align-items: center;
+				align-items: center;
+			}
+			
+			.donghua {
+				-webkit-transition-duration: 300ms;
+				transition-duration: 300ms;
+			}
+			
+			.aui-img-object {
+				height: 1.36rem;
+				width: 1.36rem;
+			}
+			
+			.wb-list-item {
+				border-bottom: 1px solid #ddd!important;
+			}
+			
+			.aui-list-item-inner {
+				justify-content: flex-start!important;
+			}
+			
+			.wb-telephone {
+				position: absolute;
+				font-size: .6rem;
+				right: .4rem;
+				top: 50%;
+				margin-top: -.3rem;
+				color: #ccc;
+			}
+			
+			.linkman {
+				color: #333;
+				font-size: .67rem;
+			}
+			
+			.aui-searchbar {
+				height: 2.8rem;
+				margin-top: .7rem;
+			}
+			/*iphoneX媒体查询*/
+			@media only screen and (device-width: 375px) and (device-height: 812px) and (-webkit-device-pixel-ratio: 3) {
+  				.aui-searchbar{
+					margin-top: 1.5rem;	
+				}
+			}
+			.wb-adress {
+				color: #ccc;
+				font-size: .6rem;
+			}
+			
+			.wb-minus {
+				position: absolute;
+				left: 0;
+				color: red;
+				font-size: .48rem;
+				top: 2px;
+			}
+			
+			.aui-list .aui-list-item {
+				min-height: 2.9rem!important;
+			}
+			
+			.header {
+				height: 57px;
+				width: 100%;
+				display: block;
+				line-height: 57px;
+				padding-top: 11px;
+				font-size: .8rem;
+				background-color: #ff961b;
+			}
+			
+			.aui-bar-nav .aui-btn .aui-iconfont {
+				font-size: .7rem;
+			}
+			
+			.aui-list .aui-list-header {
+				background-color: #f5f5f9;
+				margin-top: .2rem;
+			}
+			
+			.aui-searchbar {
+				background-color: #f5f5f9;
+			}
+			
+			.wb-noResult {
+				position: fixed;
+				top: 0;
+				left: 0;
+				bottom: 0;
+				right: 0;
+				margin: auto;
+				z-index: 10;
+				display: flex;
+				justify-content: center;
+				align-items: center;
+			}
+			.wb-noResult img{
+				width: 5rem;
+				height:5rem;
+			}
+			.aui-swipe-btn {
+				width: 80px
+			}
+			
+			.aui-swipe-btn .aui-btn {
+				height: 99%;
+				width: 100%;
+				justify-content: center;
+			}
+			
+			.wb-delete {
+				position: absolute;
+				z-index: 10;
+				top: 0;
+				left: 104px;
+				width: 100%;
+				text-align: center;
+				justify-content: center;
+			}
+			
+			.aui-icon-close {
+				color: #000000;
+			}
+			
+			.highlight {
+				color: #fa8802;
+			}
+			
+			.wb-c{height:2rem;}
+			.wb-c1{height:2.8rem;}
+			.wb-position{
+				margin-left:.2rem;
+			}
+			.aui-list .aui-list-item {
+				background:none;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div class="wb-content">
+			<header class="aui-bar aui-bar-nav header"  style="position:fixed;z-index: 10001;">
+				<a class="aui-pull-left aui-btn" onclick="back()" style="font-weight: bold;font-size: .7rem;">
+					<span class="aui-iconfont aui-icon-left"></span>
+				</a>
+				<div class="aui-title">通讯录 </div>
+
+			</header>
+			<div class="wb-c"></div>
+			<!--搜索-->
+			<div class="aui-searchbar" id="search" style="position:fixed;z-index: 1000;">
+				<div class="aui-searchbar-input aui-border-radius">
+					<i class="aui-iconfont aui-icon-search"></i>
+					<input type="search" placeholder="请输入搜索内容" id="search-input">
+					<div class="aui-searchbar-clear-btn">
+						<i class="aui-iconfont aui-icon-close"></i>
+					</div>
+				</div>
+				<div class="aui-searchbar-btn" tapmode>取消</div>
+			</div>
+			<div class="wb-c1"></div>
+			<section class="aui-content" id="search_result_content">
+				<ul class="aui-list" id="search_result_1" style=''>
+					
+				</ul>
+				<ul class="aui-list" id="search_result_2" style=''>
+					
+
+				</ul>
+				
+			</section>
+			<section class="aui-content" id="no_all_data">
+				<div  class="wb-noResult">
+					<div>
+						<img class="" src="../../image/no_zizi.png" alt="" />
+						<span>搜索无结果~~~</span>
+					</div>
+					
+				</div>
+				
+			</section>
+		</div>
+	</body>
+	<script type="text/javascript" src="../../script/api.js"></script>
+	<script type="text/javascript" src="../../script/aui-tab.js"></script>
+	<script type="text/javascript" src="../../script/aui-list-swipe.js"></script>
+	<script type="text/javascript" src="../../script/zepto.js"></script>
+	<script type="text/javascript" src="../../script/vue.js"></script>
+	<script type="text/javascript" src="../../script/iphoneX.js"></script>
+	<script src="../../config/config.js"></script>
+	<script type="text/javascript">
+		var paramObj, results,isTrue = false;
+		//去空格
+		String.prototype.trim = function() {
+			return this.replace(/(^\s*)|(\s*$)/g, '');
+		};
+		apiready = function() {
+			iphoneXfit();
+			if(isIphoneX()){
+				$(".aui-btn").css("top","1rem")
+			}
+			paramObj = JSON.parse(localStorage.getItem('userObj'));
+			api.parseTapmode();
+			search_to_name()
+			// 弹出键盘
+			open_key();
+			deleteContacts()
+			//ios右滑控制
+		      api.addEventListener({
+		        name:'swiperight'
+		      }, function(ret, err){
+		      });
+		}
+		// 初始化弹出键盘
+		function open_key() {
+			setTimeout(function() {
+				var softInput = api.require('softInputMgr');
+				softInput.toggleKeyboard();
+				document.getElementById("search-input").focus();
+				$("#search-input").click()
+			}, 200)
+
+		}
+		var searchBar = document.querySelector(".aui-searchbar");
+		var searchBarInput = document.querySelector(".aui-searchbar input");
+		var searchBarBtn = document.querySelector(".aui-searchbar .aui-searchbar-btn");
+		var searchBarClearBtn = document.querySelector(".aui-searchbar .aui-searchbar-clear-btn");
+		if(searchBar) {
+			searchBarInput.onclick = function() {
+				searchBarBtn.style.marginRight = 0;
+			}
+			searchBarInput.oninput = function() {
+				if(this.value.length) {
+					searchBarClearBtn.style.display = 'block';
+					searchBarBtn.classList.add("aui-text-info");
+					searchBarBtn.textContent = "搜索";
+					
+				} else {
+					searchBarClearBtn.style.display = 'none';
+					searchBarBtn.classList.remove("aui-text-info");
+					searchBarBtn.textContent = "取消";
+					isTrue = false;
+//					$("#search_result_1").hide();
+//					$("#search_result_2").hide();
+//					$("#no_all_data").show();
+					//					search_to_name()
+				}
+				search_to_name()
+			}
+		}
+		searchBarClearBtn.onclick = function() {
+			this.style.display = 'none';
+			searchBarInput.value = '';
+			searchBarBtn.classList.remove("aui-text-info");
+			searchBarBtn.textContent = "取消";
+			isTrue = false;
+			search_to_name()
+//			$("#search_result_1").hide();
+//			$("#search_result_2").hide();
+//			$("#no_all_data").show();
+		}
+		searchBarBtn.onclick = function() {
+			var keywords = searchBarInput.value;
+			if(keywords.length) {
+				searchBarInput.blur();
+				search_to_name()
+				// document.getElementById("search-keywords").textContent = keywords;
+			} else {
+				this.style.marginRight = "-" + this.offsetWidth + "px";
+				searchBarInput.value = '';
+				searchBarInput.blur();
+
+				api.closeWin()
+			}
+		}
+
+		function search_to_name() {
+			var name = $("#search-input").val().trim();
+			api.ajax({
+				url: webapp_global.url + "/userInfo/getContactsList",
+				method: 'get',
+				dataType: "json",
+				data: {
+					values: {
+						userId: paramObj.userid,
+						orgId: paramObj.orgId,
+						name: name
+					}
+				}
+			}, function(ret, err) {
+				var code = ret["code"];
+				if(code == "success") {
+					data = ret["data"];
+					var contactsList = '<li class="aui-list-header">业主联系人</li>',
+						proprietorContactList = data.proprietorContactList,
+						maintenanceUserList = data.maintenanceUserList;
+					if(proprietorContactList.length > 0) {
+						$("#search_result_1").show();
+						/*$("#search_result_2").show();*/
+						$("#no_all_data").hide();
+						var wbPosition
+						for(i in proprietorContactList) {
+							if(proprietorContactList[i].position){
+								wbPosition = `<span class="linkman wb-position">${proprietorContactList[i].position}</span>`
+							}else{
+								wbPosition = '';
+							}
+								
+							contactsList += `<li class="aui-list-item wb-list-item">
+								<div class="aui-list-item-inner aui-img-body" persionType=${proprietorContactList[i].persionType} onclick="callPhone(${proprietorContactList[i].conactPhone})">
+									<span class="xficon-forbindden wb-minus" persionType=${proprietorContactList[i].persionType} style="display:none"></span>
+									<img class="aui-img-object aui-pull-left wb-headPortrait" datasrc="${proprietorContactList[i].proprietorUnitType}" src=""/>
+									<div class="aui-img-body aui-margin-l-5">
+										<span class="linkman">${proprietorContactList[i].conactName}</span>${wbPosition}
+										<p class="aui-ellipsis-1 wb-adress">${proprietorContactList[i].proprietorName}</p>
+									</div>
+									<p class="wb-telephone">${proprietorContactList[i].conactPhone}</p>
+								</div>
+								<div class="aui-swipe-btn" persionType=${proprietorContactList[i].persionType}>
+									<div class="aui-btn aui-btn-danger" onclick="isDelete()">移除</div>
+									<div class="aui-btn aui-btn-danger wb-delete wb-dele" 
+									
+									contactId = "${proprietorContactList[i].contactId}">确认删除</div>
+								</div>
+							</li>`
+						}
+						$("#search_result_1").html(contactsList)
+						$("#search_result_1 .aui-img-body").each(function(index,item){
+							if($(this).attr('persionType')=='1'){
+								$(this).addClass('aui-swipe-handle');
+								$(this).find('.wb-minus').show();
+								$(this).find('.wb-headPortrait').attr('src','../../image/unitaryType.png')
+							}else{
+								$(this).next('.aui-swipe-btn').remove();
+								$(this).find('.wb-minus').hide();
+								$(this).find('.wb-headPortrait').attr('src','../../image/groupType.png')
+							}
+						})
+						
+						
+					} else {
+						$("#search_result_1").hide()
+					}
+
+					if(maintenanceUserList.length > 0) {
+						$("#search_result_2").show();
+						$("#no_all_data").hide();
+						var enterpriseContacts = '<li class="aui-list-header">企业通讯录</li>';					
+						maintenanceUserList.forEach(function(item, index) {
+							enterpriseContacts += `<li class="aui-list-item wb-list-item">
+									<div class="aui-list-item-inner aui-img-body" onclick="callPhone(${item.telephone})">
+			
+										<img class="aui-img-object aui-pull-left wb-enterprisePic" src='' pic='${item.headPortrait}' />
+										<div class="aui-img-body aui-margin-l-5">
+											<span class="linkman">${item.userName}</span>
+			
+										</div>
+										<p class="wb-telephone">${item.telephone}</p>
+									</div>
+			
+								</li>`
+								
+
+						})
+						$("#search_result_2").html(enterpriseContacts)
+						$("#search_result_2 .wb-enterprisePic").each(function(index,item){
+							var dataSrc =!!$(this).attr('pic')
+							if(dataSrc){
+								$(this).attr('src',webapp_global.imageUrl+''+$(this).attr('pic'))
+							}else{
+								$(this).attr('src','../../image/weibao.png')
+							}
+						})
+					
+					} else {
+						$("#search_result_2").hide();
+					}
+					if(proprietorContactList.length == '0' && maintenanceUserList.length == '0') {
+						$("#no_all_data").show();
+					}
+						if(isTrue)highlight()
+						deleteContacts()
+						isTrue = true;
+				}
+			})
+		}
+		
+		//侧滑
+		var swipe = new auiListSwipe(function(ret) {
+		});
+		
+		function deleteContacts(){
+			$('.wb-delete').on('click',function(){
+				var contactId = $(this).attr('contactId')
+				$(this).parent().parent().remove();
+				deleList(contactId)
+			})
+			
+		}
+		function deleList(id) {
+			api.ajax({
+				url: webapp_global.url + "/userInfo/delContacts",
+				method: 'post',
+				dataType: "json",
+				data: {
+					values: {
+						id: id
+					}
+				}
+			}, function(ret, err) {
+				
+				var code = ret["code"];
+				if(code == "success") {
+					data = ret["data"];
+					//删除打开的侧滑效果
+					swipe.deleteReset()
+					api.toast({
+						msg: '联系人删除成功',
+						duration: 1500,
+						location: 'middle',
+						global: true
+					});
+
+				}
+			})
+		}
+
+		function callPhone(nums) {
+				api.call({
+					type: 'tel_prompt',
+					number: nums
+				});
+		}
+
+		function isDelete() {
+			$(".wb-delete").css({
+				transition: "400ms",
+				transform: "translateX(-104px)"
+			})
+		}
+		//返回，关闭当前页，
+		function back() {
+			api.closeWin();
+		}
+		//高亮显示keyword
+		function searchHighlight(id) {
+			var content = document.getElementById(id)
+			var contents = content.innerHTML;
+			var text = $("#search-input").val().trim();
+			var values = contents.split(text);
+			content.innerHTML = values.join('<span style="background:red;">' + text + '</span>');
+		}
+
+		function encode(s) {
+			return s.replace(/&/g, "&").replace(/</g, "<").replace(/>/g, ">").replace(/([\\\.\*\[\]\(\)\$\^])/g, "\\$1");
+		}
+
+		function decode(s) {
+			return s.replace(/\\([\\\.\*\[\]\(\)\$\^])/g, "$1").replace(/>/g, ">").replace(/</g, "<").replace(/&/g, "&");
+		}
+
+		function highlight(s) {
+			var s = document.getElementById("search-input").value.trim();
+			if(s.length == 0) {
+				//document.getElementById("search_result_content").innerHTML = '';
+			}
+			s = encode(s);
+			var obj = document.getElementById("search_result_content");
+			var t = obj.innerHTML.replace(/<span\s+class=.?highlight.?>([^<>]*)<\/span>/gi, "$1");
+			obj.innerHTML = t;
+			var cnt = loopSearch(s, obj);
+			t = obj.innerHTML
+			var r = /{searchHL}(({(?!\/searchHL})|[^{])*){\/searchHL}/g
+			t = t.replace(r, "<span class='highlight'>$1</span>");
+			obj.innerHTML = t;
+		}
+
+		function loopSearch(s, obj) {
+			var cnt = 0;
+			if(obj.nodeType == 3) {
+				cnt = replace(s, obj);
+				return cnt;
+			}
+			for(var i = 0, c; c = obj.childNodes[i]; i++) {
+				if(!c.className || c.className != "highlight")
+					cnt += loopSearch(s, c);
+			}
+			return cnt;
+		}
+
+		function replace(s, dest) {
+			var r = new RegExp(s, "g");
+			var tm = null;
+			var t = dest.nodeValue;
+			var cnt = 0;
+			if(tm = t.match(r)) {
+				cnt = tm.length;
+				t = t.replace(r, "{searchHL}" + decode(s) + "{/searchHL}")
+				dest.nodeValue = t;
+			}
+			return cnt;
+		}
+	</script>
+
+</html>

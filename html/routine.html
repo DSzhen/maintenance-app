@@ -1,0 +1,577 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+		<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+		<link rel="stylesheet" type="text/css" href="../css/aui.css" />
+		<link rel="stylesheet" type="text/css" href="../css/MintUistyle.css" />
+		<link rel="stylesheet" type="text/css" href="../css/wbicon/style.css" />
+		<link rel="stylesheet" type="text/css" href="../css/mobileSelect.css" />
+		<link rel="stylesheet" href="../css/mint-ui.css" />
+		<style type="text/css">
+			body {
+				background-color: #f6f6f6;
+			}
+
+			.wb-flex {
+				display: -webkit-box;
+				display: -webkit-flex;
+				display: flex;
+				-webkit-box-pack: justify;
+				-webkit-justify-content: center;
+				justify-content: center;
+				-webkit-box-align: center;
+				-webkit-align-items: center;
+				align-items: center;
+			}
+
+			.wb-space-between {
+				-webkit-justify-content: space-between;
+				justify-content: space-between;
+			}
+
+			.aui-btn-warning.wb-time-btn {
+				width: 6rem;
+				background-color: rgba(255, 150, 27, .8) !important;
+				border-radius: .7rem;
+			}
+
+			.wb-time-btn input {
+				width: 100%;
+				height: 1.5rem;
+				padding-left: 0.2rem;
+				line-height: 1.55rem;
+				color: #fff;
+				font-size: .9rem;
+			}
+
+			.wb-margin-t-10 {
+				margin-top: 1rem;
+			}
+
+			.aui-content-padded {
+				margin: .5rem;
+			}
+
+			.aui-card-list {
+				margin-bottom: .5rem;
+				box-shadow: 0 4px 8px 0 rgba(229, 229, 229, .65);
+				border-radius: .2rem;
+			}
+
+			.wb-title-h5 {
+				color: #474747;
+				font-size: .75rem;
+			}
+
+			.wb-telphone {
+				display: inline-block;
+				line-height: .8rem;
+				color: rgba(7, 105, 252, .9);
+				border-bottom: 1px solid rgba(7, 105, 252, .9);
+			}
+
+			.wb-info-des {
+				font-size: .75rem;
+				color: #a0a0a0;
+			}
+
+			.wb-info-des b {
+				margin-right: .3rem;
+			}
+
+			.mint-button.mint-button--default.mint-button--normal {
+				height: 1.5rem;
+				padding: 0 1rem;
+				font-size: .9rem;
+				line-height: 1.6rem;
+				color: #fff !important;
+				background-color: #ff961b !important;
+				border: 0;
+				border-radius: .7rem;
+				box-shadow: none;
+			}
+
+			.wb-margin-t-4 {
+				margin-top: .4rem;
+			}
+
+			.wb-list-inner {
+				max-width: 78%;
+			}
+
+			.aui-btn-info.aui-btn-outlined.wb-btn {
+				color: #0769fc !important;
+				background-color: #ecf6ff !important;
+				border: 1px solid rgba(7, 105, 252, .6) !important;
+			}
+
+			.picker-items .picker-slot:nth-child(3) {
+				width: 0 !important;
+				flex: none !important;
+			}
+
+			.picker-item {
+				color: #707070;
+				font-size: .9rem;
+			}
+
+			.picker-center-highlight {
+				background-color: #fff2e2;
+				border: 0;
+				z-index: -1;
+			}
+
+			.selector {
+				background: #FF961B;
+				box-shadow: 1px 2px 20px 2px #000000;
+				width: 544px;
+				height: 122px;
+			}
+
+			.mint-datetime-action {
+				height: 2.4rem;
+				line-height: 2.4rem;
+				font-size: .9rem;
+				color: #333;
+			}
+
+			.picker-toolbar .mint-datetime-action:last-child,
+			.mint-datetime-action:hover,
+			.mint-datetime-action:focus {
+				background-color: #ff961b;
+				color: #fff;
+			}
+
+			.picker.mint-datetime-picker {
+				position: relative;
+			}
+
+			.picker-toolbar {
+				height: 2.4rem;
+				position: absolute;
+				bottom: 0;
+				left: 0;
+				right: 0;
+				width: 100%;
+				background-color: #fff;
+				box-shadow: 0 -2px 15px 1px rgba(0, 0, 0, .05);
+				z-index: 50;
+			}
+
+			.wb-card-mark {
+				position: absolute;
+				top: 0rem;
+				right: 0;
+			}
+
+			[v-cloak] {
+				display: none;
+			}
+
+			.defaultDiv-layout {
+				margin-top: 35%;
+				height: 100%;
+				width: 100%;
+				text-align: center;
+			}
+
+			.defaultDiv-layout label {
+				color: #C4C4C4;
+			}
+
+			.defaultDiv {
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				margin-bottom: 1rem;
+			}
+
+			.defaultDiv img {
+				height: 5.5rem;
+				width: 6rem;
+			}
+		</style>
+	</head>
+
+	<body>
+		<section class="aui-content" id="app" v-cloak>
+			<div class="page-datetime-wrapper aui-text-center wb-margin-t-10 aui-margin-b-15">
+				<div id="datePicker" >
+					<div class="aui-btn aui-btn-warning wb-time-btn" style="font-size: .8rem;line-height: 1.6rem">
+						<input id="startTime" :value='dateValue' style="font-size: .8rem;" type="text" readonly onclick="selectDate()"  />
+					</div>
+				</div>
+
+			</div>
+			<div class="aui-content-padded" v-if="tableData.length > 0">
+				<div class="aui-card-list" v-for="item in tableData" @click="clickItem(item)">
+					<div class="aui-card-list-content-padded aui-padded-t-15 aui-padded-b-15 wb-flex wb-space-between">
+						<div class="wb-list-inner">
+							<h5 class="wb-title-h5 aui-ellipsis-1">{{item.planName}}({{item.planTypeName}})</h5>
+							<p class="wb-info-des wb-margin-t-4 aui-ellipsis-1"><b class="wbicon-building">
+	                   	 			</b>{{item.proprietorName}}</p>
+							<p class="wb-info-des wb-margin-t-4 aui-ellipsis-1"><b class="wbicon-locationSolid">
+	                    			</b>{{item.planStartTime.substr(0,10)}}~{{item.planEndTime.substr(0,10)}}</p>
+							<p class="wb-info-des wb-margin-t-4 aui-ellipsis-1"><b class="wbicon-linkman"></b>{{item.proprietorConact}}
+								<a class="wb-telphone aui-margin-l-10" @click="callPhone($event,item.proprietorPhone)">{{item.proprietorPhone}}</a>
+							</p>
+						</div>
+						<div :class=item.classes>{{item.completedText}}</div>
+						<div class="wb-card-mark" v-if="item.isOverdue ==1"><img src="../image/wb-mark.png" style="width: 2.2rem"></div>
+					</div>
+				</div>
+				<div class='noshuju' style="text-align:center;color:#999999; display:none">没有数据啦</div>
+				<div class='to_load' style="text-align:center;color:#999999;display:none">加载更多...</div>
+			</div>
+			<div class="routineDefaultImg" v-if="defaultDiv != ''">
+				<div class='defaultDiv-layout'>
+					<div class='defaultDiv'><img :src='defaultDiv' /></div>
+					<label style="">暂无例行维保任务，快联系管理员制定吧</label>
+				</div>
+			</div>
+		</section>
+	</body>
+	<script type="text/javascript" src="../script/api.js"></script>
+	<script type="text/javascript" src="../config/config.js"></script>
+	<script type="text/javascript" src="../script/vue.js"></script>
+	<script type="text/javascript" src="../script/mint-ui.js"></script>
+	<script type="text/javascript" src="../script/zepto.js"></script>
+	<script type="text/javascript" src="../script/mobileSelect.js"></script>
+	<script type="text/javascript" src="../script/umeng/zhuge.js"></script>
+
+	<script type="text/javascript">
+		var pageNo=2;
+		var pageVue;
+		var paramObj = JSON.parse(localStorage.getItem('userObj'));
+		var UIDatePicker;
+		apiready = function() {
+				UIDatePicker = api.require('UIDatePicker');
+			apiEvents();
+			pageVue = new Vue({
+				el: '#app',
+				data: function() {
+					return {
+						dateValue: '',
+						tableData: [],
+						defaultDiv: ""
+					}
+				},
+				created: function() {
+					this.initData()
+				},
+				methods: {
+					//拨打电话
+					callPhone: function(e, tel) {
+						e.stopPropagation()
+						if(api.systemType != 'ios'){
+							api.call({
+								type: 'tel_prompt',
+								number: tel
+							});
+						}
+					},
+					//点击
+					clickItem: function(item) {
+						// 点击例行维保进详情
+						api.openWin({
+							name: 'routine/win_allList.html',
+							url: './routine/win_allList.html',
+							rect: {
+								x: 0,
+								y: 0,
+								w: 320,
+								h: 480
+							},
+							pageParam: item,
+							bounces: false,
+							bgColor: 'rgba(0,0,0,0)',
+							vScrollBarEnabled: true,
+							hScrollBarEnabled: true
+						});
+					},
+					initData: function() {
+
+						var data = new Date();
+						var year = data.getFullYear();
+						var yue = data.getMonth() + 1;
+						this.dateValue = year + "年" + yue + '月';
+						this.year = year;
+						this.month = yue;
+						//请求后台方法
+						this.ajaxFun()
+					},
+					ajaxFun: function() {
+						Vue.$indicator.open("加载中...");
+						var that = this;
+						//请求后台
+						var obj = JSON.parse(localStorage.getItem("userObj"));
+						api.ajax({
+							url: webapp_global.url + "/serverUnit/queryRoutinemaintenanceList",
+							method: 'get',
+							dataType: "json",
+							data: {
+								values: {
+									userId: obj.userid,
+									year: that.year,
+									month: that.month,
+									pageNo:1,
+									pageSize:10
+								}
+							}
+						}, function(ret, err) {
+							Vue.$indicator.close();
+							api.refreshHeaderLoadDone();
+							api.parseTapmode();
+
+							if(ret) {
+								that.tableData = ret.data.data;
+								if(!that.tableData) {
+									return
+								}
+								if(that.tableData.length == 0) {
+									that.defaultDiv = "../image/defaultPage/routine.png";
+								} else {
+									that.defaultDiv = "";
+								}
+								that.tableData.forEach(function(item) {
+									if(item.planType == "1") {
+										item.planTypeName = "日计划";
+									} else if(item.planType == "2") {
+										item.planTypeName = "周计划";
+									} else if(item.planType == "3") {
+										item.planTypeName = "月计划";
+									} else if(item.planType == "4") {
+										item.planTypeName = "季计划";
+									} else if(item.planType == "5") {
+										item.planTypeName = "年计划";
+									} else {
+										item.planTypeName = "自定义计划";
+									}
+									if(item.status == 3) {
+										item.completedText = "查看"
+										item.classes = 'aui-btn aui-btn-info aui-btn-outlined wb-btn'
+									} else {
+										item.completedText = "维保"
+										item.classes = 'aui-btn aui-btn-warning aui-btn-outlined wb-btn'
+									}
+								})
+								if(ret.data.data.length>9){
+									setTimeout(function(){
+										$(".to_load").show();
+									},500)
+								}else{
+									$(".to_load").hide();
+								}
+							} else {
+								var connectionType = api.connectionType;
+								if(connectionType == "none") {
+									that.defaultDiv = "../image/defaultPage/detectionNetwork.png"
+								}
+							}
+						})
+					},
+					changePage:function(){
+						// Vue.$indicator.open("加载中...");
+						var that = this;
+						//请求后台
+						var obj = JSON.parse(localStorage.getItem("userObj"));
+						api.ajax({
+							url: webapp_global.url + "/serverUnit/queryRoutinemaintenanceList",
+							method: 'get',
+							dataType: "json",
+							data: {
+								values: {
+									userId: obj.userid,
+									year: that.year,
+									month: that.month,
+									pageNo:pageNo,
+									pageSize:10
+								}
+							}
+						}, function(ret, err) {
+							Vue.$indicator.close();
+							api.refreshHeaderLoadDone();
+							api.parseTapmode();
+							if(ret){
+								var code = ret["code"]
+								if(code == "success"){
+									var data = ret["data"];
+									if(data){
+										if(data.data.length==0){
+											$(".to_load").hide()
+											$(".noshuju").show();
+										}else{
+											$(".to_load").show()
+											$(".noshuju").hide();
+											pageNo++
+											data.data.forEach(function(item) {
+												if(item.planType == "1") {
+													item.planTypeName = "日计划";
+												} else if(item.planType == "2") {
+													item.planTypeName = "周计划";
+												} else if(item.planType == "3") {
+													item.planTypeName = "月计划";
+												} else if(item.planType == "4") {
+													item.planTypeName = "季计划";
+												} else if(item.planType == "5") {
+													item.planTypeName = "年计划";
+												} else {
+													item.planTypeName = "自定义计划";
+												}
+												if(item.status == 3) {
+													item.completedText = "查看"
+													item.classes = 'aui-btn aui-btn-info aui-btn-outlined wb-btn'
+												} else {
+													item.completedText = "维保"
+													item.classes = 'aui-btn aui-btn-warning aui-btn-outlined wb-btn'
+												}
+												that.tableData.push(item);
+											})
+										}
+										}
+									}
+							}
+						})
+					},
+				}
+
+			})
+		};
+		//选择时间
+		function selectDate() {
+			var options = {
+				type: 'yearAndMonth',
+				rowHeight: 40,
+				title: '选择时间',
+				styles: {
+					bg: 'rgba(0,0,0,0)',
+					headerViewBackgroundColor: 'rgba(0,0,0,0)',
+					lineBackgroundColor: 'rgba(0,0,0,0)',
+					item: {
+						normal: '#ccc',
+						normalFont: 14,
+						selected: '#fdab3c',
+						selectedFont: 17,
+						cancelBtn: {
+							cancelButtonTextColor: '#1E1E1E',
+							cancelButtonText: '取消',
+							cancelButtonFont: 17
+						},
+						confirmBtn: {
+							confirmButtonTextColor: '#fdab3c',
+							confirmButtonText: '确认',
+							confirmButtonFont: 17
+						},
+					}
+				},
+				fixedOn: "filter"
+			}
+			UIDatePicker.open(options, function(ret, err) {
+				if(ret) {
+					if(ret.year){
+						var dateStr = ret.year + "年" + ret.month + "月";
+						pageVue.dateValue=dateStr;
+						pageVue.year=ret.year;
+						pageVue.month=ret.month;
+						// $("#startTime").val(dateStr);
+						pageVue.ajaxFun()
+					}
+
+				} else {}
+				UIDatePicker.close();
+			});
+		}
+
+		function openClub() {
+			var delay = 0;
+			if(api.systemType != 'ios') {
+				delay = 300;
+			}
+			api.openWin({
+				name: 'club_win',
+				url: './html/club_win.html',
+				bounces: false,
+				delay: delay,
+				slidBackEnabled: true,
+				vScrollBarEnabled: false,
+				progress: {
+					type: "page"
+				}
+			});
+		}
+
+		function apiEvents() {
+			// 下拉刷新。调用请求后台接口
+			api.setRefreshHeaderInfo({
+				visible: true,
+				bgColor: '#ccc',
+				textColor: '#fff',
+				textDown: '下拉刷新...',
+				textUp: '松开刷新...',
+				showTime: true
+			}, function(ret, err) {
+				pageNo=2;
+				$(".to_load").hide()
+				$(".noshuju").hide();
+				pageVue.initData();
+			});
+
+			api.addEventListener({
+				name: 'scrolltobottom',
+				extra: {
+					threshold: 0
+				}
+			}, function(ret, err) {
+				setTimeout(function(){
+					pageVue.changePage()
+				},500)
+			});
+
+			var connectionType = api.connectionType;
+			if(connectionType == "none") {
+				api.toast({
+					msg: '网络走丢了，请找回网络',
+					duration: 2000,
+					location: 'middle',
+					global: true
+				});
+			}
+			//监听设备断开网络的事件，字符串类型
+			api.addEventListener({
+				name: 'offline'
+			}, function(ret, err) {
+				api.toast({
+					msg: '网络走丢了，请找回网络',
+					duration: 2000,
+					location: 'middle',
+					global: true
+				});
+			});
+			//监听设备连接到网络的事件，字符串类型
+			api.addEventListener({
+				name: 'online'
+			}, function(ret, err) {
+				api.toast({
+					msg: '网络已经找回，请刷新页面',
+					duration: 2000,
+					location: 'middle',
+					global: true
+				});
+			});
+			//更新视图
+			 api.addEventListener({
+			 	name: 'updateRoutineList'
+			 }, function(ret, err) {
+				pageVue.initData();
+			 });
+		}
+
+		function closeWin() {
+			api.closeWin({});
+		}
+	</script>
+
+</html>

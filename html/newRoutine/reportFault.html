@@ -1,0 +1,1353 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+		<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+		<link rel="stylesheet" type="text/css" href="../../css/api.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/aui.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/MintUistyle.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/mobileSelect.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/wbicon/style.css" />
+		<link rel="stylesheet" href="../../css/xficon/style.css" />
+		<style type="text/css">
+			html,
+			body {
+				height: 100%;
+				font-family: "Microsoft YaHei";
+				background-color: #eeeef5;
+			}
+
+			body {
+				color: #333;
+			}
+
+			.aui-content-padded {
+				margin: 0;
+			}
+
+			.wb-flex {
+				display: -webkit-box;
+				display: -webkit-flex;
+				display: flex;
+				-webkit-box-pack: justify;
+				-webkit-justify-content: center;
+				justify-content: center;
+				-webkit-box-align: center;
+				-webkit-align-items: center;
+				align-items: center;
+			}
+
+			.wb-item-flexStart {
+				-webkit-align-items: flex-start;
+				align-items: flex-start;
+			}
+
+			.wb-space-between {
+				-webkit-justify-content: space-between;
+				justify-content: space-between;
+			}
+
+			.wb-flex-start {
+				-webkit-justify-content: flex-start;
+				justify-content: flex-start;
+			}
+
+			.wb-breakdown-title {
+				color: #666;
+			}
+
+			.wb-breakdown-text {
+				color: #999;
+				margin-top: .05rem;
+			}
+
+			.wb-list-item-inner {
+				width: 100%;
+				padding-right: .5rem;
+			}
+
+			.wb-update-image {
+				margin-top: .4rem;
+				padding-bottom: .5rem;
+			}
+
+			.wb-update-img {
+				margin-left: .2rem;
+			}
+
+			.wb-update-img img {
+				display: inline-block;
+				width: 3rem;
+				height: 3rem;
+				margin-right: .4rem;
+				border: 0;
+				background-color: #e0e0e0;
+			}
+
+			.wb-update-camrea {
+				display: inline-block;
+				width: 3rem;
+				height: 3rem;
+				text-align: center;
+				line-height: 3.3rem;
+				font-size: 2rem;
+				color: #999;
+				border: 1px dashed #efefef;
+				vertical-align: top;
+			}
+			/*删除图片*/
+
+			.xf-carera-content {
+				margin-right: .3rem;
+			}
+
+			.xf-carera-content li {
+				position: relative;
+				display: inline-block;
+				width: 3rem;
+				vertical-align: top;
+				margin-right: .3rem;
+			}
+
+			.xf-icon-imgDelete {
+				position: absolute;
+				right: -.2rem;
+				top: -.45rem;
+				color: red;
+			}
+
+			.xf-image-update {
+				display: inline-block;
+				width: 3rem;
+				height: 3rem;
+				text-align: center;
+				border: 1px solid #ddd;
+			}
+
+			.xf-image-icon {
+				font-size: 2rem;
+				line-height: 3rem;
+				color: #999;
+			}
+
+			.xf-iamge-model {
+				display: inline-block;
+				width: 3rem;
+				height: 3rem;
+			}
+
+			.nulls {
+				display: inline-block;
+				width: 15px;
+				padding-left: 2px;
+			}
+
+			.red {
+				color: #e91a1a;
+			}
+
+			.div-flex {
+				display: flex;
+				background-color: #fff;
+				font-size: .75rem;
+			}
+
+			.bottom_1 {
+				border-bottom: #f2f2f2 solid 1px;
+			}
+
+			.flex1 {
+				flex: 1;
+				font-size: .75rem;
+			}
+
+			.ju_center_start {
+				align-items: center;
+			}
+
+			.ju_center {
+				justify-content: center;
+				align-items: center;
+			}
+
+			.pd10px {
+				padding: 10px;
+			}
+
+			.nocur {
+				color: #ff961b;
+				display: inline-block;
+				width: 100%;
+				text-align: right;
+			}
+
+			.cur {
+				color: #828285!important;
+				text-align: left!important;
+			}
+
+			.input_css {
+				color: #828285!important;
+				height: 24px!important;
+				font-size: .75rem !important;
+			}
+
+			.m-b10px {
+				margin-bottom: 10px;
+			}
+
+			.bg-white {
+				background-color: #fff;
+			}
+
+			.solve_css {
+				display: inline-block;
+				background-color: #f2f2f2;
+				border-radius: 2px;
+				padding: 5px 0;
+				text-align: center;
+				width: 70px;
+				color: #828285;
+				position: relative;
+			}
+
+			.text-right {
+				text-align: right;
+			}
+
+			.position_r {
+				position: relative;
+			}
+
+			.btn_b {
+				padding: 10px 15px;
+				text-align: center;
+				display: inline-block;
+				justify-content: center;
+				align-items: center;
+			}
+
+			.b-left {
+				background-color: #fff;
+				color: #ff8303;
+				border: 1px solid #ff8303;
+			}
+
+			.b-right {
+				background-color: #ff8303;
+				color: #fff;
+			}
+
+			.flex_bottom {
+				position: fixed;
+				bottom: 0;
+				left: 0;
+				right: 0;
+			}
+
+			.solve_css_cur {
+				background-color: #fff3e5!important;
+				color: #ff961b!important;
+			}
+
+			.solve_css_cur_img {
+				width: 10px;
+				position: absolute;
+				right: 0;
+				top: 0;
+				display: none;
+			}
+
+			.textarea_css {
+				padding: 5px;
+				height: 100px;
+				padding-left: 15px;
+				font-size: .7rem;
+				color: #666;
+			}
+
+			.counter {
+				position: absolute;
+				bottom: 0;
+				right: 6px;
+				font-size: 10px;
+				display: none;
+			}
+
+			.color999 {
+				color: #999;
+			}
+
+			.areaType {
+				background: #fff;
+				padding: .5rem;
+				height: 8rem;
+				display: none;
+			}
+
+			[v-cloak] {
+				display: none
+			}
+
+			.m-r10px {
+				margin-right: 10px;
+			}
+			.wbicon-voice{
+				position: absolute;
+			    float: right;
+			    right: 1px;
+			    margin-top: -24px;
+			    margin-right: 14px;
+			    color: #A0A0A0;
+			}
+			
+		</style>
+	</head>
+
+	<body>
+		<div id="addApp" class="wb-content" v-cloak>
+			<section class="aui-content-padded">
+				<div class="div-flex pd10px bottom_1">
+					<div class="m-r10px">
+						消防系统<span class="nulls red">*</span>
+					</div>
+					<div v-if="!faultTypeName" class="flex1 text-right">
+						<span id="area1" class="nocur">请选择</span>
+					</div>
+					<div v-else class="flex1 text-right">
+						<span class="nocur cur">{{faultTypeName}}</span>
+					</div>
+				</div>
+				<div class="div-flex pd10px bottom_1">
+					<div class="m-r10px">
+						维保类型<span class="nulls red">*</span>
+					</div>
+					<div v-if="!checkItemTypeName" class="flex1 text-right" @click='alertType("maintenanceType")'>
+						<span id="area4" class="nocur">请选择</span>
+					</div>
+					<div v-else class="flex1 text-right">
+						<span class="nocur cur">{{checkItemTypeName}}</span>
+					</div>
+				</div>
+				<div class="div-flex pd10px bottom_1">
+					<div class="m-r10px">
+						楼栋楼层<span class="nulls red">*</span>
+					</div>
+					<div class="flex1 text-right">
+						<span id="area2" class="nocur">请选择</span>
+					</div>
+				</div>
+				<div class="div-flex pd10px bottom_1">
+					<div class="m-r10px">
+						具体设备<span class="nulls"></span>
+					</div>
+					<div v-show="equipmentList && equipmentList.length>0" class="flex1 text-right" @click='alertType'>
+						<span id="deviceChoose" class="nocur">请选择</span>
+					</div>
+					<div v-show="equipmentList && equipmentList.length==0" class="flex1 text-right">
+						<span class="nocur cur">{{checkItemTypeName}}</span>
+					</div>
+				</div>
+				<div class="div-flex pd10px bottom_1">
+					<div class="m-r10px">
+						设备位置<span class="nulls red">*</span>
+					</div>
+					<div v-if="enterprisesType != '1'" class="flex1 text-right" @click="choose">
+						<span id="deviceLocation" class="nocur">请选择</span>
+						<!-- <input type="text" class="input_css" placeholder="请输入设备位置" /> -->
+					</div>
+					<div v-else class="flex1 text-right">
+						<input id="deviceLocation" type="text" class="input_css" placeholder="请输入设备位置" />
+					</div>
+				</div>
+				<div class="div-flex pd10px m-b10px">
+					<div class="m-r10px">
+						回路点位<span class="nulls"></span>
+					</div>
+					<div v-if="enterprisesType != '1'" class="flex1">
+						<span class="cur" id="loopLocation"></span>
+					</div>
+					<div v-else class="flex1 text-right">
+						<input id="loopLocation" type="text" class="input_css" placeholder="例：'1-1-3'" />
+					</div>
+				</div>
+				<main class="bottom_1" style="position:relative;">
+					<div class="div-flex pd10px">
+						<div class="m-r10px">
+							故障类型<span class="nulls red">*</span>
+						</div>
+						<div class="flex1 text-right" @click='alertType("faultType")'>
+							<span id="area3" class="nocur">请选择</span>
+						</div>
+					</div>
+					<textarea class="areaType" id="areaType" placeholder="请填写故障类型" cols="30" rows="10"></textarea>
+					<span class="counter">
+						<em id="areaTypeNum" style="color:red;">0</em>/
+						<em>300</em>
+					</span>
+				</main>
+				<div class=" bottom_1 bg-white">
+					<div class="pd10px">
+						<div class="m-b10px">
+							照片<span class="nulls red">*</span>
+						</div>
+						<div class="wb-update-image">
+							<div class="wb-flex wb-flex-start wb-item-flexStart">
+								<ul class="xf-carera-content" id="imgUpdate">
+									<li class="xf-image-update"><b class="wbicon-camera xf-image-icon" onclick="imageClick()"></b></li>
+								</ul>
+							</div>
+						</div>
+						<p style="color:#f8bba5">注：如维保过程中更换设备，需将新旧设备都拍照留证</p>
+					</div>
+				</div>
+
+				<div class="div-flex pd10px bottom_1 m-b10px">
+					<div class="div-flex ju_center_start">
+						解决结果<span class="nulls red">*</span>
+					</div>
+					<div class="flex1 text-right">
+						<span onclick="chenge_status($(this),1,'result_1')" class="solve_css">未解决<img class="solve_css_cur_img" src="../../image/solve_cur.png"></span>
+						<span onclick="chenge_status($(this),2,'result_1')" class="solve_css">已解决<img class="solve_css_cur_img"  src="../../image/solve_cur.png"></span>
+					</div>
+				</div>
+
+				<!-- 已解决 -->
+				<div class="yi_solved " style="display:none">
+					<div class="pd10px bottom_1 bg-white">
+						<div class="m-b10px div-flex ju_center_start">
+							维修过程<span class="nulls red">*</span>
+						</div>
+						<div class="flex1 position_r">
+							<textarea id='disposeProcess' class="textarea_css" onkeyup="change_word($(this))" name="name" placeholder="请描述现场解决故障的过程"></textarea>
+							<p class="text-right color999"><span class="cur_num">0</span>/<span class="cur_totle">300</span></p>
+						</div>
+					</div>
+				</div>
+
+				<!-- 未解决 -->
+				<div class="no_solved" style="display:none">
+					<div class="pd10px bottom_1 bg-white">
+						<div class="m-b10px div-flex ju_center_start">
+							未解决原因<span class="nulls red">*</span>
+						</div>
+						<div class="flex1 position_r">
+							<textarea id="unsolvedCause" class="textarea_css" onkeyup="change_word($(this))" name="name" placeholder="请填写未解决原因"></textarea>
+							<p class="text-right color999"><span class="cur_num">0</span>/<span class="cur_totle">300</span></p>
+						</div>
+					</div>
+					<div class="div-flex pd10px bottom_1">
+						<div class="div-flex ju_center_start">
+							建议报消防局备案<span class="nulls red">*</span>
+						</div>
+						<div class="flex1 text-right">
+							<span onclick="chenge_status($(this),2,'beian_1')" class="solve_css ">是<img class="solve_css_cur_img" src="../../image/solve_cur.png"></span>
+							<span onclick="chenge_status($(this),1,'beian_1')" class="solve_css">否<img class="solve_css_cur_img"  src="../../image/solve_cur.png"></span>
+						</div>
+					</div>
+					<div class="div-flex pd10px bottom_1">
+						<div class="div-flex ju_center_start">
+							建议停用系统<span class="nulls red">*</span>
+						</div>
+						<div class="flex1 text-right">
+							<span onclick="chenge_status($(this),2,'stop_1')" class="solve_css ">是<img class="solve_css_cur_img" src="../../image/solve_cur.png"></span>
+							<span onclick="chenge_status($(this),1,'stop_1')" class="solve_css">否<img class="solve_css_cur_img"  src="../../image/solve_cur.png"></span>
+						</div>
+					</div>
+					<div class="div-flex pd10px bottom_1">
+						<div class="flex1 position_r">
+							<textarea id="stopSystem" class="textarea_css" onkeyup="change_word($(this))" name="name" placeholder="请填写安全保护措施"></textarea>
+							<!--<b onclick="voiceInput('stopSystem')" class="wbicon-voice"></b>-->
+							<p class="text-right color999"><span class="cur_num">0</span>/<span class="cur_totle">300</span></p>
+						</div>
+					</div>
+				</div>
+				<!--按钮-->
+				<div class="div-flex ">
+					<div class="btn_b flex1 b-left" @click='submitFun("nextDetails")'>+添加下一个</div>
+					<div class="btn_b flex1 b-right" @click='submitFun'>提交</div>
+				</div>
+			</section>
+		</div>
+	</body>
+	<script type="text/javascript" src="../../script/api.js"></script>
+	<script type="text/javascript" src="../../config/config.js"></script>
+	<script type="text/javascript" src="../../script/vue.js"></script>
+	<script type="text/javascript" src="../../script/zepto.js"></script>
+	<script type="text/javascript" src="../../script/mint-ui.js"></script>
+	<script type="text/javascript" src="../../script/mobileSelect.js"></script>
+	<script type="text/javascript" src="../../script/umeng/zhuge.js"></script>
+
+	<script type="text/javascript">
+		var sumbitObj, formVm;
+		var fileatt = [];
+		var paramObj = JSON.parse(localStorage.getItem("userObj"));
+		console.log(JSON.stringify(paramObj))
+		var checkItemTypeParentIdArr = [];
+		apiready = function() {
+			checkItemTypeParentIdArr = api.pageParam.checkItemTypeParentIdArr;
+			_initApiEvent();
+			formVm = new Vue({
+				el: '#addApp',
+				data: function() {
+					return {
+						enterprisesType:api.pageParam.enterprisesType,//无电子档案具体设备和设备位置直接输入 0不是 1是
+						fire_extinguishing_system: '', //消防系统
+						imageArr: [],
+						getFault: [{
+							id: "",
+							value: ""
+						}],
+						isStop: null,
+						isRecord: null,
+						isSaveing: false,
+						//故障类型id
+						faultTypeId: null,
+						isSolved: null,
+						later1: null,
+						later2: null,
+						MaintenanceType: null,
+						getDeviceInfo: {
+							id: "",
+							value: ""
+						},
+						faultTypeName: "",
+						checkItemTypeName: "",
+						equipmentList: [{
+							name: ""
+						}],
+						commitData: {} //提交数据
+					}
+				},
+				created: function() {
+					if(!api.pageParam.checkItemTypeParentId) {
+						this.initBulid();
+					} else {
+						this.faultTypeId = api.pageParam.checkItemTypeParentId;
+						this.faultTypeName = api.pageParam.checkItemTypeParentName;
+						this.checkItemTypeId = api.pageParam.checkItemTypeId;
+						this.checkItemTypeName = api.pageParam.checkItemTypeName;
+						//查询故障类型
+						this.accessToSpecificEquipment();
+						this.queryFaultType()
+						this.getFloor();
+					}
+				},
+				methods: {
+					initBulid: function() {
+						var that = this;
+						var paramObj = JSON.parse(localStorage.getItem("userObj"));
+						//获取系统大类
+						api.ajax({
+							url: webapp_global.url + '/maintenancePlanProcess/getSystemList',
+							dataType: "json",
+							method: 'get'
+						}, function(ret, err) {
+							if(ret) {
+								var type = ret
+								var data = type.data;
+								var res = ''
+								if(typeof data == 'string') {
+									res = JSON.parse(data)
+								} else {
+									res = data
+								}
+								var tpl = res;
+								if(tpl.length == 0) return
+								var obj = [];
+								for(var i = 0; i < tpl.length; i++) {
+									var temp = {
+										id: tpl[i].id,
+										value: tpl[i].name
+									}
+									for(var j = 0; j < checkItemTypeParentIdArr.length; j++) {
+										if(checkItemTypeParentIdArr[j] == tpl[i].id) {
+											obj.push(temp)
+										}
+									}
+								}
+								///////////////////////////////////////////
+								new MobileSelect({
+									trigger: '#area1',
+									title: '选择消防系统',
+									wheels: [{
+										data: obj
+									}],
+									position: [0, 1],
+									callback: function(indexArr, data) {
+										that.faultTypeId = data[0].id;
+										that.faultTypeName = data[0].value;
+										$("#area1").addClass("cur");
+										//获取维保类型
+										that.getMaintenanceType();
+										//查询故障类型
+										that.queryFaultType()
+									}
+								});
+							} else {}
+						});
+						// 获取楼栋楼层
+						that.getFloor();
+					},
+					//获取维保类型
+					getMaintenanceType() {
+						var that = this;
+						api.ajax({
+							url: webapp_global.url + '/maintenancePlanProcess/getPlanCheckItemSecondId',
+							dataType: "json",
+							data: {
+								values: {
+									planId: api.pageParam.planId,
+									getPlanCheckItemParentId: that.faultTypeId
+								}
+							},
+							method: 'get'
+						}, function(ret, err) {
+							if(ret && ret.code == 'success') {
+								var data = ret.data;
+								var result = [];
+								data.forEach(function(item){
+									var obj = {};
+									obj.id = item.id;
+									obj.value = item.name;
+									result.push(obj);
+								})
+								if(that.MaintenanceType) {
+									that.MaintenanceType.updateWheel(0, result);
+								} else {
+									that.MaintenanceType = new MobileSelect({
+										trigger: '#area4',
+										title: '维保类型',
+										wheels: [{
+											data: result
+										}],
+										position: [0, 1],
+										callback: function(indexArr, data) {
+											that.checkItemTypeId = data[0].id;
+											that.checkItemTypeName = data[0].value;
+											$("#area4").addClass("cur");
+											//获取具体设备
+											that.accessToSpecificEquipment();
+										}
+									});
+								}
+							}
+						})
+					},
+					//获取具体设备
+					accessToSpecificEquipment() {
+						var that = this;
+						api.ajax({
+							url: webapp_global.url + '/maintenancePlanProcess/getDeviceTypeList',
+							dataType: "json",
+							data: {
+								values: {
+									id: that.faultTypeId,
+									secondId: that.checkItemTypeId,
+								}
+							},
+							method: 'get'
+						}, function(ret, err) {
+							if(ret && ret.code == 'success') {
+								var info = ret.data;
+								var result = [];
+								info.forEach(function(item){
+									var obj = {};
+									obj.id = item.deviceTypeId;
+									obj.value = item.deviceTypeName;
+									result.push(obj);
+								})
+								that.equipmentList = result;
+								that.getDeviceInfo = {
+									id: "",
+									value: that.checkItemTypeName
+								}
+								if(that.later1) {
+									that.later1.updateWheel(0, result);
+									// that.later1.updateWheel(1,result.value);
+								} else {
+									if(result && result.length > 0) {
+										that.later1 = new MobileSelect({
+											trigger: '#deviceChoose',
+											title: '具体设备',
+											wheels: [{
+												data: result
+											}],
+											position: [0, 1],
+											callback: function(indexArr, data) {
+												that.getDeviceInfo = data[0];
+												$("#deviceChoose").addClass("cur");
+											}
+										});
+									}
+								}
+							}
+						})
+					},
+					//
+					getFloor() {
+						var that = this;
+						api.ajax({
+							url: webapp_global.url + '/recordEnterprise/enterpriseBulidInfo',
+							dataType: "json",
+							data: {
+								values: {
+									unitId: api.pageParam.proprietorId,
+									orgId: paramObj.orgId
+								}
+							},
+							method: 'get'
+						}, function(ret, err) {
+							if(ret) {
+								var type = ret
+								var data = type.data;
+								var res = ''
+								if(typeof data == 'string') {
+									res = JSON.parse(data)
+								} else {
+									res = data
+								}
+								var tpl = res.builds;
+								if(tpl.length == 0) return
+								var retData = [];
+								tpl.forEach(function(item, index) {
+									var obj = {};
+									obj.id = item.buildId;
+									obj.value = item.buildName;
+									obj.childs = [];
+									for(var i = 0; i < item.floors.length; i++) {
+										var temp = {}
+										temp.id = item.floors[i].floorId;
+										temp.value = item.floors[i].floorName;
+										obj.childs.push(temp)
+									}
+									retData.push(obj)
+								})
+								new MobileSelect({
+									trigger: '#area2',
+									title: '选择楼层',
+									wheels: [{
+										data: retData
+									}],
+									position: [0, 1],
+									callback: function(indexArr, data) {
+										that.getShe = data;
+										$("#area2").addClass("cur");
+									}
+								});
+							}
+						})
+					},
+					//查询故障类型
+					queryFaultType() {
+						var that = this;
+						api.ajax({
+							url: webapp_global.url + '/maintenancePlanProcess/getFaultTypeList',
+							method: 'get',
+							data: {
+								values: {
+									id: that.faultTypeId
+								}
+							}
+						}, function(ret, err) {
+							if(ret && ret.code == 'success') {
+								var res = ret.data;
+								var aSelectType = [];
+								res.forEach(function(item) {
+									var obj = {};
+									obj.id = item.id;
+									obj.value = item.name;
+									obj.childs = [];
+									if(item.list) {
+										for(var j = 0; j < item.list.length; j++) {
+											var temp = {}
+											temp.id = item.list[j].id;
+											temp.value = item.list[j].parentId;
+											obj.childs.push(temp)
+										}
+									}
+									aSelectType.push(obj)
+								})
+								if(that.later2) {
+									that.later2.updateWheels(aSelectType); //更新列表
+								} else {
+									that.later2 = new MobileSelect({
+										trigger: '#area3',
+										title: '选择故障类型',
+										wheels: [{
+											data: aSelectType
+										}],
+										position: [0, 1],
+										callback: function(indexArr, data) {
+											console.log(JSON.stringify(data));
+											var arrData = data[0].value;
+											if(arrData == '其他') {
+												$('#areaType').show();
+												$('.counter').show();
+												$('#areaType').focus();
+												that.getFault = [{
+													id: "",
+													value: $('#areaType').val()
+												}]; //input输入框数据
+												$('#areaType').on('input', function() {
+													var _this = $(this);
+													setTimeout(function() {
+														that.getFault[0].value = _this.val();
+														if(_this.val().length > 300) {
+															_this.val(_this.val().substring(0, 300));
+															$('#areaType').blur();
+														}
+														$('#areaTypeNum').text(_this.val().length);
+													}, 500)
+
+												})
+											} else {
+												$('#areaType').hide();
+												$('.counter').hide();
+												that.getFault = data;
+											}
+											$("#area3").addClass("cur");
+										}
+									});
+								}
+							
+							} else {
+							}
+						});
+					},
+					alertType: function(type) {
+						if(type == "faultType" || type == "maintenanceType") {
+							if(!this.faultTypeId) {
+								api.toast({
+									msg: '请选择消防系统信息',
+									location: 'bottom'
+								});
+							}
+						} else {
+							if(!this.faultTypeId || !this.checkItemTypeId) {
+								api.toast({
+									msg: '请选择消防系统信息或维保类型',
+									location: 'bottom'
+								});
+							}
+						}
+					},
+					alertDevice: function() {
+						if(!this.faultTypeId || !this.getShe) {
+							api.toast({
+								msg: '请选择消防系统信息或具体设备',
+								location: 'bottom'
+							});
+						}
+					},
+					imageClick: function() {
+						if(fileatt.length >= 5) {
+							api.toast({
+								msg: '最多只能上传5张照片！',
+								location: 'bottom'
+							});
+							return false;
+						}
+						//上传照片
+						var that = this;
+						api.actionSheet({
+							cancelTitle: '取消',
+							buttons: ['拍照', '从相册选择']
+						}, function(ret, err) {
+							var index = ret.buttonIndex;
+							if(index == 1) {
+								that.photograph();
+							} else if(index == 2) {
+								that.gallery();
+							}
+						});
+
+					},
+					//拍照
+					photograph: function() {
+						var that = this;
+						api.getPicture({
+							sourceType: 'camera',
+							encodingType: 'jpg',
+							mediaValue: 'pic',
+							destinationType: 'url',
+							allowEdit: true,
+							quality: 50,
+							saveToPhotoAlbum: false
+						}, function(ret, err) {
+							if(ret) {
+								var tempData = ret.data;
+								if(tempData == "") return
+								var res = tempData.split('/');
+								that.imageArr.push(tempData);
+								fileatt.push(tempData);
+								that.showImgList(fileatt);
+							} else {
+//								api.toast({
+//									msg: '网络异常，请设置网络连接！',
+//									location: 'bottom'
+//								});
+							}
+						});
+					},
+					//从图库选择
+					gallery: function() {
+						var that = this;
+						api.getPicture({
+							sourceType: 'album',
+							encodingType: 'jpg',
+							mediaValue: 'pic',
+							destinationType: 'url',
+							allowEdit: true,
+							quality: 50,
+							saveToPhotoAlbum: false
+						}, function(ret, err) {
+							if(ret) {
+								var tempData = ret.data;
+								if(tempData == "") return
+								var res = tempData.split('/');
+								that.imageArr.push(tempData);
+								fileatt.push(tempData);
+								that.showImgList(fileatt);
+							} else {
+//								api.toast({
+//									msg: '网络异常，请设置网络连接！',
+//									location: 'bottom'
+//								});
+							}
+						});
+
+					},
+					showImgList: function(res) {
+						var tpl = "";
+						for(var i = 0; i < res.length; i++) {
+							var temp = "";
+							temp = this.imgTpl(res[i], i);
+							tpl += temp
+						}
+						tpl += '<li class="wb-update-camrea"><b class="wbicon-camera" onclick="imageClick()"></b></li>';
+						$('#imgUpdate').html(tpl)
+					},
+					imgTpl: function(src, index, type) {
+						if(!src) return ""
+						var tempId = this.random();
+						var tpl = '<li id=' + tempId + ' ><a><img class="xf-iamge-model"  src="' + src + '" onclick="openPicture(' + index + ')"  ></a><em onclick="deleteImg(\'' + src + '\',\'' + tempId +
+							'\')" class="xficon-forbindden xf-icon-imgDelete"></em></li>';
+						return tpl
+					},
+					random: function() {
+						var len = len || 32;
+						var chars = 'ABCDEFGHJKMNPQRSTWXYZabcdefhijkmnprstwxyz2345678';
+						var maxPos = chars.length;
+						var pwd = '';
+						for(var i = 0; i < len; i++) {
+							pwd += chars.charAt(Math.floor(Math.random() * maxPos));
+						}
+						return pwd
+					},
+					choose: function() {
+						if(!this.getShe) {
+							api.toast({
+								msg: '请选择楼层信息或设备信息',
+								location: 'bottom'
+							});
+							return false
+						}
+						var that = this;
+						var obj1 = JSON.parse(localStorage.getItem("userObj"));
+						var pageParam = {
+							unitId: api.pageParam.proprietorId,
+							buildId: this.getShe[0].id,
+							buildName: this.getShe[0].value,
+							floorId: this.getShe[1].id,
+							floorName: this.getShe[1].value,
+							checkItemTypeId: this.checkItemTypeId,
+							deviceTypeId: this.getDeviceInfo.id,
+							deviceTypeName: this.getDeviceInfo.value,
+							checkItemTypeParentId: this.faultTypeId
+						};
+						api.openWin({
+							name: '_chooseImg.html',
+							url: './_chooseImg.html',
+							rect: {
+								x: 0,
+								y: 57,
+								w: 'auto',
+								h: api.winHeight - 57
+							},
+							bounces: false,
+							pageParam: pageParam,
+							vScrollBarEnabled: false,
+							hScrollBarEnabled: true
+						});
+					},
+					submitFun: function(next) {
+						var that = this;
+						if(!that.faultTypeId) {
+							api.toast({
+								msg: '请选择消防系统信息',
+								location: 'bottom'
+							});
+							return false
+						}
+						//验证
+						if(!that.getShe) {
+							api.toast({
+								msg: '请选择楼层信息',
+								location: 'bottom'
+							});
+							return false
+						}
+						if(!that.getDeviceInfo.value) {
+							api.toast({
+								msg: '请选择具体设备信息',
+								location: 'bottom'
+							});
+							return false
+						}
+						//自建企业
+						if(that.enterprisesType == "1"){
+							if(!$('#deviceLocation').val().trim()) {
+								api.toast({
+									msg: '请选择设备位置信息',
+									location: 'bottom'
+								});
+								return false
+							}
+						}else{
+							if(!$('#deviceLocation').text() || $('#deviceLocation').text() == "请选择") {
+								api.toast({
+									msg: '请选择设备位置信息',
+									location: 'bottom'
+								});
+								return false
+							}
+						}
+						var deviceFaultName = that.getFault[1] ? that.getFault[1].value : that.getFault[0].value;
+
+						if(!deviceFaultName.trim()){
+							api.toast({
+								msg: '请选择故障类型',
+								location: 'bottom'
+							});
+							return false
+						}
+
+						if(fileatt.length == 0) {
+							api.toast({
+								msg: '请上传照片',
+								location: 'bottom'
+							});
+							return false
+						}
+						if(that.isSolved == null) {
+							api.toast({
+								msg: '请选择解决结果',
+								location: 'bottom'
+							});
+							return false
+						}
+
+						if($('#unsolvedCause').val().trim() == '' && that.isSolved == 0) {
+							api.toast({
+								msg: '请填写未解决原因',
+								location: 'bottom'
+							});
+							return false
+						}
+						if($('#disposeProcess').val().trim() == '' && that.isSolved == 1) {
+							api.toast({
+								msg: '请填写维修过程',
+								location: 'bottom'
+							});
+							return false
+						}
+						if(that.isRecord == null && that.isSolved == 0) {
+							api.toast({
+								msg: '请选择是否报消防部门备案',
+								location: 'bottom'
+							});
+							return false
+						}
+						if(that.isStop == null && that.isSolved == 0) {
+							api.toast({
+								msg: '请选择是否停用系统',
+								location: 'bottom'
+							});
+							return false
+						}
+						if($('#stopSystem').val().trim() == '' && that.isSolved == 0) {
+							if(that.isStop == "1" || that.isStop == 1){
+								api.toast({
+									msg: '请填写维修过程',
+									location: 'bottom'
+								});
+								return false
+							}else{
+								api.toast({
+									msg: '请填写安全保护措施',
+									location: 'bottom'
+								});
+								return false
+							}
+						}
+
+						var params = {
+							maintenanceTaskId: api.pageParam.planId,
+							buildId: that.getShe[0].id,
+							build: that.getShe[0].value,
+							floorId: that.getShe[1].id,
+							floor: that.getShe[1].value,
+							deviceAddress: that.enterprisesType=='0'?that.commitData.deviceAddress:$('#deviceLocation').val(),
+							deviceName: that.commitData.deviceTypeName,
+							deviceTypeId: that.getDeviceInfo.id,
+							deviceTypeName: that.getDeviceInfo.value,
+							deviceId: that.commitData.deviceId,
+							isExists: that.commitData.clickMap ? '0' : '1',
+							laLoop: that.commitData.laLoop,
+							laPoint: that.commitData.laPoint,
+							laMake: that.commitData.laMake,
+							solved: that.isSolved, //*解决结果
+							stopUsing: that.isStop == null ? '' : that.isStop, //*停用系统
+							stopUsingText: $('#stopSystem').val().trim(), //*停用系统描述
+							unsolvedCause: $('#unsolvedCause').val(), //*未解决原因
+							reportRecord: that.isRecord == null ? '' : that.isRecord, //*建议报销防局备案
+							deviceFaultId: that.getFault[1] ? that.getFault[1].id : that.getFault[0].id,
+							deviceFaultName: deviceFaultName, //故障类型名称
+							disposeProcess: $('#disposeProcess').val(), //维修过程
+							handler: paramObj.username,
+							handlerId: paramObj.userid,
+							checkItemTypeId: that.checkItemTypeId,
+							checkItemTypeName: that.checkItemTypeName,
+							checkItemTypeParentId: that.faultTypeId || '',
+							checkItemTypeParentName: that.faultTypeName || ''
+						};
+
+						if(sumbitObj) {
+							params.deviceId = sumbitObj.deviceId;
+							params.deviceName = sumbitObj.deviceName;
+							params.deviceTypeId = sumbitObj.deviceTypeId;
+							params.deviceTypeName = sumbitObj.deviceTypeName;
+						}
+						if(!that.isSaveing) {
+							// console.log(JSON.stringify(params));
+							that.isSaveing = true;
+							api.confirm({
+								title: '提示',
+								msg: '是否上报故障？',
+								buttons: ['确定', '取消']
+							}, function(ret, err) {
+								var index = ret.buttonIndex;
+								if(index == 1) {
+									Vue.$indicator.open("提交中...");
+									api.ajax({
+										url: webapp_global.url + '/maintenancePlanProcess/reportFault',
+										method: 'POST',
+										timeout: 50,
+										data: {
+											values: params,
+											files: {
+												files: fileatt
+											}
+										}
+									}, function(ret, err) {
+										Vue.$indicator.close();
+										that.isSaveing = false;
+										if(ret && ret.code == 'success') {
+											if(next == 'nextDetails') {
+												//例行维保 提交上报故障表单后继续添加下一个
+												growingIoAddEvent('submitFault',{planId_var:api.pageParam.planId});
+												api.toast({
+													msg: '提交成功！可在故障记录中查看',
+													duration: 2000,
+													location: 'bottom'
+												});
+												setTimeout(function() {
+													window.location.reload();
+												}, 2000)
+
+											} else {
+												//例行维保 提交上报故障表单
+												api.toast({
+													msg: '提交成功！可在故障记录中查看',
+													duration: 2000,
+													location: 'bottom'
+												});
+												setTimeout(function() {
+													api.closeWin();
+												},2000)
+											}
+
+										} else {
+											alert(JSON.stringify(ret))
+											api.toast({
+												msg: '提交失败！',
+												location: 'bottom'
+											});
+										}
+									});
+								} else {
+									that.isSaveing = false;
+								}
+							});
+
+						}
+					}
+				}
+			});
+		}
+
+		// 选择解决结果的
+		function chenge_status(that, status, types) {
+			that.addClass("solve_css_cur").siblings().removeClass("solve_css_cur");
+			that.parent().find("img").hide();
+			that.find("img").show();
+			// 解决结果
+			if(types == 'result_1') {
+				if(status == 1) {
+					$(".yi_solved").hide();
+					$(".no_solved").show();
+				}
+				if(status == 2) {
+					$(".yi_solved").show();
+					$(".no_solved").hide();
+				}
+			}
+			//=>判断解决结果,建议停用,报消防局备案 装填
+			switch(types) {
+				case 'result_1': //解决结果
+					formVm.isSolved = status - 1;
+					break;
+				case 'stop_1': //建议停用系统
+					formVm.isStop = status - 1;
+					if(status == 1) {
+						$('#stopSystem').attr('placeholder', "请填写安全保护措施");
+					} else {
+						$('#stopSystem').attr('placeholder', "请填写维修过程");
+					}
+					break;
+				case 'beian_1': //建议报销备案
+					formVm.isRecord = status - 1;
+					break;
+			}
+		}
+		// 限制输入文本域 300字以内
+		function change_word(that) {
+			if(that.val().length > 300) {
+				that.val(that.val().substring(0, 300))
+				that.parent().find(".cur_num").text(that.val().substring(0, 300).length)
+			} else {
+				that.parent().find(".cur_num").text(that.val().length)
+			}
+		}
+
+		function update(res) {
+			var text = res.buildName + res.floorName + res.deviceAddress;
+			$('#deviceLocation').val(text);
+			$('#deviceChoose').text(res.deviceName);
+			sumbitObj = res
+		}
+
+		function imageClick() {
+			formVm.imageClick()
+		}
+
+		function deleteImg(src, div) {
+			$("#" + div).remove()
+			if(fileatt.length > 0) {
+				for(var i = 0; i < fileatt.length; i++) {
+					if(fileatt[i] == src) {
+						fileatt.splice(i, 1);
+					}
+				}
+			}
+		}
+
+		function openPicture(index) {
+			var res;
+			res = fileatt;
+
+			var passObj = {
+				"index": index,
+				"attaches": res,
+				"flag": 1
+			}
+			api.openWin({
+				name: 'picture',
+				url: './picture.html',
+				rect: {
+					x: 0,
+					y: 0,
+					w: 320,
+					h: 480
+				},
+				pageParam: passObj,
+				bounces: true,
+				bgColor: 'rgba(0,0,0,0)',
+				vScrollBarEnabled: true,
+				hScrollBarEnabled: true
+			});
+
+			// let photoBrowser = api.require('photoBrowser');
+			// var res = fileatt;
+			// photoBrowser.open({
+			// 	images: res,
+			// 	placeholderImg: 'widget://res/img/apicloud.png',
+			// 	bgColor: '#000',
+			// 	activeIndex: index
+			// }, function(ret, err) {
+			// 	if(ret && ret.eventType.includes('click')) {
+			// 		photoBrowser.close();
+			// 	}
+			// });
+
+		}
+
+		function _initApiEvent() {
+			api.addEventListener({
+				name: 'selectDeviceInfo'
+			}, function(ret, err) {
+				formVm.commitData = ret.value;
+				$('#deviceLocation').text(formVm.commitData.deviceAddress).addClass('cur');
+				$('#loopLocation').text(formVm.commitData.loopPoint || "无");
+			});
+			//监听语音输入的值
+				api.addEventListener({
+					name: 'voiceInputModelValue'
+				}, function(ret, err) {
+					if(ret && ret.value.pageName == "reportFault"){
+						$("#"+ret.value.inputFrame).text(ret.value.value);
+						document.getElementById(ret.value.inputFrame).onkeyup();
+					}
+				});
+				//ios右滑控制
+      api.addEventListener({
+        name:'swiperight'
+      }, function(ret, err){
+      });
+		}
+		//语音录入
+			function voiceInput(divId){
+				api.openWin({
+					name: 'voiceInput',
+					url: '../public/voiceInput.html',
+					rect: {
+						x: 0,
+						y: 0,
+						w: 320,
+						h: 480
+					},
+					pageParam: {
+						"pageName":"reportFault",
+						"inputFrame":divId
+					},
+					bounces: false,
+					vScrollBarEnabled: true,
+					hScrollBarEnabled: true
+				});
+			}
+	</script>
+
+</html>

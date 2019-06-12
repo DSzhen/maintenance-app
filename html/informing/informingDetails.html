@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>告知单详情</title>
+		<link rel="stylesheet" type="text/css" href="../../css/aui.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/wbicon/style.css" />
+		<style>
+			html {
+				font-family: "Microsoft YaHei";
+			}
+			
+			body {
+				color: #333;
+				background-color: #f5f5f9;
+			}
+			
+			.aui-content-padded {
+				margin: 0;
+			}
+			
+			.wb-flex {
+				display: -webkit-box;
+				display: -webkit-flex;
+				display: flex;
+				-webkit-box-pack: justify;
+				-webkit-justify-content: center;
+				justify-content: center;
+				-webkit-box-align: center;
+				-webkit-align-items: center;
+				align-items: center;
+			}
+			
+			.wb-flex-start {
+				-webkit-justify-content: flex-start;
+				justify-content: flex-start;
+			}
+			
+			.wb-item-flexStart {
+				-webkit-align-items: flex-start;
+				align-items: flex-start;
+			}
+			
+			.wb-space-between {
+				-webkit-justify-content: space-between;
+				justify-content: space-between;
+			}
+			
+			.wb-list-item-inner {
+				display: -webkit-box;
+				display: -webkit-flex;
+				display: flex;
+				-webkit-box-pack: justify;
+				-webkit-justify-content: flex-start;
+				justify-content: flex-start;
+				-webkit-align-items: flex-start;
+				align-items: flex-start;
+			}
+			
+			.wb-text-img {
+				width: 3rem;
+			}
+			
+			.aui-list,
+			.aui-list .aui-list-item {
+				border: 0;
+				background: #fff;
+			}
+			
+			.aui-list .aui-list-item-label {
+				padding-bottom: .3rem;
+				line-height: inherit;
+				font-size: .75rem;
+				color: #999;
+				white-space: nowrap;
+			}
+			
+			.aui-list-item-info {
+				padding-right: .5rem;
+				color: #666;
+				font-size: .72rem;
+			}
+			
+			.aui-form-list .aui-list-item {
+				padding-left: 0;
+				padding-top: .6rem;
+				padding-bottom: .5rem;
+			}
+			
+			.aui-form-list .aui-list-item:last-child {
+				border-bottom: 0;
+			}
+			
+			.wb-update-img img {
+				display: inline-block;
+				width: 3rem;
+				height: 3rem;
+				margin-right: .4rem;
+				border: 0;
+				background-color: #e0e0e0;
+			}
+			
+			.wb-card-title {
+				color: #999;
+				font-size: .75rem;
+				white-space: nowrap;
+			}
+			
+			.wb-card-list-header b {
+				color: #fd9905;
+				margin-left: -.2rem;
+				vertical-align: -1px;
+				font-weight: bold;
+			}
+			
+			.wb-disposition-ul li {
+				position: relative;
+				padding-bottom: .7rem;
+			}
+			
+			.wb-disposition-ul li:before {
+				position: absolute;
+				top: 6px;
+				left: 5px;
+				content: '';
+				width: 1px;
+				height: 100%;
+				border-left: 1px dashed #ff961b;
+			}
+			
+			.wb-disposition-ul li:last-child:before {
+				width: 0;
+				height: 0;
+				border-left: 0;
+			}
+			
+			.aui-card-list-content-padded {
+				padding: 0.5rem 0.5rem;
+			}
+			
+			.wb-trouble-pos+span {
+				color: #999;
+			}
+			
+			.wb-breakdown-list {
+				width: 80%;
+			}
+			
+			.wb-breakdown-list,
+			.wb-breakdown-list>h3 {
+				font-size: .72rem;
+			}
+			
+			.aui-card-list-content-padded .wb-flex+.wb-flex {
+				margin-top: .35rem;
+			}
+			
+			.aui-info {
+				padding-top: .65rem;
+				padding-bottom: .65rem;
+			}
+			
+			.aui-info-item {
+				font-size: .75rem;
+				color: #999;
+			}
+			
+			[v-cloak] {
+				display: none;
+			}
+			
+			.aui-bg {
+				background-color: #fff;
+			}
+			
+			.aui-flex {
+				-webkit-box-sizing: border-box;
+				-moz-box-sizing: border-box;
+				box-sizing: border-box;
+				display: -webkit-box;
+				display: -webkit-flex;
+				display: flex;
+				-webkit-box-pack: justify;
+				-webkit-justify-content: flex-start;
+				justify-content: flex-start;
+				-webkit-box-align: center;
+				-webkit-align-items: center;
+				align-items: center;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div class="wb-content" id="app" v-cloak>
+			<section class="aui-content-padded">
+				<div class="aui-card-list aui-margin-b-10">
+					<div class="aui-card-list-content-padded aui-padded-15 wb-flex wb-space-between">
+						<div class="wb-breakdown-list">
+							<div class="wb-flex wb-flex-start wb-item-flexStart">
+								<h5 class="wb-card-title">业主单位：</h5>
+								<span class="wb-info-text">{{data.proprietorName}}</span>
+							</div>
+							<div class="wb-flex wb-flex-start wb-item-flexStart">
+								<h5 class="wb-card-title">上报人员：</h5>
+								<span class="wb-info-text">{{data.userName}}</span>
+							</div>
+							<div class="wb-flex wb-flex-start wb-item-flexStart">
+								<h5 class="wb-card-title">上报时间：</h5>
+								<span class="wb-info-text">{{data.commitTime}}</span>
+							</div>
+						</div>
+						<!--已完成-->
+						<a v-if="data.base64 != ''" class="wb-text-img"><img src="../../image/informing/Completed.png"></a>
+						<!--待签字-->
+						<a v-else class="wb-text-img"><img src="../../image/informing/signature.png"></a>
+					</div>
+				</div>
+				<ul class="aui-list aui-form-list aui-padded-l-15 aui-margin-b-10">
+					<li class="aui-list-item">
+						<div class="wb-list-item-inner">
+							<div class="wb-card-title">故障描述：</div>
+							<div class="aui-list-item-info aui-margin-r-10">{{data.faultDescription}}</div>
+						</div>
+					</li>
+					<li class="aui-list-item">
+						<div class="wb-update-image">
+							<div class="wb-flex wb-flex-start wb-item-flexStart">
+								<h5 class="wb-card-title">现场照片：</h5>
+								<div class="wb-update-img">
+									<img v-for="(item,index) in data.attachment" :src="imgUrl+item.attachPath.substring(0,item.attachPath.length-4)+'_48X48'+item.attachPath.substring(item.attachPath.length-4,item.attachPath.length)" @click="openPicture(item,index,data.attachment)">
+								</div>
+							</div>
+						</div>
+					</li>
+				</ul>
+				<div class="aui-list aui-form-list aui-padded-l-15 aui-margin-b-10" v-if="data.base64 == ''">
+					<div class="aui-info aui-padded-r-10" @click="electronicSignature()">
+						<div class="aui-info-item">业主单位签名</div>
+						<div class="aui-info-item">
+							<b class="wbicon-arrowRight2"></b>
+						</div>
+					</div>
+				</div>
+				<!--接收人签名-->
+				<div v-else class="aui-flex aui-bg aui-padded-10 aui-padded-l-15">
+					<div class="aui-info-item">接收人签名：</div>
+					<div class="aui-flex-item aui-margin-l-10">
+						<img :src="data.base64" style="width: 5rem;" />
+					</div>
+				</div>
+			</section>
+		</div>
+	</body>
+	<script type="text/javascript" src="../../script/api.js"></script>
+	<script type="text/javascript" src="../../script/aui-tab.js"></script>
+	<script type="text/javascript" src="../../script/aui-collapse.js"></script>
+	<script type="text/javascript" src="../../script/vue.js"></script>
+	<script type="text/javascript" src="../../config/config.js"></script>
+	<script>
+		var mainInfoVue;
+		//定义一个变量防止重复请求ajax
+		var preventAjaxRepeatSubmit = true;
+		apiready = function() {
+			//ios右滑控制
+      api.addEventListener({
+        name:'swiperight'
+      }, function(ret, err){
+      });
+			api.addEventListener({
+				name: 'signatureImage'
+			}, function(ret, err) {
+				if(preventAjaxRepeatSubmit){
+					preventAjaxRepeatSubmit = false;
+					api.ajax({
+						url: webapp_global.url + '/maintenance/updateSign',
+						method: 'post',
+						timeout:20,
+						data: {
+							values: {
+								id: api.pageParam.id,
+								base64: ret.value.baseImg
+							}
+						}
+					}, function(ret, err) {
+						preventAjaxRepeatSubmit = true;
+						_queryMaintInfoById();
+					})
+				}
+			});
+			//请求数据展示页面信息
+			_queryMaintInfoById();
+		}
+		//请求数据展示页面信息
+		function _queryMaintInfoById() {
+			if(!mainInfoVue) {
+				mainInfoVue = new Vue({
+					el: "#app",
+					data() {
+						return {
+							data: {},
+							imgUrl: webapp_global.imageUrl
+						}
+					},
+					created:function() {
+						var that = this;
+
+						function callback(data) {
+							that.data = data;
+						}
+						queryData(callback);
+					},
+					methods: {
+						setData:function(data) {
+							this.data = data;
+						},
+						electronicSignature:function() {
+							electronicSignature();
+						},
+						openPicture: function(item, index, attaches) {
+							var passObj = {
+								"item": item,
+								"index": index,
+								"attaches": attaches,
+								"flag":0
+							}
+							api.openWin({
+								name: 'picture',
+								url: './picture.html',
+								rect: {
+									x: 0,
+									y: 0,
+									w: 320,
+									h: 480
+								},
+								pageParam: passObj,
+								bounces: true,
+								bgColor: 'rgba(0,0,0,0)',
+								vScrollBarEnabled: true,
+								hScrollBarEnabled: true
+							});
+						},
+					}
+				})
+			} else {
+				function callback(data) {
+					mainInfoVue.setData(data);
+				}
+				queryData(callback);
+			}
+		}
+		//查询数据
+		function queryData(callback) {
+			api.ajax({
+				url: webapp_global.url + '/maintenance/queryMaintInfoById',
+				method: 'get',
+				data: {
+					values: {
+						id: api.pageParam.id
+					}
+				}
+			}, function(ret, err) {
+				if(ret) {
+					var code = ret["code"];
+					if(code == "success") {
+						var data = ret["data"];
+						callback(data)
+					} else {
+						callback("")
+					}
+				} else {
+					callback("")
+				}
+			})
+		}
+		//打开电子签名
+		function electronicSignature() {
+			api.openWin({
+				name: "_signature",
+				url: './_signature.html',
+				rect: {
+					x: 0,
+					y: 0,
+					w: 320,
+					h: 480
+				},
+				pageParam: {},
+				bounces: false,
+				bgColor: 'rgba(0,0,0,0)',
+				vScrollBarEnabled: true,
+				hScrollBarEnabled: true
+			});
+		}
+	</script>
+
+</html>

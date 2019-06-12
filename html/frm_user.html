@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html lang="en">
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+		<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+		<title>我的</title>
+		<link rel="stylesheet" type="text/css" href="../css/api.css" />
+		<link rel="stylesheet" type="text/css" href="../css/aui.css" />
+		<link rel="stylesheet" type="text/css" href="../css/wbicon/style.css" />
+		<style>
+			.xf-bg {
+				background-color: #f5f4f9;
+			}
+
+			.xf-flex {
+				display: -webkit-box;
+				display: -webkit-flex;
+				display: flex;
+				width: 100%;
+				-webkit-box-sizing: border-box;
+				-moz-box-sizing: border-box;
+				box-sizing: border-box;
+			}
+
+			.xf-flex_item {
+				justify-content: flex-start;
+				flex-grow: 1;
+			}
+
+			.xf-msg-wrap {
+				/*padding: .5rem 0 0rem .5rem;*/
+				/* background-color: #fff;*/
+				padding: .5rem 0;
+			}
+
+			.xf-state-size {
+				/*display: inline-block;*/
+				/*width: 3rem;*/
+				/*height: 3rem;*/
+				/*line-height: 3rem;*/
+				/*border-radius: .2rem;*/
+				/*color: #fff;*/
+				/*text-align: center;*/
+				display: inline-block;
+				width: 2.7rem;
+				height: 2.7rem;
+				line-height: 2.7rem;
+				border-radius: .2rem;
+				color: #fff;
+				text-align: center;
+			}
+
+			.xf-msg-item {
+				padding: .5rem .5rem .25rem;
+				border-bottom: .05rem solid #eee;
+				width: 100%;
+				-webkit-box-sizing: border-box;
+				-moz-box-sizing: border-box;
+				box-sizing: border-box;
+				margin-right: 5rem;
+			}
+
+			.xf-msg-item:last-child {
+				margin-bottom: 0;
+			}
+
+			.xf-msg-item_icon {
+				max-width: 3rem;
+				width: 3rem;
+				margin-right: .2rem;
+			}
+
+			.xf-msg-item_inner {
+				overflow: hidden;
+				padding-right: .25rem;
+			}
+
+			.xf-msg-item_inner_h1 {
+				margin-top: .2rem;
+				font-size: .8rem;
+				color: #222222;
+				vertical-align: middle;
+				line-height: 1rem;
+			}
+
+			.xf-msg-item_inner_h1 span {
+				color: rgba(34, 34, 34, .5);
+				font-size: .75rem;
+			}
+
+			.xf-msg-item_inner_h1>small {
+				float: right;
+				display: inline-block;
+				vertical-align: middle;
+				line-height: 1.5;
+				margin-top: .1rem;
+				margin-right: .3rem;
+				color: #d2d2d2;
+			}
+
+			.xf-msg-item_inner_t {
+				margin-top: .2rem;
+				color: #a1a2a2;
+				font-size: .75rem;
+				text-overflow: ellipsis;
+				overflow: hidden;
+				white-space: nowrap;
+			}
+
+			.xf-mine-link {
+				display: inline-block;
+				max-width: 50px;
+				color: #FFF;
+				text-align: center;
+				font-size: .8rem;
+				color: #979797;
+				-webkit-transform: scale(1.1, 1.2);
+				-moz-transform: scale(1.1, 1.2);
+				-ms-transform: scale(1.1, 1.2);
+				-o-transform: scale(1.1, 1.2);
+				transform: scale(1.1, 1.2);
+			}
+
+			.xf-mine-link a {
+				color: inherit;
+			}
+
+			.xf-panel {
+				background-color: #fff;
+				box-sizing: border-box;
+				margin-bottom: .5rem;
+				padding: 0;
+				font-size: .7rem;
+				/*margin-right: 0.5rem;*/
+			}
+
+			.xf-msg-item_inner img {
+				display: inline-block;
+				vertical-align: middle;
+				margin-top: 2.5px;
+			}
+
+			.xf-span-margin {
+				display: inline-block;
+				margin-top: 0.5rem;
+			}
+
+			.header {
+				height: 57px;
+				width: 100%;
+				display: block;
+				line-height: 57px;
+				padding-top: 11px;
+				font-size: .8rem;
+			}
+
+			.header.active {
+				display: block;
+			}
+
+			.top-menu {
+				/*padding: 0 43px 0 8px;*/
+				text-align: center;
+				color: #fff;
+				font-weight: bold;
+			}
+			/*按钮*/
+
+			.backBtn {
+				height: 40px;
+				width: 35px;
+				position: absolute;
+				right: left;
+				bottom: 0;
+			}
+
+			.backBtn::before {
+				position: absolute;
+				top: .65rem;
+				left: .75rem;
+				display: block;
+				content: '';
+				width: 10px;
+				height: 10px;
+				/*border-left: 2px solid;
+           border-top: 2px solid;*/
+				border-left: 1px solid;
+				border-top: 1px solid;
+				color: #fff;
+				transform: rotate(-45deg);
+			}
+
+			.btn {
+				height: 40px;
+				width: 35px;
+				position: absolute;
+				right: 0;
+				bottom: 0;
+			}
+
+			.header.home>div.active {
+				opacity: 1;
+			}
+
+			.header.home {
+				/*background: -moz-linear-gradient(top, #febd00 0%, #ff951b 100%);
+				background: -webkit-gradient(linear, left top, right bottom, color-stop(0%, #febd00), color-stop(100%, #ff951b));
+				background: -webkit-linear-gradient(top, #febd00 0%, #ff951b 100%);
+				background: -o-linear-gradient(top, #febd00 0%, #ff951b 100%);
+				background: -ms-linear-gradient(top, #febd00 0%, #ff951b 100%);
+				background: linear-gradient(to top, #febd00 0%, #ff951b 100%);*/
+				background-color: #ff961b;
+			}
+
+			.header.home .top-menu>div {
+				color: #fff;
+				opacity: .8;
+			}
+
+			.header.home .top-menu>div.active {
+				opacity: 1;
+			}
+
+			.img_style {
+				width: 1.5rem;
+				float: left;
+				margin-top: 6px;
+			}
+
+			.img_more {
+				width: 0.5rem;
+				/*float: right;*/
+				margin-top: -7px;
+				margin-left: 26px
+			}
+
+			.xf-panel .xf-flex .xf-flex_item {
+				color: #727171;
+			}
+
+			.xf-button {
+				border-radius: 0;
+				margin-top: 1rem;
+				display: block;
+				width: 100%;
+				background-color: #ff9b18;
+				border: 0;
+				color: #fff;
+				font-size: 1rem;
+				height: 2rem;
+			}
+
+			#myPhoto {
+				width: 2.6rem;
+				height: 2.6rem;
+				border-radius: .3rem;
+			}
+
+			.icon-style {
+				font-size: .9rem;
+				vertical-align: -2px;
+			}
+
+			.icon-style-1 {
+				color: #fd879d
+			}
+
+			.icon-style-2 {
+				color: #ffa61e
+			}
+
+			.icon-style-3 {
+				color: #98cd5a
+			}
+
+			.icon-style-4 {
+				color: #5497e4
+			}
+
+			.icon-style-5 {
+				color: #72ce81
+			}
+
+			.icon-style-6 {
+				color: #79b7ff
+			}
+			.icon-style-7{
+				color:#ff9c00;
+			}
+
+			.wb-username {
+				display: inline-block;
+				max-width: 50%;
+				color: #333 !important;
+				text-overflow: ellipsis;
+				white-space: nowrap;
+				overflow: hidden;
+				color: #333;
+			}
+
+			.xf-msg-item_inner_h1 span {
+				display: inline-block;
+			}
+
+			[v-cloak] {
+				display: none;
+			}
+		</style>
+	</head>
+
+	<body class="xf-bg">
+		<header>
+			<div class="header home active">
+				<div id="title" class="top-menu">我的</div>
+				<div class="add_btn btn" tapmode></div>
+			</div>
+		</header>
+		<section id="mymessage" v-cloak></section>
+	</body>
+	<script src="../script/zepto.js"></script>
+	<script src="../script/api.js"></script>
+	<script type="text/javascript" src="../script/vue.js"></script>
+	<script src="../config/config.js"></script>
+	<script type="text/javascript" src="../script/umeng/umengbase.js"></script>
+	<script type="text/javascript" src="../script/umeng/zhuge.js"></script>
+	<script type="text/javascript" src="../script/iphoneX.js"></script>
+	<script>
+		var paramObj = JSON.parse(localStorage.getItem('userObj'));
+		var usename = paramObj.loginName;
+		var myMessageVue;
+		apiready = function() {
+			iphoneXfit();
+			//我得模块得埋点
+			addEvent('wbzs_my', 'loginName', paramObj.loginName);
+			addEvent('wbzs_my', 'orgName', paramObj.orgName);
+			if(!usename) {
+				api.closeFrame({
+					name: 'main'
+				});
+				api.closeFrame({
+					name: 'frm_user'
+				});
+				api.closeWin({
+					name: "index"
+				})
+				api.openWin({
+					name: 'login',
+					url: 'login.html',
+					bounces: false
+				})
+				return
+			}
+			//添加监听事件
+			apiEvents();
+			queryMyInfo();
+			ck(api.pageParam.bool)
+		}
+		function ck(bool){
+			if(bool=='0' &&  api.deviceModel != 'iPhone10,3'){
+				api.openFrame({
+						name:'frm_user_guidance',
+						url: './guidance/frm_user_guidance.html',
+						bounces: false,
+						reload: false, //不重新刷新页面
+						rect: {
+							x: 0,
+							y: 0,
+							w: 'auto',
+							h: 'auto'
+						},
+						vScrollBarEnabled: false
+					})
+			}
+		}
+		//查询我的信息
+		function queryMyInfo() {
+			api.ajax({
+				url: webapp_global.url + "/userInfo/getUserInfo",
+				method: 'get',
+				dataType: "json",
+				data: {
+					values: {
+						userId: paramObj.userid,
+						orgCode:paramObj.orgId
+					}
+				}
+			}, function(ret, err) {
+				if(ret && ret.data) {
+					api.refreshHeaderLoadDone();
+					api.parseTapmode();
+					//信息展示
+					mymessage(ret.data);
+
+				} else {
+					var obj = {
+						telephone: "",
+						orgName: ""
+					}
+					mymessage(obj);
+				}
+			})
+		}
+
+		function mymessage(myInfo) {
+			myMessageVue = new Vue({
+				el: "#mymessage",
+				template: `<section class="xf-msg-wrap">
+			<div class="xf-panel">
+				<dl class="xf-msg-item xf-flex" @click="editMyMessage()">
+					<dt class="xf-flex_item xf-msg-item_icon"><span class="xf-state-size">
+					<img id="myPhoto"
+					:src="headportrait.substring(0,headportrait.length-4)+'_48X48'+headportrait.substring(headportrait.length-4,headportrait.length)"
+
+					 onerror="javascript:this.src='../image/weibao.png'" alt=""></span></dt>
+					<dd class="xf-flex_item xf-msg-item_inner">
+						<h1 class="xf-msg-item_inner_h1" id="controlId"><span class="wb-username">{{userName}}</span><span class="xf-msg-item_inner_t aui-margin-l-10">{{telephone}}</span></h1>
+						<p class="xf-msg-item_inner_t">{{orgName}}</p>
+					</dd>
+					<dd class="xf-flex_item xf-mine-link" style=" padding-top: 20px;"><span class="xf-span-margin"><img style="margin-top: -16px; width:0.5rem ;margin-left: 26px"  src="../image/new/new_more.png" ></span></dd>
+				</dl>
+			</div>
+			<div class="xf-panel">
+				<li class="xf-msg-item xf-flex " style="line-height: 2;  height: 2.5rem;" @click="proprietorUnit()">
+				    <a class="xf-flex_item xf-msg-item_inner "><b class="wbicon-building icon-style aui-margin-r-10 icon-style-1"></b>我的业主单位</a>
+					<span class="xf-flex_item xf-mine-link"><span class="xf-span-margin"><img class="img_more"  src="../image/new/new_more.png" ></span></span>
+				</li>
+			</div>
+
+			<div class="xf-panel">
+				<li class="xf-msg-item xf-flex" style="line-height: 2;  height: 2.5rem;display:none;" @click="workStatistics()">
+					<a class="xf-flex_item xf-msg-item_inner"><b class="wbicon-jobAccount icon-style aui-margin-r-10 icon-style-2"></b>工作统计</a>
+					<span class="xf-flex_item xf-mine-link"><span class="xf-span-margin"><img class="img_more"  src="../image/new/new_more.png" ></span></span>
+				</li>
+				<li class="xf-msg-item xf-flex" style="line-height: 2;  height: 2.5rem;" @click="messageReminding()">
+					<a class="xf-flex_item xf-msg-item_inner"><b class="wbicon-messageSolid icon-style aui-margin-r-10 icon-style-3"></b>消息提醒</a>
+					<span class="xf-flex_item xf-mine-link"><span class="xf-span-margin"><img class="img_more"  src="../image/new/new_more.png" ></span></span>
+				</li>
+				<li class="xf-msg-item xf-flex" style="line-height: 2;  height: 2.5rem;" @click="mailList()">
+					<a class="xf-flex_item xf-msg-item_inner"><b class="wbicon-addressList icon-style aui-margin-r-10 icon-style-4"></b>通讯录</a>
+					<span class="xf-flex_item xf-mine-link"><span class="xf-span-margin"><img class="img_more"  src="../image/new/new_more.png" ></span></span>
+				</li>
+				<li class="xf-msg-item xf-flex" style="line-height: 2;  height: 2.5rem;" @click="myInforming()">
+					<a class="xf-flex_item xf-msg-item_inner"><b class="wbicon-courierList icon-style aui-margin-r-10 icon-style-5"></b>告知单</a>
+					<span class="xf-flex_item xf-mine-link"><span class="xf-span-margin"><img class="img_more"  src="../image/new/new_more.png" ></span></span>
+				</li>
+				<li class="xf-msg-item xf-flex" style="line-height: 2;  height: 2.5rem;" @click="summary()">
+					<a class="xf-flex_item xf-msg-item_inner"><b class="wbicon-timeSolid icon-style aui-margin-r-10 icon-style-7"></b>一周小结</a>
+					<span class="xf-flex_item xf-mine-link"><span class="xf-span-margin"><img class="img_more"  src="../image/new/new_more.png" ></span></span>
+				</li>
+			</div>
+
+			<div class="xf-panel">
+				<li class="xf-msg-item xf-flex" style="line-height: 2;  height: 2.5rem;" @click="setUp()">
+					<a class="xf-flex_item xf-msg-item_inner"><b class="wbicon-set icon-style aui-margin-r-10 icon-style-6"></b>设置</a>
+					<span class="xf-flex_item xf-mine-link"><span class="xf-span-margin"><img class="img_more"  src="../image/new/new_more.png" ></span></span>
+				</li>
+			</div>
+		</section>`,
+				data() {
+					return {
+						userName: paramObj.userName,
+						headportrait: "",
+						telephone: myInfo.telephone,
+						orgName: myInfo.orgName
+					}
+				},
+				methods: {
+					//编辑个人信息
+					editMyMessage: function() {
+						growingIoAddEvent('ckwdgrxx');
+						openPage("mymessage", "editMyMessage", {
+							usename: usename
+						})
+					},
+					//编辑业主单位
+					proprietorUnit: function() {
+						//编辑业主单位埋点
+						addEvent('wbzs_my_myyzdw', 'loginName', paramObj.loginName);
+						addEvent('wbzs_my_myyzdw', 'orgName', paramObj.orgName);
+						growingIoAddEvent('ckwdyzdw');
+						openPage("mymessage", "proprietorUnitAll", {})
+					},
+					//设置
+					setUp: function() {
+						openPage("set-up", "setUp", {})
+					},
+					//修改头像
+					setHeadportrait: function(imgUrl) {
+						this.headportrait = imgUrl;
+					},
+					//修改电话
+					setTelephone: function(val) {
+						this.telephone = val;
+					},
+					//工作统计
+					workStatistics: function() {
+						api.toast({
+							msg: '正在开发中，敬请期待！',
+							duration: 2000,
+							location: 'middle'
+						});
+					},
+					//消息提醒
+					messageReminding: function() {
+						growingIoAddEvent('jrxxtx');
+						openPage("notifications", "notifications", {})
+						//
+						// api.toast({
+						// 	msg: '正在开发中，敬请期待！',
+						// 	duration: 2000,
+						// 	location: 'middle'
+						// });
+					},
+					//通讯录
+					mailList: function() {
+						openPage("contacts", "contacts", {})
+//						api.toast({
+//							msg: '正在开发中，敬请期待！',
+//							duration: 2000,
+//							location: 'middle'
+//						});
+					},
+					//我的告知单
+					myInforming: function() {
+						growingIoAddEvent('jrgzd');
+						openPage("informing", "_myInformingList", {})
+						//						api.toast({
+						//							msg: '正在开发中，敬请期待！',
+						//							duration: 2000,
+						//							location: 'middle'
+						//						});
+					},
+					// 一周小结
+					summary:function () {
+						growingIoAddEvent('jryzxj');
+						// api.toast({
+						// 	msg: '正在开发中，敬请期待！',
+						// 	duration: 2000,
+						// 	location: 'middle'
+						// });
+						openPage("mymessage", "_summaryList", {})
+					}
+				},
+				created: function() {
+					if(myInfo.headportrait) {
+						this.headportrait = webapp_global.imageUrl + '/' + myInfo.headportrait;
+					} else {
+						this.headportrait = "../image/weibao.png";
+					}
+				}
+			})
+		}
+		//打开页面
+		function openPage(file, name, pageParam) {
+			api.openWin({
+				name: name,
+				url: './' + file + '/' + name + '.html',
+				rect: {
+					x: 0,
+					y: 0,
+					w: 320,
+					h: 480
+				},
+				pageParam: pageParam,
+				bounces: false,
+				bgColor: 'rgba(0,0,0,0)',
+				vScrollBarEnabled: true,
+				hScrollBarEnabled: true
+			});
+		}
+
+		function apiEvents() {
+			var connectionType = api.connectionType;
+			if(connectionType == "none") {
+				api.toast({
+					msg: '网络走丢了，请找回网络',
+					duration: 2000,
+					location: 'middle',
+					global: true
+				});
+			}
+			//监听设备断开网络的事件，字符串类型
+			api.addEventListener({
+				name: 'offline'
+			}, function(ret, err) {
+				api.toast({
+					msg: '网络走丢了，请找回网络',
+					duration: 2000,
+					location: 'middle',
+					global: true
+				});
+			});
+			api.addEventListener({
+				name: 'sendNewFunction'
+			}, function(ret, err) {
+				ck(ret.value.fucState)
+			})
+
+			//监听设备连接到网络的事件，字符串类型
+			api.addEventListener({
+				name: 'online'
+			}, function(ret, err) {
+				api.toast({
+					msg: '网络已经找回，请刷新页面',
+					duration: 2000,
+					location: 'middle',
+					global: true
+				});
+			});
+			//html页面a：
+			api.addEventListener({
+				name: 'myHeadportrait'
+			}, function(ret, err) {
+				var obj = ret.value;
+				myMessageVue.setHeadportrait(obj.headportrait);
+				myMessageVue.setTelephone(obj.telephone);
+			});
+			//ios右滑控制
+      api.addEventListener({
+        name:'swiperight'
+      }, function(ret, err){
+      });
+		}
+	</script>
+
+</html>

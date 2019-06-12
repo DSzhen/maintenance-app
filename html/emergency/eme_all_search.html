@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>全部应急维保列表</title>
+		<link rel="stylesheet" href="../../css/api.css" />
+		<link rel="stylesheet" href="../../css/aui.css" />
+		<link rel="stylesheet" href="../../css/wbicon/style.css" />
+		<link rel="stylesheet" href="../../css/mint-ui.css" />
+		<style type="text/css">
+					 body, html { font-family: "Helvetica"; -webkit-touch-callout: none; -webkit-text-size-adjust: none; -webkit-tap-highlight-color: transparent; -webkit-user-select: none; background-color: #f5f5f9 }
+							 .aui-content-padded { margin: .5rem; } .aui-card-list { margin-bottom:
+.5rem; box-shadow: 0 4px 8px 0 rgba(229, 229, 229, .65); border-radius: .2rem; } .header {height: 57px;width: 100%;display: block;line-height: 57px;padding-top: 11px;font-size: .8rem;} .header.active { display: block; } .top-menu { text-align: center; color: #fff; font-weight: bold;
+						} .backBtn { height: 40px; width: 35px; position: absolute; right: left; bottom: 0; } .backBtn::before { position: absolute; top: .65rem; left: .75rem; display: block; content: ''; width: 10px; height: 10px; border-left: 1px solid; border-top: 1px solid;
+						color: #fff; transform: rotate(-45deg); } .btn { height: 40px; width: 35px; position: absolute; right: 0; bottom: 0; } .header.home>div.active { opacity: 1; } .header.home { background: -moz-linear-gradient(top, #febd00 0%, #ff951b 100%); background:
+						-webkit-gradient(linear, left top, right bottom, color-stop(0%, #febd00), color-stop(100%, #ff951b)); background: -webkit-linear-gradient(top, #febd00 0%, #ff951b 100%); background: -o-linear-gradient(top, #febd00 0%, #ff951b 100%); background: -ms-linear-gradient(top,
+						#febd00 0%, #ff951b 100%); background: linear-gradient(to top, #febd00 0%, #ff951b 100%); } .header.home .top-menu>div { color: #fff; opacity: .8; } .header.home .top-menu>div.active { opacity: 1; } .add_btn { -webkit-background-size: 38px 43px; background-size:
+						38px 43px; } .wb-flex { display: -webkit-box; display: -webkit-flex; display: flex; -webkit-box-pack: justify; -webkit-justify-content: center; justify-content: center; -webkit-box-align: center; -webkit-align-items: center; align-items: center; } .wb-flex-start
+						{ -webkit-justify-content: flex-start; justify-content: flex-start; } .wb-space-between { -webkit-justify-content: space-between; justify-content: space-between; } .aui-card-list-content-padded { padding: 0.5rem 0.5rem; } .aui-tab-item { width: 100%;
+						height: 2.4rem; line-height: 2.4rem; font-size: 0.8rem; color: #666; } .aui-tab-item.aui-active { color: #ff961b; border-bottom: 2px solid #ff961b; } .aui-card-list-header { position: relative; min-height: 0 !important; padding: .25rem .5rem .1rem !important;
+						border-bottom: 1px solid #ddd; border-top-left-radius: 3px; border-top-right-radius: 3px; } .aui-card-list-header span { color: #999; } .wb-card-list-header { font-size: .7rem; max-width:80%; color: #999; } .wb-pending-txt { font-size: .7rem; color: #333; } .wb-card-title { white-space: nowrap; color: #999999; } .wb-card-list { width: 88%; } .wb-info-text { display: inline-block; max-width: 77%; } .wb-info-text span
+					{ margin-left: .5rem; } .aui-card-list-content-padded .wb-flex+.wb-flex { margin-top: .35rem; } /*.wb-text-defalut { color: #333; }*/ .wb-list-icon { margin-right: .2rem; font-size: 1.5rem; color: #0a85ff; } .wbicon-arrowMark { position: absolute; top:
+					0; left: 0; color: #ff961b; font-size: .6rem; } .defaultDiv-layout { margin-top: 35%; height: 100%; width: 100%; text-align: center; } .defaultDiv-layout label { color: #C4C4C4; } .defaultDiv { display: flex; justify-content: center; align-items: center;
+					margin-bottom: 1rem; } .defaultDiv img { height: 5rem; width: 6rem; } .wb-task-inner-item { padding: 0 .4rem; font-size: .6rem; color: #fd7575; background-color: rgba(253, 117, 117, .1); border-radius: .15rem; border: 1px solid #fd7575; margin-top: -.2rem;
+					} .pos{ position: fixed; top: 0; left:0; right: 0; z-index: 999; }
+		</style>
+	</head>
+
+	<body>
+		<header id="header">
+			<div class="header home active pos">
+				<div class="backBtn" tapmode onclick="back()"></div>
+				<div class="top-menu">搜索结果</div>
+			</div>
+		</header>
+		<div>
+
+		</div>
+		<section class="aui-content-padded" style="margin-top:55px;"></section>
+		<div class="push-status" style="display: none;" id="pushStatus">火速加载中...</div>
+		<script type="text/javascript" src="../../script/api.js"></script>
+		<script type="text/javascript" src="../../script/zepto.js"></script>
+		<script type="text/javascript" src="../../config/config.js"></script>
+		<script type="text/javascript" src="../../script/vue.js"></script>
+		<script type="text/javascript" src="../../script/mint-ui.js"></script>
+		<script type="text/javascript" src="../../script/utils/splitPage.js"></script>
+		<script>
+			//先清除数据
+			$('.aui-content-padded').html("");
+			//分页
+			var param = {
+				pageSize: 20,
+				addUp: 20
+			}
+			var splitPageFn = new splitPage(param);
+			var userObj = localStorage.getItem("userObj");
+
+			var activity;
+			if(typeof userObj == "string") {
+				userObj = JSON.parse(userObj);
+			}
+			var requestParam = {
+				userId: userObj.userid,
+				orderState: "",
+				proprietorId: "",
+				timely: "",
+				bleConnected: "",
+				reassignment: "",
+				bespeak_start_time: "",
+				bespeak_end_time: "",
+				pageNo: 1,
+				pageSize:param.pageSize
+
+				// dataNum: param.pageSize
+			}
+			apiready = function() {
+				var to_data=api.pageParam.val;
+				requestParam.params=to_data
+
+
+				if(!userObj) {
+					api.closeFrame({
+						name: 'main'
+					});
+					api.closeFrame({
+						name: 'frm_user'
+					});
+					api.closeWin({
+						name: "index"
+					})
+					api.openWin({
+						name: 'login',
+						url: '../../html/login.html',
+						bounces: false
+					})
+				}
+				activity = api.require('UILoading');
+				//初始化api事件
+				apiEvents();
+				//查询所有应急维保数据
+				queryAlleme();
+			}
+			//查询所有应急维保数据
+			function queryAlleme() {
+				Vue.$indicator.open("加载中...");
+				api.ajax({
+					url: webapp_global.url + "/maintenance/order/orders",
+					method: 'get',
+					dataType: "json",
+					timeout: 20,
+					data: {
+						values: requestParam
+					}
+				}, function(ret, err) {
+					setTimeout(function() {
+						Vue.$indicator.close();
+						if(ret && ret.data) {
+							api.refreshHeaderLoadDone();
+							api.parseTapmode();
+							if(ret.data.length > 0) {
+								var tplHtml = loadHtml(ret.data);
+								$('.aui-content-padded').html(tplHtml);
+							} else {
+								var img = "<div class='defaultDiv-layout'><div class='defaultDiv'><img src='../../image/defaultPage/emergency.png' /></div><label>没有应急维保订单哦</label></div>";
+								$('.aui-content-padded').html(img);
+							}
+						} else {
+							api.refreshHeaderLoadDone();
+							api.parseTapmode();
+							var img = "<div class='defaultDiv-layout'><div class='defaultDiv'><img src='../../image/defaultPage/detectionNetwork.png'/></div><label>网络走丢了,请尝试刷新或者检查网络</label></div>";
+							$('.aui-content-padded').html(img);
+						}
+					}, 100)
+				})
+			};
+			//列表拼接展示
+			function loadHtml(data) {
+				var tpl = "";
+				if(typeof data == "object" && data.length == 0) return
+				for(var i = 0; i < data.length; i++) {
+					// 显示需要什么传什么
+					var obj = {
+						orderId: data[i].orderId,
+						orderType: data[i].orderType
+					};
+					tpl += '<div class="aui-card-list" onclick=appendClick(' + JSON.stringify(obj) + ')><div class="aui-card-list-header" >';
+					tpl += '<h3 class="aui-ellipsis-1 wb-card-list-header">维保单号：<span> ' + data[i].orderId + '</span></h3>';
+					if(data[i].isOverdue == "1") {
+						tpl += '<a class="wb-task-inner-item">逾期</a>'
+					}
+					tpl += '<a class="wb-pending-txt" >' + data[i].orderState + '</a>';
+					tpl += '</div><div class="aui-card-list-content-padded wb-flex wb-space-between"><div class="wb-card-list"><div class="wb-flex wb-flex-start">';
+					tpl += '<h5 class="wb-card-title">业主单位：</h5><span class="wb-info-text aui-ellipsis-1">' + data[i].proprietor;
+					tpl += '</span></div><div class="wb-flex wb-flex-start"><h5 class="wb-card-title" style="letter-spacing: 5px">联系人：</h5>';
+					tpl += '<span class="wb-info-text aui-ellipsis-1">' + data[i].concat + '<span>' + data[i].concatPhone + '</span></span></div><div class="wb-flex wb-flex-start">';
+					tpl += '<h5 class="wb-card-title wb-text-defalut">预约时间：</h5><span class="wb-info-text aui-ellipsis-1">' + data[i].orderTime + "</span></div></div>";
+					tpl += '<a class="wb-list-icon" onclick="callPhone(' + data[i].concatPhone + ')"><b class="wbicon-telephone"></b></a></div></div>';
+				}
+				return tpl
+			}
+			//单条数据的点击事件
+			function appendClick(obj) {
+				if(typeof obj == "string") {
+					obj = JSON.parse(obj);
+				}
+				obj.gname = "emergency";
+				obj.fname = "eme_all";
+
+				api.openWin({
+					name: 'win_eme.html',
+					url: './win_eme.html',
+					rect: {
+						x: 0,
+						y: 0,
+						w: 320,
+						h: 480
+					},
+					pageParam: obj,
+					bounces: false,
+					bgColor: 'rgba(0,0,0,0)',
+					vScrollBarEnabled: true,
+					hScrollBarEnabled: true
+				});
+			}
+			//打电话
+			function callPhone(tel) {
+
+				//埋点 电话被打了
+				var paramObj = JSON.parse(localStorage.getItem('userObj'));
+				window.event.stopPropagation()
+				if(api.systemType != 'ios'){
+					api.call({
+						type: 'tel_prompt',
+						number: tel
+					});
+				}
+			}
+			function back(){
+				api.closeWin({
+					name:'search_bar'
+				});
+			}
+			//初始化api事件
+			function apiEvents() {
+				api.addEventListener({
+					name: 'keyback'
+				}, function(ret, err) {
+					back();
+				});
+				api.addEventListener({
+					name: 'scrolltobottom',
+					extra: {
+						threshold: 0
+					}
+				}, function(ret, err) {
+					var size = splitPageFn.getAddUpSize();
+					requestParam.pageSize = size;
+					queryAlleme();
+				});
+				api.addEventListener({
+					name: 'filterOrderData'
+				}, function(ret, err) {
+					if(ret.value.pname=='eme_all'){
+						afterFilter(ret.value)
+					}
+				});
+				//ios右滑控制
+      api.addEventListener({
+        name:'swiperight'
+      }, function(ret, err){
+      });
+			}
+			/**与过滤页和emergency交互 start**/
+			//筛选按钮点击
+			var flowerId = ""
+			function allFilter() {
+				activity.flower({ 
+					center: {
+				        x: 160,
+				        y: 240
+				    },
+				    size: 30,
+				    mask:"rgba(0,0,0,0.1)",
+				    fixed: true
+				}, function(ret) {
+					flowerId = ret.id;
+				});
+				api.openFrame({
+					name: "filter",
+					url: './eme_filter.html',
+					bounces: false,
+					reload: false, //不重新刷新页面
+					scrollEnabled: true,
+					rect: {
+						x: 70,
+						y: 57,
+						w: api.winWidth - 70,
+						h: api.winHeight
+					},
+					animation: {
+						type: "movein", //动画类型（详见动画类型常量）
+						subType: "from_right", //动画子类型（详见动画子类型常量）
+						duration: 100
+					},
+					vScrollBarEnabled: false,
+					pageParam: {
+						pname: "eme_all"
+					}
+				});
+			}
+			//筛选过后传过来的数据
+			function afterFilter(options) {
+				requestParam.proprietorId = options.proprietorId;
+				requestParam.orderState = options.orderState;
+				requestParam.timely = options.timely;
+				requestParam.bleConnected = options.bleConnected;
+				requestParam.reassignment = options.reassignment;
+				requestParam.bespeak_start_time = options.bespeak_start_time;
+				requestParam.bespeak_end_time = options.bespeak_end_time;
+				var size = splitPageFn.resetcurrentPageCount();
+				requestParam.pageSize = size;
+				queryAlleme();
+			}
+
+			function closeFilter() {
+				activity.closeFlower({
+					id:flowerId
+				});
+				flowerId = "";
+			}
+			/**与过滤页和emergency交互 end**/
+		</script>
+	</body>
+
+</html>

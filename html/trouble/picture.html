@@ -1,0 +1,108 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport"
+          content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="tephone=no,email=no,date=no,address=no">
+    <style type="text/css">
+        html {
+            background-color: white;
+        }
+
+        header {
+            border-bottom: 1px solid #ccc;
+            padding: 25px 0;
+        }
+
+        span {
+            padding: 5px 15px;
+            margin: 10px;
+            display: inline-block;
+            background-color: #e8e8e8;
+        }
+    </style>
+</head>
+<body>
+<!-- <header>
+    <h1>UIScrollPicture</h1>
+    <mark>
+        使用前请详细阅读 文档 使用规则
+    </mark>
+</header> -->
+<!-- <span tapmode onclick="fnOpen()">open()</span>
+<span tapmode onclick="fnClose()">close()</span>
+<span tapmode onclick="fnShow()">show()</span>
+<span tapmode onclick="fnHide()">hide()</span>
+<span tapmode onclick="fnSetCurrentIndex()">setCurrentIndex()</span>
+<span tapmode onclick="fnReloadData()">reloadData()</span>
+<span tapmode onclick="fnAddEventListener()">addEventListener()</span> -->
+</body>
+<script type="text/javascript" src="../../config/config.js"></script>
+<script type="text/javascript">
+    var UIScrollPicture;
+    apiready = function () {
+
+        var obj = api.pageParam;
+        UIScrollPicture = api.require('UIScrollPicture');
+        var imgUrl = webapp_global.imageUrl;
+
+        var makePaths = function makePaths(pathsArr) {
+            if (!pathsArr) {
+              //  alert('没有有效图片')
+                return
+            }
+            var paths = [];
+            for(var i = 0 ;i<pathsArr.length;i++) {
+            	if(api.systemType == 'ios'){
+            		paths.push(imgUrl+"/"+pathsArr[i].attachPath.substring(0,pathsArr[i].attachPath.length-4)+"_1000X1000"+pathsArr[i].attachPath.substring(pathsArr[i].attachPath.length-4,pathsArr[i].attachPath.length));	
+            	}else{
+            		paths.push(imgUrl+"/"+pathsArr[i].attachPath);
+            	}
+            }
+            return paths
+        }
+
+        var pathUrlArr = obj.attaches;
+        if(obj.flag==0){
+            pathUrlArr = makePaths(obj.attaches);
+        }
+
+        var imgIndex = obj.index;
+
+        UIScrollPicture.open({
+            rect: {
+                x: 0,
+                y: 0,
+                w: api.winWidth,
+                h: 'auto'
+            },
+            data: {
+                paths: pathUrlArr
+            },
+
+            placeholderImg: 'widget://res/slide1.jpg',
+            contentMode: 'scaleToFill',
+            interval: 3,
+            auto: false,
+            fixed: true
+        }, function (ret, err) {
+
+            if (ret.eventType == "click") {
+                api.closeWin({
+                    name: 'picture'
+                });
+                return
+            }
+
+            UIScrollPicture.setCurrentIndex({
+                index: imgIndex
+            });
+
+
+        });
+
+
+    };
+</script>
+</html>

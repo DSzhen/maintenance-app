@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+		<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+		<title>一周小结</title>
+		<link rel="stylesheet" type="text/css" href="../../css/api.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/aui.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/gg.css" />
+		<style>
+			html,
+			body {
+				height: 100%;
+				display: flex;
+				display: -webkit-flex;
+				display: -webkit-box;
+				flex-flow: column;
+				-webkit-flex-flow: column;
+				-webkit-box-orient: vertical;
+				background-color: #f6f6f6;
+			}
+
+
+      .summary_head{
+        width: 30px;
+        height: 30px!important;
+      }
+      .summary_time_p{
+        background-color: #d1d1d1;
+        color: #fff;
+				font-size: .7rem;
+        display: inline-block;
+        padding: 0rem .5rem;
+				padding-top: .2rem;
+      }
+      .summary_p1{
+        font-weight: bold;
+        color: #000;
+        font-size: .8rem;
+      }
+      .summary_p2{
+        color: #727272;
+      }
+      .summary_p3{
+        color: #ff961b;
+        margin-top: 10px;
+        line-height: 1.5!important;
+        font-weight: 500;
+        padding-bottom: 5px;
+      }
+			.img_width15{
+				width: 15px;
+				height: 15px;
+				display: inline-block;
+			}
+			[v-cloak] {
+				display: none;
+			}
+			.m-t10px{margin-top: 10px;}
+		</style>
+	</head>
+
+	<body>
+			<div style="padding:.5rem">
+				<div class="no_data" style="display:none">
+					<img src="../../image/no_zizi.png" alt="">
+					<p>暂时还没有相关信息~</p>
+				</div>
+				<!--  -->
+        <div class="have_data" id="content" v-cloak>
+  				<div class="item-div m-t20px" v-for='item in dataList' @click="jump_this(item.id)">
+              <div class="text-center ">
+                <div class="border-radius100 summary_time_p">{{item.creatrTime.substring(5,item.creatrTime.length-3)}}</div>
+              </div>
+              <div class="bg-white pd5  box-shadow1 border-radius2 m-t10px">
+                  <div class="div-flex pd5-10 border-bottom-colorddd-1">
+                    <p class="flex1 div-flex left-center color_72 fs14">一周小结&nbsp;&nbsp;&nbsp;&nbsp;{{item.startTime}}—{{item.endTime}}</p>
+                    <div class="div-flex left-center">
+                        <img src="../../image/message_img/edit_summary.png"  class="img_width15"   alt="">
+                    </div>
+                  </div>
+
+                  <div class="div-flex m-t10 pd5">
+                    <div class="">
+
+                        <!-- <img class="border-radius50 summary_head" onerror="javascript:this.src='../../image/weibao.png'"
+												:src="urls+item.headPortrait" alt=""> -->
+												<img class="border-radius50 summary_head" onerror="javascript:this.src='../../image/weibao.png'"
+												:src="(urls+item.headPortrait).substring(0,(urls+item.headPortrait).lastIndexOf('.'))+'_50X50'+(urls+item.headPortrait).substring((urls+item.headPortrait).lastIndexOf('.'),(urls+item.headPortrait).length)" alt="">
+                    </div>
+                    <div class="flex1 m-l15px m-t5px">
+                        <p class="summary_p1">处理了{{item.solveFaultCount}}个故障，{{item.planCount}}次例行维保</p>
+                        <div class="m-t10">
+                          <p class="summary_p2 line-height2">为{{item.serverProprietor}}家业主单位的消费安全保驾护航</p>
+                          <p class="summary_p2 line-height2">总共花了{{item.sumTime}}</p>
+                          <p class="summary_p2 line-height2">打败了全国{{item.scale}}的用户</p>
+                          <p class="summary_p3">{{item.more}}</p>
+                        </div>
+                    </div>
+                  </div>
+              </div>
+          </div>
+        </div>
+			</div>
+	</body>
+	<script type="text/javascript" src="../../script/api.js"></script>
+	<script type="text/javascript" src="../../script/vue.js"></script>
+	<script type="text/javascript" src="../../script/zepto.js" ></script>
+	<script type="text/javascript" src="../../config/config.js" ></script>
+	<script>
+		var userId;
+		var mainInfoVue;
+		apiready = function() {
+			userId= JSON.parse(localStorage.getItem('userObj')).userid
+			initEvents();
+      getSummary()
+		}
+		//查询资质数据
+		function getSummary() {
+			api.ajax({
+        url: webapp_global.url + "/userInfo/getWeekSummary?userId="+userId,
+				method: 'get',
+				dataType: "json",
+			}, function(ret, err) {
+				var code = ret["code"];
+				if(code == "success") {
+					var data = ret["data"];
+					if(data.length<1){
+						$(".have_data").hide();
+						$(".no_data").show();
+					}else{
+						$(".have_data").show();
+						$(".no_data").hide();
+						getSummary_line(data)
+					}
+				}
+			})
+		}
+		function getSummary_line(dataList) {
+				new Vue({
+						el: "#content",
+						data() {
+							return {
+								dataList:dataList,
+								urls:webapp_global.imageUrl
+							}
+						},
+						methods: {
+							jump_this(id){
+								api.openWin({
+								    name: 'summary_detail',
+								    url: './summary_detail.html',
+										animation:{
+											type:"movein",                //动画类型（详见动画类型常量）
+									    subType:"from_bottom",       //动画子类型（详见动画子类型常量）
+									    duration:300
+										},
+								    pageParam: {
+								        name: '详情',
+												id:id
+								    }
+								});
+							}
+						}
+					})
+		}
+		//监听事件
+		function initEvents() {
+				api.addEventListener({
+					name: 'keyback'
+				}, function(ret, err) {
+					back();
+				});
+		}
+		//返回，关闭当前详情页，
+		function back() {
+			api.closeWin({
+				name: 'summaryList'
+			});
+		}
+	</script>
+
+</html>

@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+		<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+		<title>设置</title>
+		<link rel="stylesheet" type="text/css" href="../../../css/api.css" />
+		<link rel="stylesheet" href="../../../css/aui.css" />
+		<link rel="stylesheet" href="../../../css/MintUistyle.css" />
+		<link rel="stylesheet" href="../../../css/wbicon/style.css" />
+		<style>
+			html,
+			body {
+				height: 100%;
+				display: flex;
+				display: -webkit-flex;
+				display: -webkit-box;
+				flex-flow: column;
+				-webkit-flex-flow: column;
+				-webkit-box-orient: vertical;
+				background-color:#fff;
+			}
+			
+			.header {
+				height: 57px;
+				width: 100%;
+				display: block;
+				line-height: 57px;
+				padding-top: 11px;
+				font-size: .8rem;
+			}
+			
+			.header.active {
+				display: block;
+			}
+			
+			.top-menu {
+				/*padding: 0 43px 0 8px;*/
+				text-align: center;
+				color: #fff;
+				font-weight: bold;
+			}
+			/*按钮*/
+			
+			.backBtn {
+				height: 40px;
+				width: 35px;
+				position: absolute;
+				right: left;
+				bottom: 0;
+			}
+			
+			.backBtn::before {
+				position: absolute;
+				top: .65rem;
+				left: .75rem;
+				display: block;
+				content: '';
+				width: 10px;
+				height: 10px;
+				/*border-left: 2px solid;
+           border-top: 2px solid;*/
+				border-left: 1px solid;
+				border-top: 1px solid;
+				color: #fff;
+				transform: rotate(-45deg);
+			}
+			
+			.btn {
+				height: 40px;
+				width: 35px;
+				position: absolute;
+				right: .5rem;
+				bottom: 0;
+				color: white;
+			}
+			/*首页头部导航*/
+			/*字体颜色*/
+			
+			.header.home>div.active {
+				opacity: 1;
+			}
+			
+			.header.home {
+				background-color: #ff961b;
+			}
+			
+			.header.home .top-menu>div {
+				color: #fff;
+				opacity: .8;
+			}
+			
+			.header.home .top-menu>div.active {
+				opacity: 1;
+			}
+			
+			.add_btn {
+				/*background: #d43d3d url('../image/head/add.png') center center no-repeat;*/
+				-webkit-background-size: 38px 43px;
+				background-size: 38px 43px;
+			}
+			/*****后加入******/
+			
+			.xf-panel {
+				box-sizing: border-box;
+				padding: 0;
+				font-size: 0.7rem;
+				margin-top: 85%;
+			}
+			
+			.xf-button {
+				display: block;
+				width: 90%;
+				background-color: #ff9b18;
+				border: 0;
+				color: #fff;
+				height: 2.5rem;
+				margin-left: 5%;
+				border-radius: 1rem;
+			}
+			
+			.aui-content-padded {
+				margin: 0;
+			}
+			
+			.aui-personal-info {
+				background-color: #fff;
+			}
+			
+			.aui-info-item img {
+				width: 2.6rem;
+				height: 2.6rem;
+				border-radius: .3rem;
+			}
+			
+			.aui-info {
+				padding: .7rem 0;
+				border-bottom: 1px solid #ddd;
+			}
+			
+			.aui-personal-info .aui-info:last-child {
+				border-bottom: 0;
+			}
+			
+			.aui-info .aui-info-item:first-child {
+				color: #040404;
+				font-size: .75rem;
+			}
+			
+			.aui-info .aui-info-item:last-child {
+				color: #999;
+				font-size: .7rem;
+			}
+			
+			.aui-info .aui-info-item .aui-info-item_icon {
+				font-size: .8rem;
+				color: #848484;
+			}
+			.wbQuestion{
+				overflow : hidden;
+				text-overflow: ellipsis;
+				display: -webkit-box;
+				-webkit-line-clamp: 2;
+				-webkit-box-orient: vertical;
+				color:#828285!important;
+			}
+			.hotQuestion{
+				height:1.5rem;
+				display: flex;
+				justify-content: flex-start;
+				align-items: center;
+				background-color:#fff;
+				color:#303030;
+			}
+			.hotQuestion span{
+				display:inline-block;
+				width:.1rem;
+				background-color:#ff8202;
+				height:.6rem;
+				margin-right:.2rem;
+			}
+			.moreQuestion{
+				color:#ff8202;
+				font-size: .8rem;
+			}
+			.aui-grid .aui-grid-label {
+			     margin-top: 0; 
+			     color:#333;
+			}
+			.aui-grid [class*=aui-col-] {
+			    padding: .8rem 0;
+			}
+			.questionClassify{
+				border-top: 1px solid #ddd;
+				padding-top:.5rem;
+			}
+			.wb-info{
+				display:flex;
+				justify-content: space-between;
+				align-items: center;
+				padding: .7rem 0;
+				border-bottom: 1px solid #ddd;
+			}
+			.wb-info .aui-info-item .aui-info-item_icon {
+				font-size: .8rem;
+				color: #848484;
+			}
+			.highlight {
+				color: #fa8802;
+			}
+		</style>
+	</head>
+
+	<body>
+		
+		<!--搜索-->
+		<div class="aui-searchbar" id="search" style="background-color:#fff;padding-top:.3rem;position:fixed;z-index: 10001;">
+			<div class="aui-searchbar-input aui-border-radius" style="background-color:#f2f2f2;">
+				<i class="aui-iconfont aui-icon-search"></i>
+				<input type="search" placeholder="请输入搜索内容" id="search-input">
+				<div class="aui-searchbar-clear-btn">
+					<i class="aui-iconfont aui-icon-close"></i>
+				</div>
+			</div>
+			<div class="aui-searchbar-btn" tapmode>取消</div>
+		</div>
+		<!--<div class="hotQuestion aui-padded-l-10" style="margin-top:2rem;">
+			<span></span>热门问题
+		</div>-->
+		<div class="aui-content-padded" style="margin-top:2rem;">
+			<div class="aui-personal-info aui-padded-l-10 aui-padded-r-10" id="search_result_content">
+				
+				
+				
+			</div>
+			<!--<div class="aui-info aui-padded-r-5 aui-padded-l-10 aui-padded-r-10" onclick="" style="border-bottom: 0;">
+				<div class="moreQuestion" onclick="search_to_name('1','','more')">更多</div>
+			</div>-->
+			<div class='noshuju' style="text-align:center;color:#999999; display:none">没有更多数据啦</div>
+			<div class='to_load' style="text-align:center;color:#999999;display:none">加载更多...</div>
+		</div>
+		
+	</body>
+	<script type="text/javascript" src="../../../config/config.js" ></script>
+	<script type="text/javascript" src="../../../script/api.js"></script>
+	<script type="text/javascript" src="../../../script/vue.js"></script>
+	<script type="text/javascript" src="../../../script/zepto.js"></script>
+	<script type="text/javascript" src="../../../script/mint-ui.js"></script>
+	<script>
+		var num = 1,isTrue=false,upload=true,pageSize = 10,less = 1;
+		apiready = function() {
+			initEvents();
+			search_to_name();
+			intoHelpCenter();
+			 apiEvents();
+		}
+		
+		var searchBar = document.querySelector(".aui-searchbar");
+		var searchBarInput = document.querySelector(".aui-searchbar input");
+		var searchBarClearBtn = document.querySelector(".aui-searchbar .aui-searchbar-clear-btn");
+		if(searchBar) {
+			searchBarInput.oninput = function() {
+				var that = this;
+				if(this.value.length) {
+					searchBarClearBtn.style.display = 'block';
+					
+				} else {
+					searchBarClearBtn.style.display = 'none';
+					isTrue = false;
+				}
+				num = 1;
+				search_to_name()
+				
+			}
+		}
+		searchBarClearBtn.onclick = function() {
+			this.style.display = 'none';
+			searchBarInput.value = '';
+			isTrue = false;
+			num = 1;
+			search_to_name();
+		}
+		//搜索热门问题
+		function search_to_name(pageSize = 10) {
+			var name = $("#search-input").val().trim(),searchData;
+			if(upload){
+				upload = false
+				Vue.$indicator.open("加载中...");
+				api.ajax({
+					url: webapp_global.url + "/userInfo/getProblemListByType",
+					method: 'get',
+					dataType: "json",
+					data: {
+						values: {
+							pageNo: 1,
+							pageSize: pageSize,
+							type : 1 ,
+							titleName : name || ""
+						}
+					}
+				}, function(ret, err) {
+					console.log(pageSize)
+					upload = true;
+					var code = ret["code"];
+					Vue.$indicator.close();
+					if(code == "success") {
+						api.refreshHeaderLoadDone();
+						searchData = ret["data"].rows;
+						if(less ===2){
+							api.toast({
+								msg: '没有更多问题啦！',
+								duration: 2000,
+								location: 'middle',
+								global: true
+							});
+						}	
+						if(searchData.length < pageSize){
+							less = 2;
+						};
+						var contactsList = '';
+						searchData.forEach(function(item,index){
+							contactsList += `<div class="wb-info aui-padded-r-5" pageUrl = "${item.contentUrl}"><div class="wbQuestion">${item.title}</div><div class="aui-info-item"><a class="aui-info-item_icon aui-margin-l-10"><b class="wbicon-arrowRight2"></b></a></div></div>`
+						})
+						$("#search_result_content").html(contactsList);
+						if(isTrue)highlight()
+						isTrue = true;
+						if(searchData.length===0){
+							$("#search_result_content").html('<div class="aui-content" style="height:4rem;text-align: center;line-height: 4rem;color:#828285;">没有匹配的问题</div>');
+						}
+						
+					}
+				})
+			}	
+		}
+		function apiEvents() {
+		
+			//上拉加载
+			api.addEventListener({
+				name: 'scrolltobottom',
+				extra: {
+					threshold: 10
+				}
+			}, function(ret, err) {
+				pageSize += 10;
+				search_to_name(pageSize);
+//				pageVue.pageNo += 1;
+//				setTimeout(function() {
+//					pageVue.ajaxFun()
+//				}, 500)
+			});
+		}
+		//帮助中心
+		function intoHelpCenter() {
+			$('#search_result_content').on('click',".wb-info",function(){
+				var pageUrl = $(this).attr('pageUrl')
+				api.openWin({
+					name: "_answer",
+					url: './_answer.html',
+					rect: {
+						x: 0,
+						y: 0,
+						w: 320,
+						h: 480
+					},
+					pageParam: {pageName:pageUrl},
+					bounces: false,
+					bgColor: 'rgba(0,0,0,0)',
+					vScrollBarEnabled: true,
+					hScrollBarEnabled: true
+				});
+			})
+			
+		}
+		//监听事件
+		function initEvents() {
+			api.addEventListener({
+				name: 'keyback'
+			}, function(ret, err) {
+				back();
+			});
+		}
+		//返回，关闭当前详情页，
+		function back() {
+			api.closeWin({
+				name: 'helpCenter'
+			});
+		}
+		/**
+		 *高亮开始
+		 * */
+		function encode(s) {
+			return s.replace(/&/g, "&").replace(/</g, "<").replace(/>/g, ">").replace(/([\\\.\*\[\]\(\)\$\^])/g, "\\$1");
+		}
+
+		function decode(s) {
+			return s.replace(/\\([\\\.\*\[\]\(\)\$\^])/g, "$1").replace(/>/g, ">").replace(/</g, "<").replace(/&/g, "&");
+		}
+
+		function highlight(s) {
+			var s = document.getElementById("search-input").value.trim();
+			if(s.length == 0) {
+				//document.getElementById("search_result_content").innerHTML = '';
+			}
+			s = encode(s);
+			var obj = document.getElementById("search_result_content");
+			var t = obj.innerHTML.replace(/<span\s+class=.?highlight.?>([^<>]*)<\/span>/gi, "$1");
+			obj.innerHTML = t;
+			var cnt = loopSearch(s, obj);
+			t = obj.innerHTML
+			var r = /{searchHL}(({(?!\/searchHL})|[^{])*){\/searchHL}/g
+			t = t.replace(r, "<span class='highlight'>$1</span>");
+			obj.innerHTML = t;
+		}
+
+		function loopSearch(s, obj) {
+			var cnt = 0;
+			if(obj.nodeType == 3) {
+				cnt = replace(s, obj);
+				return cnt;
+			}
+			for(var i = 0, c; c = obj.childNodes[i]; i++) {
+				if(!c.className || c.className != "highlight")
+					cnt += loopSearch(s, c);
+			}
+			return cnt;
+		}
+
+		function replace(s, dest) {
+			var r = new RegExp(s, "g");
+			var tm = null;
+			var t = dest.nodeValue;
+			var cnt = 0;
+			if(tm = t.match(r)) {
+				cnt = tm.length;
+				t = t.replace(r, "{searchHL}" + decode(s) + "{/searchHL}")
+				dest.nodeValue = t;
+			}
+			return cnt;
+		}
+		/**
+		 *高亮结束
+		 * */
+	</script>
+
+</html>

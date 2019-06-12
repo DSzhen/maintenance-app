@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta http-equiv="X-UA-Compatible" content="ie=edge">
+		<title>pdf</title>
+		<link rel="stylesheet" href="../../css/api.css">
+		<link rel="stylesheet" type="text/css" href="../../css/aui.css" />
+		<link rel="stylesheet" href="../../css/mint-ui.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/MintUistyle.css" />
+		<link rel="stylesheet" href="../../script/jQuery/jquery.touchPDF.css" />
+		<style>
+			html,
+			body {
+				height: 100%;
+				display: flex;
+				display: -webkit-flex;
+				display: -webkit-box;
+				flex-flow: column;
+				-webkit-flex-flow: column;
+				-webkit-box-orient: vertical;
+			}
+			
+			.header {
+				height: 57px;
+				width: 100%;
+				display: block;
+				line-height: 57px;
+				padding-top: 11px;
+				font-size: .8rem;
+			}
+			
+			.header.active {
+				display: block;
+			}
+			
+			.top-menu {
+				/*padding: 0 43px 0 8px;*/
+				text-align: center;
+				color: #fff;
+				font-weight: bold;
+			}
+			/*按钮*/
+			
+			.backBtn {
+				height: 40px;
+				width: 35px;
+				position: absolute;
+				right: left;
+				margin-top: .5rem;
+				font-size: .7rem;
+				font-weight: bold;
+			}
+			
+			.backBtn::before {
+				position: absolute;
+				top: .65rem;
+				left: .75rem;
+				display: block;
+				content: '';
+				width: 10px;
+				height: 10px;
+				border-left: 1px solid;
+				border-top: 1px solid;
+				color: #fff;
+				transform: rotate(-45deg);
+			}
+			/*字体颜色*/
+			
+			.header.home>div.active {
+				opacity: 1;
+			}
+			
+			.header.home {
+				background-color: #FF961B;
+			}
+			
+			.l-btn {
+				position: fixed;
+				bottom: .5rem;
+				width: 94%;
+				margin-left: 2%;
+				height: 2.5rem;
+				font-size: .8rem;
+				text-align: center;
+				line-height: 2.5rem;
+				z-index: 666;
+				background-color: #fff;
+				color: white;
+				outline: none;
+				border: 1px solid transparent;
+				z-index: 999;
+				background-color: #FF961B;
+			}
+			
+			.mypdf,
+			.mypdf1 {
+				position: absolute;
+				margin-top: 1rem;
+			}
+			
+			.pdf-button {
+				font-size: 50px;
+				margin-right: 20px;
+			}
+			
+			.pdf-zoomout,
+			.pdf-zoomin,
+			.pdf-next,
+			.pdf-prev,
+			.pdf-page-count {
+				visibility: hidden;
+			}
+			
+			.pdf-viewer {
+				top: 60px !important;
+			}
+			
+			.touchPDF>.pdf-outerdiv {
+				padding: 0 0 !important;
+			}
+		</style>
+	</head>
+
+	<body>
+		<header id="header">
+			<div class="header home active">
+				<div class="backBtn" tapmode onclick="back()"></div>
+				<div id="title" class="top-menu">报告书</div>
+			</div>
+		</header>
+		<div class="mypdf" id="myPDF"></div>
+		<button class="l-btn" onclick="addSave()" style="display:none">
+        	业主签字
+    	</button>
+		<script type="text/javascript" src="../../script/api.js"></script>
+		<script type="text/javascript" src="../../config/config.js"></script>
+		<script type="text/javascript" src="../../script/vue.js"></script>
+		<script type="text/javascript" src="../../script/jQuery/pdf.compatibility.js"></script>
+		<script type="text/javascript" src="../../script/jQuery/pdf.js"></script>
+		<script type="text/javascript" src="../../script/jQuery/jquery.min.js"></script>
+		<script type="text/javascript" src="../../script/jQuery/jquery.touchSwipe.js"></script>
+		<script type="text/javascript" src="../../script/jQuery/jquery.touchPDF.js"></script>
+		<script type="text/javascript" src="../../script/jQuery/jquery.panzoom.js"></script>
+		<script type="text/javascript" src="../../script/jQuery/jquery.mousewheel.js"></script>
+		<script type="text/javascript" src="../../script/mint-ui.js"></script>
+		<script type="text/javascript" src="../../script/umeng/zhuge.js"></script>
+		<script type="text/javascript" src="../../script/zepto.js"></script>
+		<script type="text/javascript" src="../../script/iphoneX.js"></script>
+
+		<script>
+			var userObj, planId, base64;
+			apiready = function() {
+				iphoneXfit();
+				if(isIphoneX()) {
+					$(".backBtn").css("top", "1.3rem");
+				}
+				$(".mypdf").css("height", "90%").css("width", "100%").css("top", "45px")
+				userObj = api.pageParam; // 传参赋值
+				planId = userObj.planId;
+
+				initList(); // 初始化函数
+				_initApiEvent()
+			}
+
+			function initList() { // 初始化
+				Vue.$indicator.open("加载中...");
+				api.clearCache(function() {});
+				api.ajax({
+					url: webapp_global.url + '/plan/previewRoutineWord',
+					method: 'get',
+					dataType: 'json',
+					timeout: 120,
+					data: {
+						values: {
+							id: planId,
+							type: "1",
+						}
+					}
+				}, function(ret, err) {
+					Vue.$indicator.close();
+					if(ret) {
+						if(ret.code == "success") {
+							var pathPdf = ret.data;
+							if(userObj.signBase64 == 0 || userObj.signBase64 == "0") { // 签字展示
+								$('.l-btn').show();
+							}
+							setTimeout(function() {
+								$("#myPDF").pdf({
+									source: webapp_global.imageUrl + pathPdf + "?r=" + new Date().getTime() // MORE SETTINGS HERE
+								});
+							}, 1000)
+						} else {
+							api.toast({
+								msg: "pdf文档正在生成中，请稍后再试！",
+								duration: 3000,
+								location: 'middle'
+							});
+						}
+					} else {
+						api.toast({
+							msg: "pdf文档正在生成中，请稍后再试！",
+							duration: 3000,
+							location: 'middle'
+						});
+					};
+				});
+			}
+
+			function uploadPdf(base64) { // 上传base64
+				$("#myPDF").remove();
+				Vue.$indicator.open("报告生成中...");
+				$('.l-btn').hide();
+				api.clearCache(function() {});
+				// 关闭pdf
+				api.ajax({
+					url: webapp_global.url + '/plan/previewWordWithImg',
+					method: 'post',
+					dataType: 'json',
+					timeout: 60,
+					data: {
+						values: {
+							id: planId,
+							base64: base64,
+						}
+					},
+				}, function(ret, err) {
+					Vue.$indicator.close();
+					if(ret) {
+						if(ret.code == 'success') {
+							var pathPdf = ret.data;
+							$("body").append('<div class="mypdf1" id="myPDF1"></div>');
+							$(".mypdf1").css("height", "90%").css("width", "100%").css("top", "45px");
+							setTimeout(function() {
+								$("#myPDF1").pdf({
+									source: webapp_global.imageUrl + pathPdf + "?r=" + new Date().getTime()
+								})
+							}, 1000)
+						} else {
+							api.toast({
+								msg: "pdf文档正在生成中，请稍等...",
+								duration: 3000,
+								location: 'bottom'
+							});
+							setTimeout(function(){
+								uploadPdf(base64);
+							},2000)
+						}
+					} else {
+						api.toast({
+							msg: "pdf文档正在生成中，请稍等...",
+							duration: 3000,
+							location: 'bottom'
+						});
+						setTimeout(function(){
+							uploadPdf(base64);
+						},2000)
+					};
+				});
+			}
+
+			function addSave() { // 跳转签字
+				//GrowingIO 埋点 例行维保，点击进入业主签字
+				api.openWin({
+					name: '_signature',
+					url: './_signature.html',
+					bounces: false,
+					reload: true,
+				});
+			}
+
+			function _initApiEvent() {
+				api.addEventListener({
+					name: 'keyback'
+				}, function(ret, err) {
+					back()
+				});
+				api.addEventListener({
+					name: 'lookPdf'
+				}, function(ret, err) {
+					base64 = ret.value.baseImg;
+					uploadPdf(base64);
+				});
+				//ios右滑控制 
+				api.addEventListener({
+					name: 'swiperight'
+				}, function(ret, err) {});
+			}
+
+			function back() {
+				api.sendEvent({
+					name: 'updatePlanDataPage',
+					extra: {}
+				});
+				api.closeWin();
+			}
+		</script>
+	</body>
+
+</html>

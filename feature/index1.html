@@ -1,0 +1,468 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+		<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+		<link rel="stylesheet" type="text/css" href="./css/aui.css" />
+		<link rel="stylesheet" type="text/css" href="./css/wbicon/style.css" />
+		<style type="text/css">
+			html {
+				font-family: "Microsoft YaHei";
+				height: 100%;
+			}
+			
+			body {
+				color: #333;
+				background-color: #eeeef5;
+				height: 100%;
+			}
+			
+			.aui-content-padded {
+				margin: 0 0 .5rem 0;
+			}
+			
+			.aui-card-list {
+				margin-bottom: .5rem;
+			}
+			
+			.wb-flex {
+				display: -webkit-box;
+				display: -webkit-flex;
+				display: flex;
+				-webkit-box-pack: justify;
+				-webkit-justify-content: center;
+				justify-content: center;
+				-webkit-box-align: center;
+				-webkit-align-items: center;
+				align-items: center;
+			}
+			
+			.wb-flex-start {
+				-webkit-justify-content: flex-start;
+				justify-content: flex-start;
+			}
+			
+			.wb-space-between {
+				-webkit-justify-content: space-between;
+				justify-content: space-between;
+			}
+			
+			.aui-tab-item {
+				width: 100%;
+				height: 2.4rem;
+				line-height: 2.4rem;
+				font-size: 0.8rem;
+				color: #666;
+			}
+			
+			.aui-tab-item.aui-active {
+				color: #ff961b;
+				border-bottom: 2px solid #ff961b;
+			}
+			
+			.aui-card-list-header {
+				padding: .5rem .5rem .45rem;
+				font-size: .75rem;
+			}
+			
+			.aui-card-list-content-padded {
+				padding: 0.5rem 0.5rem;
+			}
+			
+			.aui-card-list {
+				border-top-left-radius: 3px;
+				border-top-right-radius: 3px;
+			}
+			
+			.aui-card-list-header {
+				position: relative;
+				border-bottom: 1px solid #ddd;
+				border-top-left-radius: 3px;
+				border-top-right-radius: 3px;
+			}
+			
+			.wb-arrow-mark {
+				position: absolute;
+				top: -.2rem;
+				left: 0;
+				color: #ff961b;
+				font-size: 1rem;
+			}
+			
+			.wb-card-list-header {
+				max-width: 80%;
+				font-size: .75rem;
+			}
+			
+			.wb-pending-txt {
+				color: #333;
+				font-size: .75rem;
+			}
+			
+			.wb-card-title {
+				white-space: nowrap;
+				color: #999999;
+				font-size: .72rem;
+			}
+			
+			.wb-card-list {
+				width: 86%;
+			}
+			
+			.wb-card-list>div {
+				width: 100%;
+			}
+			
+			.wb-info-text {
+				display: inline-block;
+				max-width: 77%;
+				font-size: .75rem;
+			}
+			
+			.wb-info-text span {
+				margin-left: .5rem;
+			}
+			
+			.aui-card-list-content-padded .wb-flex+.wb-flex {
+				margin-top: .35rem;
+			}
+			
+			.wb-text-defalut {
+				color: #333;
+			}
+			
+			.wb-list-icon {
+				margin-right: .2rem;
+				font-size: 1.5rem;
+				color: #0a85ff;
+			}
+			
+			.filtrate {
+				height: 1.67rem;
+				font-size: .75rem;
+				line-height: 1.67rem;
+				text-align: right;
+				color: #333;
+				font-weight: 500;
+			}
+			
+			.filtrate span:last-child {
+				padding: 0 .4rem 0 .2rem;
+			}
+			
+			.wb-content {
+				position: relative;
+				height: 100%
+			}
+			
+			.wb-filtrateCon {
+				width: 13.67rem;
+				position: absolute;
+				top: 0;
+				right: -13.67rem;
+				height: 100%;
+				z-index: 10;
+				background-color: #eeeef5;
+				transition: .8s;
+			}
+			
+			.wb-shade {
+				height: 100%;
+				width: 100%;
+				z-index: 9;
+				background-color: #000;
+				opacity: 0.3;
+				filter: alpha(opacity=30);
+				position: absolute;
+				top: 0;
+				left: 0;
+				display: none;
+			}
+			
+			.wb-filtrateCon>p {
+				height: 1.67rem;
+				font-size: .75rem;
+				line-height: 1.67rem;
+				color: #333333;
+				font-weight: 600;
+				padding-left: .25rem;
+				background-color: #fff;
+			}
+			
+			.wb-filtrateList {
+				background-color: #fff;
+			}
+			
+			.wb-filtrateLi>p {
+				height: 1.33rem;
+				font-size: .67rem;
+				line-height: 1.33rem;
+				color: #666;
+				background-color: #eeeef5;
+				padding-left: .25rem;
+			}
+			
+			.searchCon {
+				padding: .3rem .4rem;
+			}
+			
+			.check_input {
+				border: 1px solid #a6a6a6!important;
+				height: 1.2rem!important;
+				font-size: .6rem!important;
+				border-radius: .15rem!important;
+				padding-left: .2rem!important;
+				-webkit-appearance: searchfield!important;
+			}
+			
+			.wb-filtrateLi>ul {
+				display: flex;
+				justify-content: flex-start;
+				padding: .15rem 0;
+				flex-wrap: wrap;
+				/*CSS3样式，支持webkit，ms*/
+				-ms-flex-wrap: wrap;
+				/*IE9以及一下不支持*/
+				-webkit-flex-wrap: wrap;
+			}
+			
+			.wb-filtrateLi>ul li {
+				height: .97rem;
+				min-width: 20%;
+				margin: .15rem .33rem;
+				font-size: .67rem;
+				color: #666;
+				background: #eeeeee;
+				border-radius: .5rem;
+				display: flex;
+				justify-content: center;
+				align-items: center;
+			}
+			
+			.wb-active {
+				background-color: #ffebcd!important;
+				color: #fdab3c!important;
+			}
+			
+			.wb-btnCon {
+				position: absolute;
+				bottom: 2rem;
+				left: 0;
+				padding: 0 .3rem;
+				width: 100%;
+				height:
+			}
+			
+			.wb-btnCon .aui-btn {
+				width: 28%;
+				height: 2rem;
+				line-height: 2rem;
+			}
+			
+			.wb-btnCon .aui-btn-warning {
+				width: 70%;
+				background-color: #ff961b!important;
+			}
+			
+			.searchList {
+				width: 99%;
+				position: absolute;
+				bottom: 2rem;
+				right: 0;
+				z-index: 13;
+				padding: .3rem .3rem;
+				background-color: #fff;
+				height: 8rem;
+				display: none;
+			}
+			
+			.searecBtnBox {
+				display: flex;
+				justify-content: space-between;
+				padding-bottom: .3rem;
+			}
+			
+			.searchList ul {
+				width: 100%;
+				height: calc(100% - 2rem);
+			}
+			
+			.searchList ul li {
+				text-align: center;
+				color: #999999;
+				font-size: .7rem;
+			}
+			
+			.searchList ul li:hover {
+				background-color: #fff3e5;
+				color: #fd9905;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div class="wb-content">
+			<!--遮罩-->
+			<div class="wb-shade"></div>
+			<!--筛选框-->
+			<div class="aui-content wb-filtrateCon">
+				<p class="wbFiltrate">筛选</p>
+				<div class="wb-filtrateList">
+					<ul class="wb-filtrateUl">
+						<li class="wb-filtrateLi">
+							<p>企业名称</p>
+							<div class="searchCon">
+								<input type="search" placeholder="" name="" id="" class="check_input" onfocus="_focus()" onblur="">
+							</div>
+						</li>
+						<li class="wb-filtrateLi">
+							<p>订单状态</p>
+							<ul>
+								<li class="wb-active">不限</li>
+								<li>待处理</li>
+								<li>处理中</li>
+								<li>待确认</li>
+								<li>已完成</li>
+							</ul>
+						</li>
+						<li class="wb-filtrateLi">
+							<p>服务及时性</p>
+							<ul>
+								<li class="wb-active">不限</li>
+								<li>正常</li>
+								<li>逾期</li>
+							</ul>
+						</li>
+						<li class="wb-filtrateLi">
+							<p>连接蓝牙</p>
+							<ul>
+								<li class="wb-active">不限</li>
+								<li>是</li>
+								<li>否</li>
+							</ul>
+						</li>
+						<li class="wb-filtrateLi">
+							<p>历史改派</p>
+							<ul>
+								<li class="wb-active">不限</li>
+								<li>是</li>
+								<li>否</li>
+							</ul>
+						</li>
+						<li class="wb-filtrateLi">
+							<p>历史改派</p>
+							<ul>
+								<li class="wb-active">不限</li>
+								<li>近日</li>
+								<li>本周</li>
+								<li>本月</li>
+								<li>本季度</li>
+								<li style="min-width: 30%;">自定义时间</li>
+							</ul>
+						</li>
+					</ul>
+				</div>
+				<div class="aui-content wb-btnCon">
+					<div class="aui-btn">清空</div>
+					<div class="aui-btn aui-btn-warning">查看N个记录</div>
+				</div>
+
+			</div>
+			<div class="aui-content searchList">
+				<div class="searecBtnBox">
+					<div class="aui-btn" onclick="deselect()">取消</div>
+					<div class="aui-btn aui-btn-warning">确认</div>
+				</div>
+				<ul>
+					<li>清华大学合肥公共安全研究院</li>
+					<li>北京辰安科技有限公司</li>
+					<li>北京辰安科技有限公司</li>
+					<li>北京辰安科技有限公司</li>
+					<li>北京辰安科技有限公司</li>
+				</ul>
+			</div>
+			<!--头部导航-->
+		</div>
+	</body>
+	<script type="text/javascript" src="./script/api.js"></script>
+	<script type="text/javascript" src="./script/aui-tab.js"></script>
+	<script type="text/javascript">
+		apiready = function() {
+			api.setStatusBarStyle({
+				style: 'light'
+			});
+			api.parseTapmode();
+			var header = $api.byId('header');
+			var headerPos = $api.offset(header);
+			var body_h = $api.offset($api.dom('body')).h;
+			var header_h = $api.offset($api.byId('header')).h;
+			api.openFrame({
+				name: 'index_frm',
+				url: './html/index_frm.html',
+				bounces: true,
+				rect: {
+					x: 0,
+					y: header_h,
+					w: 'auto',
+					h: 'auto'
+				}
+			})
+		};
+
+		function openClub() {
+			var delay = 0;
+			if(api.systemType != 'ios') {
+				delay = 300;
+			}
+			api.openWin({
+				name: 'club_win',
+				url: './html/club_win.html',
+				bounces: false,
+				delay: delay,
+				slidBackEnabled: true,
+				vScrollBarEnabled: false,
+				progress: {
+					type: "page"
+				}
+			});
+		}
+
+		function closeWin() {
+			api.closeWin({});
+		}
+
+		apiready = function() {
+			api.parseTapmode();
+		}
+		var tab = new auiTab({
+			element: document.getElementById("tab"),
+		}, function(ret) {
+		});
+
+		//此处调试样式用,事件自己完善
+		var filtrateBtn = document.querySelector(".filtrateBtn"),
+			wbShade = document.querySelector(".wb-shade"),
+			wbFiltrateCon = document.querySelector(".wb-filtrateCon");
+		filtrateBtn.onclick = function() {
+			wbShade.style.display = 'block'
+			wbFiltrateCon.style.transform = "translateX(-13.67rem)"
+		}
+		var wbFiltrate = document.querySelector(".wbFiltrate"),
+			searchList = document.querySelector(".searchList");
+		wbFiltrate.onclick = function() {
+			wbShade.style.display = 'none'
+			wbFiltrateCon.style.transform = "translateX(13.67rem)"
+		}
+		//搜索
+		function _focus() {
+			searchList.style.display = "block"
+		}
+		//取消
+		function deselect() {
+			searchList.style.display = "none"
+		}
+	</script>
+
+</html>

@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>维保单子详情信息</title>
+		<link rel="stylesheet" href="../../css/api.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/aui.css" />
+	</head>
+
+	<body>
+		<script type="text/javascript" src="../../script/api.js"></script>
+		<script>
+			apiready = function() {
+				var pageParam = api.pageParam;
+				api.openFrame({
+					name: 'routineMaintenanceDetails',
+					url: './routineMaintenanceDetails.html',
+					rect: {
+						x: 0,
+						y: 0,
+						w: 'auto',
+						h: 'auto'
+					},
+					pageParam: api.pageParam,
+					bounces: false,
+					vScrollBarEnabled: false,
+					hScrollBarEnabled: true
+				});
+			}
+		</script>
+	</body>
+
+</html>
